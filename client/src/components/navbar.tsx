@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Search, Menu, Home, Flame, Monitor, Lock, ChevronDown } from "lucide-react";
+import { Search, Menu, Home, Flame, Monitor, Lock, LockOpen, Calendar, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -73,6 +73,16 @@ export function Navbar() {
             <Lock className="h-4 w-4" />
             Censored
           </Link>
+          
+          <Link href="/uncensored" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="nav-uncensored">
+            <LockOpen className="h-4 w-4" />
+            Uncensored
+          </Link>
+          
+          <Link href="/2025" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="nav-2025">
+            <Calendar className="h-4 w-4" />
+            2025
+          </Link>
         </div>
 
         {/* Search & Actions */}
@@ -139,6 +149,18 @@ export function Navbar() {
                 <Link href="/censored" className="flex items-center gap-3 text-lg font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="mobile-nav-censored">
                   <Lock className="h-5 w-5" />
                   Censored
+                </Link>
+                
+                {/* Uncensored */}
+                <Link href="/uncensored" className="flex items-center gap-3 text-lg font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="mobile-nav-uncensored">
+                  <LockOpen className="h-5 w-5" />
+                  Uncensored
+                </Link>
+                
+                {/* 2025 */}
+                <Link href="/2025" className="flex items-center gap-3 text-lg font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="mobile-nav-2025">
+                  <Calendar className="h-5 w-5" />
+                  2025
                 </Link>
               </div>
             </SheetContent>
