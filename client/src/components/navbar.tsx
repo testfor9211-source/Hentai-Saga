@@ -29,9 +29,6 @@ export function Navbar() {
           <div className="w-8 h-8 bg-primary rounded flex items-center justify-center text-primary-foreground font-display font-bold text-xl group-hover:bg-primary/80 transition-colors">
             H
           </div>
-          <span className="font-display text-xl font-bold tracking-wider text-white group-hover:text-primary transition-colors hidden sm:inline">
-            HENTAI SAGA
-          </span>
         </Link>
 
         {/* Desktop Navigation */}
