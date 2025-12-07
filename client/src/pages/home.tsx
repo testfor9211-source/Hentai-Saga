@@ -3,7 +3,7 @@ import { HeroSection } from "@/components/hero-section";
 import { AnimeCard } from "@/components/anime-card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, Flame, Trophy, Calendar } from "lucide-react";
+import { ChevronRight, Flame, Trophy } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 // Import generated assets
@@ -49,7 +49,7 @@ export default function Home() {
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
                   <Flame className="h-6 w-6 text-primary" />
-                  <h2 className="text-2xl font-display font-bold text-white">RECENTLY UPDATED</h2>
+                  <h2 className="text-2xl font-display font-bold text-white">RECENTLY UPLOADED</h2>
                 </div>
                 <Button variant="link" className="text-muted-foreground hover:text-primary group">
                   View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
@@ -63,25 +63,78 @@ export default function Home() {
               </div>
             </section>
 
-            {/* New Season Section */}
+            {/* Test 1 Section */}
             <section>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
-                  <Calendar className="h-6 w-6 text-blue-500" />
-                  <h2 className="text-2xl font-display font-bold text-white">NEW SEASON</h2>
+                  <Flame className="h-6 w-6 text-red-500" />
+                  <h2 className="text-2xl font-display font-bold text-white">Test 1</h2>
                 </div>
-                <div className="flex gap-2">
-                  <Button size="sm" variant="secondary" className="bg-primary/20 text-primary hover:bg-primary hover:text-white transition-colors">Mon</Button>
-                  <Button size="sm" variant="secondary" className="hover:bg-primary hover:text-white transition-colors">Tue</Button>
-                  <Button size="sm" variant="secondary" className="hover:bg-primary hover:text-white transition-colors">Wed</Button>
-                  <Button size="sm" variant="secondary" className="hidden sm:flex hover:bg-primary hover:text-white transition-colors">Thu</Button>
-                  <Button size="sm" variant="secondary" className="hidden sm:flex hover:bg-primary hover:text-white transition-colors">Fri</Button>
-                </div>
+                <Button variant="link" className="text-muted-foreground hover:text-primary group">
+                  View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </Button>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
                 {trendingAnime.slice(0, 4).map((anime, i) => (
-                  <AnimeCard key={`new-${i}`} {...anime} status="New" />
+                  <AnimeCard key={`test1-${i}`} {...anime} />
+                ))}
+              </div>
+            </section>
+
+            {/* Test 2 Section */}
+            <section>
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-2">
+                  <Flame className="h-6 w-6 text-pink-500" />
+                  <h2 className="text-2xl font-display font-bold text-white">Test 2</h2>
+                </div>
+                <Button variant="link" className="text-muted-foreground hover:text-primary group">
+                  View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                {trendingAnime.slice(0, 4).map((anime, i) => (
+                  <AnimeCard key={`test2-${i}`} {...anime} />
+                ))}
+              </div>
+            </section>
+
+            {/* Test 3 Section */}
+            <section>
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-2">
+                  <Flame className="h-6 w-6 text-purple-500" />
+                  <h2 className="text-2xl font-display font-bold text-white">Test 3</h2>
+                </div>
+                <Button variant="link" className="text-muted-foreground hover:text-primary group">
+                  View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                {trendingAnime.slice(0, 4).map((anime, i) => (
+                  <AnimeCard key={`test3-${i}`} {...anime} />
+                ))}
+              </div>
+            </section>
+
+            {/* Test 4 Section */}
+            <section>
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-2">
+                  <Flame className="h-6 w-6 text-orange-500" />
+                  <h2 className="text-2xl font-display font-bold text-white">Test 4</h2>
+                </div>
+                <Button variant="link" className="text-muted-foreground hover:text-primary group">
+                  View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                {trendingAnime.slice(0, 4).map((anime, i) => (
+                  <AnimeCard key={`test4-${i}`} {...anime} />
                 ))}
               </div>
             </section>
@@ -95,7 +148,7 @@ export default function Home() {
             <div className="bg-card border border-border rounded-xl p-6 sticky top-24">
               <div className="flex items-center gap-2 mb-6">
                 <Trophy className="h-5 w-5 text-yellow-500" />
-                <h3 className="font-display font-bold text-lg text-white">TOP AIRING</h3>
+                <h3 className="font-display font-bold text-lg text-white">TOP HENTAI</h3>
               </div>
 
               <div className="space-y-4">

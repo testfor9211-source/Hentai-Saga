@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Search, Bell, Menu, Home, Flame, Monitor, Lock, ChevronDown } from "lucide-react";
+import { Search, Menu, Home, Flame, Monitor, Lock, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -90,9 +90,6 @@ export function Navbar() {
             <Search className="h-5 w-5" />
           </Button>
 
-          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary" data-testid="button-notifications">
-            <Bell className="h-5 w-5" />
-          </Button>
 
           {/* Mobile Menu */}
           <Sheet>

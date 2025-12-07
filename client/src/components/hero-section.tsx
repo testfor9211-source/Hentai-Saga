@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Play, Info, Plus } from "lucide-react";
+import { Play } from "lucide-react";
 import heroImage from "@assets/generated_images/anime_hero_banner_with_cybernetic_city.png";
 
 export function HeroSection() {
@@ -22,9 +22,8 @@ export function HeroSection() {
         <div className="max-w-4xl space-y-8 animate-in slide-in-from-left-10 duration-700 fade-in">
           <div className="flex items-center gap-2">
             <span className="bg-primary text-white px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider shadow-[0_0_10px_rgba(236,72,153,0.5)]">
-              #1 Trending
+              #1 TRENDING HENTAI WEBSITE OF ALL TIME
             </span>
-            <span className="text-white/90 text-sm font-medium tracking-wide">Action • Sci-Fi • 2024</span>
           </div>
           
           <h1 className="text-6xl md:text-8xl font-display font-black text-white leading-[0.9] drop-shadow-xl tracking-tight">
@@ -46,11 +45,7 @@ export function HeroSection() {
           <div className="flex flex-wrap items-center gap-4 pt-4">
             <Button size="lg" className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 h-12 gap-2 font-bold text-md shadow-[0_0_20px_rgba(236,72,153,0.4)] hover:shadow-[0_0_30px_rgba(236,72,153,0.6)] transition-all duration-300 transform hover:-translate-y-1">
               <Play className="h-5 w-5 fill-current" />
-              WATCH NOW
-            </Button>
-            <Button size="lg" variant="outline" className="rounded-full px-8 h-12 gap-2 border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white backdrop-blur-sm">
-              <Plus className="h-5 w-5" />
-              ADD TO LIST
+              WATCH RANDOM HENTAI
             </Button>
           </div>
         </div>
