@@ -23,7 +23,7 @@ export function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
+      <div className="container mx-auto px-4 md:px-2 h-16 flex items-center justify-between gap-4">
         {/* Logo - Mobile Only */}
         <Link href="/" className="flex items-center gap-2 group md:hidden">
           <div className="w-8 h-8 bg-primary rounded flex items-center justify-center text-primary-foreground font-display font-bold text-xl group-hover:bg-primary/80 transition-colors">
@@ -32,7 +32,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-centre gap-6">
           <Link href="/" className="flex items-center gap-2 text-sm font-medium text-white hover:text-primary transition-colors" data-testid="nav-home">
             <Home className="h-4 w-4" />
             Home
