@@ -5,10 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { 
   Star, 
-  ChevronRight, 
-  ChevronDown,
-  Heart,
-  ListPlus
+  ChevronDown
 } from "lucide-react";
 
 import imgFantasy from "@assets/generated_images/anime_poster_fantasy_adventure.png";
@@ -67,15 +64,6 @@ export default function SamplePage() {
       <Navbar />
       
       <main className="container mx-auto px-4 py-6">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6" data-testid="breadcrumb-nav">
-          <a href="/" className="hover:text-primary transition-colors" data-testid="link-home">Home</a>
-          <ChevronRight className="h-4 w-4" />
-          <a href="/anime" className="hover:text-primary transition-colors" data-testid="link-anime">All Hentai</a>
-          <ChevronRight className="h-4 w-4" />
-          <span className="text-white" data-testid="text-current-anime">{animeData.title}</span>
-        </nav>
-
         {/* Title */}
         <h1 className="text-2xl md:text-3xl font-display font-bold text-white mb-1" data-testid="heading-title">
           {animeData.title}
@@ -158,21 +146,6 @@ export default function SamplePage() {
             </div>
           </div>
 
-          <Separator className="my-6 bg-white/10" />
-
-          {/* Action Buttons */}
-          <div className="flex items-center justify-around">
-            <div className="flex flex-col items-center gap-2 cursor-pointer group" data-testid="button-add-list">
-              <ListPlus className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
-              <span className="text-sm text-muted-foreground">Add to list</span>
-            </div>
-            <div className="flex flex-col items-center gap-2 cursor-pointer group" data-testid="button-favorite">
-              <Heart className="h-8 w-8 text-primary fill-primary group-hover:scale-110 transition-transform" />
-              <span className="text-sm text-muted-foreground text-center">
-                {animeData.favorites} Users add this<br />as Favorite
-              </span>
-            </div>
-          </div>
         </Card>
 
         {/* Watch Episodes Section */}
