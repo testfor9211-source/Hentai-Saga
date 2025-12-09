@@ -26,7 +26,9 @@ import imgDark from "@assets/generated_images/anime_poster_dark_fantasy.png";
 export default function WatchEpisode() {
   const params = useParams();
   const animeSlug = params.slug || "Sample-page";
-  const episodeNumber = params.episode || "1";
+  // Parse episode from "episode-1" format
+  const episodeParam = params.episode || "episode-1";
+  const episodeNumber = episodeParam.replace("episode-", "") || "1";
   
   const [showFullSummary, setShowFullSummary] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);

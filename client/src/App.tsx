@@ -24,7 +24,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/Sample-page" component={SamplePage} />
-      <Route path="/watch/:slug/episode-:episode" component={WatchEpisode} />
+      <Route path="/watch/:slug/:episode" component={WatchEpisode} />
       <Route path="/Privacy-Policy" component={PrivacyPolicy} />
       <Route path="/Terms-of-Service" component={TermsOfService} />
       <Route path="/DMCA-Copyright-Policy" component={DMCACopyrightPolicy} />

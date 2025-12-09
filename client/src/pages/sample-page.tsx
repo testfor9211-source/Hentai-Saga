@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "wouter";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
@@ -161,31 +160,27 @@ export default function SamplePage() {
 
           <div className="space-y-4">
             {animeData.episodes.map((episode) => (
-              <Link 
+              <div 
                 key={episode.number}
-                href={`/watch/Sample-page/episode-${episode.number}`}
+                className="flex items-center gap-4 hover-elevate cursor-pointer p-2 rounded-lg"
+                data-testid={`row-episode-${episode.number}`}
               >
-                <div 
-                  className="flex items-center gap-4 hover-elevate cursor-pointer p-2 rounded-lg"
-                  data-testid={`row-episode-${episode.number}`}
-                >
-                  <div className="w-28 h-20 flex-shrink-0 overflow-hidden rounded-md">
-                    <img 
-                      src={episode.thumbnail} 
-                      alt={episode.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-white" data-testid={`text-episode-title-${episode.number}`}>
-                      {episode.title}
-                    </h3>
-                  </div>
-                  <div className="text-sm text-muted-foreground" data-testid={`text-episode-date-${episode.number}`}>
-                    {episode.date}
-                  </div>
+                <div className="w-28 h-20 flex-shrink-0 overflow-hidden rounded-md">
+                  <img 
+                    src={episode.thumbnail} 
+                    alt={episode.title}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-              </Link>
+                <div className="flex-1">
+                  <h3 className="font-bold text-white" data-testid={`text-episode-title-${episode.number}`}>
+                    {episode.title}
+                  </h3>
+                </div>
+                <div className="text-sm text-muted-foreground" data-testid={`text-episode-date-${episode.number}`}>
+                  {episode.date}
+                </div>
+              </div>
             ))}
           </div>
         </section>
