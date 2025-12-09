@@ -194,36 +194,31 @@ export default function Home() {
         <footer className="border-t border-white/10 bg-card mt-12">
           <div className="container mx-auto px-4">
             {/* Desktop Footer */}
-            <div className="hidden md:block py-8">
-              <div className="flex items-center justify-between gap-8">
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  <div className="w-8 h-8 bg-primary rounded flex items-center justify-center text-primary-foreground font-display font-bold text-lg">
-                    H
+            <div className="hidden md:block py-10">
+              <div className="flex flex-col gap-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-display font-bold text-xl">
+                      H
+                    </div>
+                    <span className="font-display text-xl font-bold text-white">HENTAI SAGA</span>
                   </div>
-                  <span className="font-display text-lg font-bold text-white">HENTAI SAGA</span>
+                  <p className="text-muted-foreground text-sm">
+                    © 2024 Hentai Saga. All rights reserved.
+                  </p>
                 </div>
-                <div className="flex flex-col items-center gap-1">
-                  <div className="flex flex-wrap justify-center gap-x-4 text-muted-foreground text-sm">
-                    <a href="#" className="hover:text-primary transition-colors">Privacy</a>
-                    <a href="#" className="hover:text-primary transition-colors">Terms</a>
-                    <a href="#" className="hover:text-primary transition-colors">DMCA</a>
-                  </div>
-                  <div className="flex flex-wrap justify-center gap-x-4 text-muted-foreground text-sm">
-                    <a href="#" className="hover:text-primary transition-colors">USA 2257</a>
-                    <a href="#" className="hover:text-primary transition-colors">Cookies</a>
-                  </div>
-                  <div className="flex flex-wrap justify-center gap-x-4 text-muted-foreground text-sm">
-                    <a href="#" className="hover:text-primary transition-colors">Disclaimer</a>
-                    <a href="#" className="hover:text-primary transition-colors">Ads Policy</a>
-                  </div>
-                  <div className="flex flex-wrap justify-center gap-x-4 text-muted-foreground text-sm">
-                    <a href="#" className="hover:text-primary transition-colors">18+ Policy</a>
-                    <a href="#" className="hover:text-primary transition-colors">Parental Controls</a>
-                  </div>
+                <Separator className="bg-white/10" />
+                <div className="flex items-center justify-center gap-8 text-muted-foreground text-sm">
+                  <a href="#" className="hover:text-primary transition-colors">Privacy</a>
+                  <a href="#" className="hover:text-primary transition-colors">Terms</a>
+                  <a href="#" className="hover:text-primary transition-colors">DMCA</a>
+                  <a href="#" className="hover:text-primary transition-colors">USA 2257</a>
+                  <a href="#" className="hover:text-primary transition-colors">Cookies</a>
+                  <a href="#" className="hover:text-primary transition-colors">Disclaimer</a>
+                  <a href="#" className="hover:text-primary transition-colors">Ads Policy</a>
+                  <a href="#" className="hover:text-primary transition-colors">18+ Policy</a>
+                  <a href="#" className="hover:text-primary transition-colors">Parental Controls</a>
                 </div>
-                <p className="text-muted-foreground text-sm text-right flex-shrink-0">
-                  © 2024 Hentai Saga. All rights<br />reserved.
-                </p>
               </div>
             </div>
             
