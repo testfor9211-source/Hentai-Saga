@@ -10,6 +10,8 @@ import SamplePage from "@/pages/sample-page";
 import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
 import DMCACopyrightPolicy from "@/pages/dmca-copyright-policy";
+import USC2257 from "@/pages/usc-2257";
+import CookiePolicy from "@/pages/cookie-policy";
 
 function Router() {
   return (
@@ -19,6 +21,8 @@ function Router() {
       <Route path="/Privacy-Policy" component={PrivacyPolicy} />
       <Route path="/Terms-of-Service" component={TermsOfService} />
       <Route path="/DMCA-Copyright-Policy" component={DMCACopyrightPolicy} />
+      <Route path="/USC-2257" component={USC2257} />
+      <Route path="/Cookie-Policy" component={CookiePolicy} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>

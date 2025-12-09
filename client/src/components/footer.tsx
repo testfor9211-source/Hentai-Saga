@@ -23,8 +23,8 @@ export function Footer() {
               <a href="/Privacy-Policy" className="hover:text-primary transition-colors" data-testid="link-privacy">Privacy</a>
               <a href="/Terms-of-Service" className="hover:text-primary transition-colors" data-testid="link-terms">Terms</a>
               <a href="/DMCA-Copyright-Policy" className="hover:text-primary transition-colors" data-testid="link-dmca">DMCA</a>
-              <a href="#" className="hover:text-primary transition-colors" data-testid="link-usa2257">USA 2257</a>
-              <a href="#" className="hover:text-primary transition-colors" data-testid="link-cookies">Cookies</a>
+              <a href="/USC-2257" className="hover:text-primary transition-colors" data-testid="link-usa2257">USA 2257</a>
+              <a href="/Cookie-Policy" className="hover:text-primary transition-colors" data-testid="link-cookies">Cookies</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-disclaimer">Disclaimer</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-ads-policy">Ads Policy</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-18-policy">18+ Policy</a>
@@ -50,8 +50,8 @@ export function Footer() {
               <a href="/Privacy-Policy" className="hover:text-primary transition-colors" data-testid="link-privacy-mobile">Privacy</a>
               <a href="/Terms-of-Service" className="hover:text-primary transition-colors" data-testid="link-terms-mobile">Terms</a>
               <a href="/DMCA-Copyright-Policy" className="hover:text-primary transition-colors" data-testid="link-dmca-mobile">DMCA</a>
-              <a href="#" className="hover:text-primary transition-colors" data-testid="link-usa2257-mobile">USA 2257</a>
-              <a href="#" className="hover:text-primary transition-colors" data-testid="link-cookies-mobile">Cookies</a>
+              <a href="/USC-2257" className="hover:text-primary transition-colors" data-testid="link-usa2257-mobile">USA 2257</a>
+              <a href="/Cookie-Policy" className="hover:text-primary transition-colors" data-testid="link-cookies-mobile">Cookies</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-disclaimer-mobile">Disclaimer</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-ads-policy-mobile">Ads Policy</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-18-policy-mobile">18+ Policy</a>
