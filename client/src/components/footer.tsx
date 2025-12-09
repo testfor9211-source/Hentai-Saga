@@ -25,7 +25,7 @@ export function Footer() {
               <a href="/DMCA-Copyright-Policy" className="hover:text-primary transition-colors" data-testid="link-dmca">DMCA</a>
               <a href="/USC-2257" className="hover:text-primary transition-colors" data-testid="link-usa2257">USA 2257</a>
               <a href="/Cookie-Policy" className="hover:text-primary transition-colors" data-testid="link-cookies">Cookies</a>
-              <a href="#" className="hover:text-primary transition-colors" data-testid="link-disclaimer">Disclaimer</a>
+              <a href="/Disclaimer" className="hover:text-primary transition-colors" data-testid="link-disclaimer">Disclaimer</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-ads-policy">Ads Policy</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-18-policy">18+ Policy</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-parental-controls">Parental Controls</a>
@@ -52,7 +52,7 @@ export function Footer() {
               <a href="/DMCA-Copyright-Policy" className="hover:text-primary transition-colors" data-testid="link-dmca-mobile">DMCA</a>
               <a href="/USC-2257" className="hover:text-primary transition-colors" data-testid="link-usa2257-mobile">USA 2257</a>
               <a href="/Cookie-Policy" className="hover:text-primary transition-colors" data-testid="link-cookies-mobile">Cookies</a>
-              <a href="#" className="hover:text-primary transition-colors" data-testid="link-disclaimer-mobile">Disclaimer</a>
+              <a href="/Disclaimer" className="hover:text-primary transition-colors" data-testid="link-disclaimer-mobile">Disclaimer</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-ads-policy-mobile">Ads Policy</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-18-policy-mobile">18+ Policy</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-parental-controls-mobile">Parental Controls</a>
