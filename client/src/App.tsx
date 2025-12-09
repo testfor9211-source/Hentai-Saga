@@ -13,6 +13,8 @@ import DMCACopyrightPolicy from "@/pages/dmca-copyright-policy";
 import USC2257 from "@/pages/usc-2257";
 import CookiePolicy from "@/pages/cookie-policy";
 import Disclaimer from "@/pages/disclaimer";
+import AdvertisementPolicy from "@/pages/advertisement-policy";
+import AgeRestrictionPolicy from "@/pages/age-restriction-policy";
 
 function Router() {
   return (
@@ -25,6 +27,8 @@ function Router() {
       <Route path="/USC-2257" component={USC2257} />
       <Route path="/Cookie-Policy" component={CookiePolicy} />
       <Route path="/Disclaimer" component={Disclaimer} />
+      <Route path="/Advertisement-Policy" component={AdvertisementPolicy} />
+      <Route path="/18-Age-Restriction-Policy" component={AgeRestrictionPolicy} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
