@@ -11,11 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Play,
-  Heart,
-  Share2,
-  Flag,
-  Download,
-  MessageSquare
+  Download
 } from "lucide-react";
 
 import imgFantasy from "@assets/generated_images/anime_poster_fantasy_adventure.png";
@@ -85,19 +81,6 @@ export default function WatchEpisode() {
       <Navbar />
       
       <main className="container mx-auto px-4 py-6">
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-          <Link href="/" className="hover:text-primary transition-colors" data-testid="link-home">
-            Home
-          </Link>
-          <span>/</span>
-          <Link href={`/${animeSlug}`} className="hover:text-primary transition-colors" data-testid="link-anime">
-            {animeData.title}
-          </Link>
-          <span>/</span>
-          <span className="text-white" data-testid="text-current-episode">Episode {episodeNumber}</span>
-        </div>
-
         {/* Title */}
         <h1 className="text-2xl md:text-3xl font-display font-bold text-white mb-1" data-testid="heading-title">
           {animeData.title} - Episode {episodeNumber}
@@ -105,6 +88,36 @@ export default function WatchEpisode() {
         <p className="text-muted-foreground mb-6" data-testid="text-alternative-title">
           {animeData.alternativeTitle}
         </p>
+
+        {/* Episode Navigation - Above Video Player */}
+        <div className="flex items-center justify-between mb-4">
+          {prevEpisode ? (
+            <Link href={`/watch/${animeSlug}/episode-${prevEpisode}`}>
+              <Button variant="outline" className="gap-2" data-testid="button-prev-episode">
+                <ChevronLeft className="w-4 h-4" />
+                Episode {prevEpisode}
+              </Button>
+            </Link>
+          ) : (
+            <div />
+          )}
+          
+          <Button variant="outline" className="gap-2" data-testid="button-download">
+            <Download className="w-4 h-4" />
+            Download
+          </Button>
+          
+          {nextEpisode ? (
+            <Link href={`/watch/${animeSlug}/episode-${nextEpisode}`}>
+              <Button variant="outline" className="gap-2" data-testid="button-next-episode">
+                Episode {nextEpisode}
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          ) : (
+            <div />
+          )}
+        </div>
 
         {/* Video Player Section */}
         <div className="mb-8">
@@ -140,51 +153,6 @@ export default function WatchEpisode() {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Episode Navigation */}
-        <div className="flex items-center justify-between mb-8">
-          {prevEpisode ? (
-            <Link href={`/watch/${animeSlug}/episode-${prevEpisode}`}>
-              <Button variant="outline" className="gap-2" data-testid="button-prev-episode">
-                <ChevronLeft className="w-4 h-4" />
-                Episode {prevEpisode}
-              </Button>
-            </Link>
-          ) : (
-            <div />
-          )}
-          
-          {nextEpisode ? (
-            <Link href={`/watch/${animeSlug}/episode-${nextEpisode}`}>
-              <Button variant="outline" className="gap-2" data-testid="button-next-episode">
-                Episode {nextEpisode}
-                <ChevronRight className="w-4 h-4" />
-              </Button>
-            </Link>
-          ) : (
-            <div />
-          )}
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex flex-wrap gap-3 mb-8">
-          <Button variant="outline" size="sm" className="gap-2" data-testid="button-favorite">
-            <Heart className="w-4 h-4" />
-            Favorite
-          </Button>
-          <Button variant="outline" size="sm" className="gap-2" data-testid="button-share">
-            <Share2 className="w-4 h-4" />
-            Share
-          </Button>
-          <Button variant="outline" size="sm" className="gap-2" data-testid="button-download">
-            <Download className="w-4 h-4" />
-            Download
-          </Button>
-          <Button variant="outline" size="sm" className="gap-2" data-testid="button-report">
-            <Flag className="w-4 h-4" />
-            Report
-          </Button>
         </div>
 
         {/* Info Box */}
@@ -323,26 +291,6 @@ export default function WatchEpisode() {
               <ChevronDown className={`h-4 w-4 transition-transform ${showFullSummary ? "rotate-180" : ""}`} />
             </button>
           </div>
-        </section>
-
-        {/* Comments Section */}
-        <section className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <MessageSquare className="h-5 w-5 text-primary" />
-            <h2 className="text-xl font-display font-bold text-white" data-testid="heading-comments">
-              COMMENTS
-            </h2>
-          </div>
-
-          <Card className="p-6 border-white/10">
-            <div className="text-center text-muted-foreground py-8">
-              <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>No comments yet. Be the first to comment!</p>
-              <Button variant="outline" className="mt-4" data-testid="button-add-comment">
-                Add Comment
-              </Button>
-            </div>
-          </Card>
         </section>
 
         {/* Related Anime Section */}
