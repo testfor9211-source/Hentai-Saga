@@ -15,6 +15,7 @@ import CookiePolicy from "@/pages/cookie-policy";
 import Disclaimer from "@/pages/disclaimer";
 import AdvertisementPolicy from "@/pages/advertisement-policy";
 import AgeRestrictionPolicy from "@/pages/age-restriction-policy";
+import ParentalControls from "@/pages/parental-controls";
 
 function Router() {
   return (
@@ -29,6 +30,7 @@ function Router() {
       <Route path="/Disclaimer" component={Disclaimer} />
       <Route path="/Advertisement-Policy" component={AdvertisementPolicy} />
       <Route path="/18-Age-Restriction-Policy" component={AgeRestrictionPolicy} />
+      <Route path="/Parental-Controls" component={ParentalControls} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>

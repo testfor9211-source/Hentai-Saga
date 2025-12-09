@@ -28,7 +28,7 @@ export function Footer() {
               <a href="/Disclaimer" className="hover:text-primary transition-colors" data-testid="link-disclaimer">Disclaimer</a>
               <a href="/Advertisement-Policy" className="hover:text-primary transition-colors" data-testid="link-ads-policy">Ads Policy</a>
               <a href="/18-Age-Restriction-Policy" className="hover:text-primary transition-colors" data-testid="link-18-policy">18+ Policy</a>
-              <a href="#" className="hover:text-primary transition-colors" data-testid="link-parental-controls">Parental Controls</a>
+              <a href="/Parental-Controls" className="hover:text-primary transition-colors" data-testid="link-parental-controls">Parental Controls</a>
             </div>
           </div>
         </div>
@@ -55,7 +55,7 @@ export function Footer() {
               <a href="/Disclaimer" className="hover:text-primary transition-colors" data-testid="link-disclaimer-mobile">Disclaimer</a>
               <a href="/Advertisement-Policy" className="hover:text-primary transition-colors" data-testid="link-ads-policy-mobile">Ads Policy</a>
               <a href="/18-Age-Restriction-Policy" className="hover:text-primary transition-colors" data-testid="link-18-policy-mobile">18+ Policy</a>
-              <a href="#" className="hover:text-primary transition-colors" data-testid="link-parental-controls-mobile">Parental Controls</a>
+              <a href="/Parental-Controls" className="hover:text-primary transition-colors" data-testid="link-parental-controls-mobile">Parental Controls</a>
             </div>
           </div>
         </div>
