@@ -191,28 +191,62 @@ export default function Home() {
         </div>
         
         {/* Footer */}
-        <footer className="border-t border-white/10 bg-card py-12 mt-12">
+        <footer className="border-t border-white/10 bg-card mt-12">
           <div className="container mx-auto px-4">
-            <div className="flex flex-col items-center gap-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-primary rounded flex items-center justify-center text-primary-foreground font-display font-bold text-2xl">
-                  H
+            {/* Desktop Footer */}
+            <div className="hidden md:block py-10">
+              <div className="grid grid-cols-3 gap-8 items-start">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-primary rounded flex items-center justify-center text-primary-foreground font-display font-bold text-2xl">
+                    H
+                  </div>
+                  <span className="font-display text-xl font-bold text-white">HENTAI SAGA</span>
                 </div>
-                <span className="font-display text-2xl font-bold text-white">HENTAI SAGA</span>
+                <div className="flex flex-col items-center gap-3">
+                  <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-muted-foreground text-sm">
+                    <a href="#" className="hover:text-primary transition-colors">Privacy</a>
+                    <a href="#" className="hover:text-primary transition-colors">Terms</a>
+                    <a href="#" className="hover:text-primary transition-colors">DMCA</a>
+                    <a href="#" className="hover:text-primary transition-colors">USA 2257</a>
+                    <a href="#" className="hover:text-primary transition-colors">Cookies</a>
+                  </div>
+                  <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-muted-foreground text-sm">
+                    <a href="#" className="hover:text-primary transition-colors">Disclaimer</a>
+                    <a href="#" className="hover:text-primary transition-colors">Ads Policy</a>
+                    <a href="#" className="hover:text-primary transition-colors">18+ Policy</a>
+                    <a href="#" className="hover:text-primary transition-colors">Parental Controls</a>
+                  </div>
+                </div>
+                <p className="text-muted-foreground text-sm text-right">
+                  © 2024 Hentai Saga. All rights reserved.
+                </p>
               </div>
-              <p className="text-muted-foreground text-sm">
-                © 2024 Hentai Saga. All rights reserved.
-              </p>
-              <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-muted-foreground text-sm max-w-md">
-                <a href="#" className="hover:text-primary transition-colors">Privacy</a>
-                <a href="#" className="hover:text-primary transition-colors">Terms</a>
-                <a href="#" className="hover:text-primary transition-colors">DMCA</a>
-                <a href="#" className="hover:text-primary transition-colors">USA 2257</a>
-                <a href="#" className="hover:text-primary transition-colors">Cookies</a>
-                <a href="#" className="hover:text-primary transition-colors">Disclaimer</a>
-                <a href="#" className="hover:text-primary transition-colors">Ads Policy</a>
-                <a href="#" className="hover:text-primary transition-colors">18+ Policy</a>
-                <a href="#" className="hover:text-primary transition-colors">Parental Controls</a>
+            </div>
+            
+            {/* Mobile Footer */}
+            <div className="md:hidden py-8">
+              <div className="flex flex-col items-center gap-5">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-primary rounded flex items-center justify-center text-primary-foreground font-display font-bold text-lg">
+                    H
+                  </div>
+                  <span className="font-display text-lg font-bold text-white">HENTAI SAGA</span>
+                </div>
+                <p className="text-muted-foreground text-xs">
+                  © 2024 Hentai Saga. All rights reserved.
+                </p>
+                <Separator className="bg-white/10 w-full" />
+                <div className="grid grid-cols-3 gap-x-6 gap-y-3 text-muted-foreground text-xs text-center">
+                  <a href="#" className="hover:text-primary transition-colors">Privacy</a>
+                  <a href="#" className="hover:text-primary transition-colors">Terms</a>
+                  <a href="#" className="hover:text-primary transition-colors">DMCA</a>
+                  <a href="#" className="hover:text-primary transition-colors">USA 2257</a>
+                  <a href="#" className="hover:text-primary transition-colors">Cookies</a>
+                  <a href="#" className="hover:text-primary transition-colors">Disclaimer</a>
+                  <a href="#" className="hover:text-primary transition-colors">Ads Policy</a>
+                  <a href="#" className="hover:text-primary transition-colors">18+ Policy</a>
+                  <a href="#" className="hover:text-primary transition-colors">Parental Controls</a>
+                </div>
               </div>
             </div>
           </div>
