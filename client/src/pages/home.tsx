@@ -203,10 +203,16 @@ export default function Home() {
               <p className="text-muted-foreground text-sm">
                 © 2024 Hentai Saga. All rights reserved.
               </p>
-              <div className="flex gap-6 text-muted-foreground text-sm">
+              <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-muted-foreground text-sm">
                 <a href="#" className="hover:text-primary transition-colors">Privacy</a>
                 <a href="#" className="hover:text-primary transition-colors">Terms</a>
                 <a href="#" className="hover:text-primary transition-colors">DMCA</a>
+                <a href="#" className="hover:text-primary transition-colors">USA 2257</a>
+                <a href="#" className="hover:text-primary transition-colors">Cookies</a>
+                <a href="#" className="hover:text-primary transition-colors">Disclaimer</a>
+                <a href="#" className="hover:text-primary transition-colors">Ads Policy</a>
+                <a href="#" className="hover:text-primary transition-colors">18+ Policy</a>
+                <a href="#" className="hover:text-primary transition-colors">Parental Controls</a>
               </div>
             </div>
           </div>
