@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -284,27 +285,7 @@ export default function SamplePage() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-white/10 bg-card py-12 mt-12">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded flex items-center justify-center text-primary-foreground font-display font-bold text-xl">
-                H
-              </div>
-              <span className="font-display text-xl font-bold text-white">HENTAI SAGA</span>
-            </div>
-            <p className="text-muted-foreground text-sm">
-              © 2024 Hentai Saga. All rights reserved.
-            </p>
-            <div className="flex gap-6 text-muted-foreground text-sm">
-              <a href="#" className="hover:text-primary transition-colors" data-testid="link-privacy">Privacy</a>
-              <a href="#" className="hover:text-primary transition-colors" data-testid="link-terms">Terms</a>
-              <a href="#" className="hover:text-primary transition-colors" data-testid="link-dmca">DMCA</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
