@@ -193,17 +193,17 @@ export default function Home() {
         {/* Footer */}
         <footer className="border-t border-white/10 bg-card py-12 mt-12">
           <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-              <div className="flex items-center gap-2">
-                 <div className="w-8 h-8 bg-primary rounded flex items-center justify-center text-primary-foreground font-display font-bold text-xl">
+            <div className="flex flex-col items-center gap-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-primary rounded flex items-center justify-center text-primary-foreground font-display font-bold text-2xl">
                   H
                 </div>
-                <span className="font-display text-xl font-bold text-white">HENTAI SAGA</span>
+                <span className="font-display text-2xl font-bold text-white">HENTAI SAGA</span>
               </div>
               <p className="text-muted-foreground text-sm">
                 © 2024 Hentai Saga. All rights reserved.
               </p>
-              <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-muted-foreground text-sm">
+              <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-muted-foreground text-sm max-w-md">
                 <a href="#" className="hover:text-primary transition-colors">Privacy</a>
                 <a href="#" className="hover:text-primary transition-colors">Terms</a>
                 <a href="#" className="hover:text-primary transition-colors">DMCA</a>
