@@ -20,7 +20,7 @@ export function Footer() {
             </div>
             <Separator className="bg-white/10" />
             <div className="flex items-center justify-center gap-8 text-muted-foreground text-sm">
-              <a href="#" className="hover:text-primary transition-colors" data-testid="link-privacy">Privacy</a>
+              <a href="/Privacy-Policy" className="hover:text-primary transition-colors" data-testid="link-privacy">Privacy</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-terms">Terms</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-dmca">DMCA</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-usa2257">USA 2257</a>
@@ -47,7 +47,7 @@ export function Footer() {
             </p>
             <Separator className="bg-white/10 w-full" />
             <div className="grid grid-cols-3 gap-x-6 gap-y-3 text-muted-foreground text-xs text-center">
-              <a href="#" className="hover:text-primary transition-colors" data-testid="link-privacy-mobile">Privacy</a>
+              <a href="/Privacy-Policy" className="hover:text-primary transition-colors" data-testid="link-privacy-mobile">Privacy</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-terms-mobile">Terms</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-dmca-mobile">DMCA</a>
               <a href="#" className="hover:text-primary transition-colors" data-testid="link-usa2257-mobile">USA 2257</a>
