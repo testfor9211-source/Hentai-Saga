@@ -54,7 +54,8 @@ export default function Login() {
 
       if (data.banned) {
         setIsBanned(true);
-        setBanMinutes(15);
+        const minutesMatch = data.message.match(/(\d+) minute/);
+        setBanMinutes(minutesMatch ? parseInt(minutesMatch[1]) : 15);
         setDialogMessage(data.message);
         setIsSuccess(false);
         setDialogOpen(true);

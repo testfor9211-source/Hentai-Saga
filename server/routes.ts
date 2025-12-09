@@ -60,7 +60,7 @@ async function isIPBanned(ip: string): Promise<{ banned: boolean; remainingMinut
 async function banIP(ip: string): Promise<void> {
   try {
     await query2(
-      "INSERT INTO ban_users (ip_address) VALUES (?)",
+      "INSERT INTO ban_users (ip_address, created_at) VALUES (?, NOW())",
       [ip]
     );
   } catch (error) {
