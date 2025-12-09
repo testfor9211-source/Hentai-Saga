@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogAction } from "@/components/ui/alert-dialog";
-import { Zap, ShieldCheck, ShieldX, Lock, User } from "lucide-react";
+import { Zap, ShieldCheck, ShieldX, Lock, User, Ban, Clock } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Login() {
@@ -13,6 +13,28 @@ export default function Login() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isBanned, setIsBanned] = useState(false);
+  const [banMinutes, setBanMinutes] = useState(0);
+  const [attemptsRemaining, setAttemptsRemaining] = useState<number | null>(null);
+
+  useEffect(() => {
+    checkBanStatus();
+  }, []);
+
+  const checkBanStatus = async () => {
+    try {
+      const response = await fetch("/api/admin/check-ban", {
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (data.banned) {
+        setIsBanned(true);
+        setBanMinutes(data.remainingMinutes);
+      }
+    } catch (error) {
+      console.error("Error checking ban status:", error);
+    }
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,6 +52,19 @@ export default function Login() {
 
       const data = await response.json();
 
+      if (data.banned) {
+        setIsBanned(true);
+        setBanMinutes(15);
+        setDialogMessage(data.message);
+        setIsSuccess(false);
+        setDialogOpen(true);
+        return;
+      }
+
+      if (data.attemptsRemaining !== undefined) {
+        setAttemptsRemaining(data.attemptsRemaining);
+      }
+
       setDialogMessage(data.message);
       setIsSuccess(data.success);
       setDialogOpen(true);
@@ -42,6 +77,59 @@ export default function Login() {
       setIsLoading(false);
     }
   };
+
+  if (isBanned) {
+    return (
+      <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary selection:text-white flex flex-col">
+        <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/80 backdrop-blur-md">
+          <div className="container mx-auto px-4 h-16 flex items-center justify-center">
+            <Link href="/" className="flex items-center gap-2 group">
+              <span className="font-display text-xl font-bold tracking-wider text-white group-hover:text-primary transition-colors">
+                HENTAI
+              </span>
+              <Zap className="h-8 w-8 text-primary fill-primary" />
+              <span className="font-display text-xl font-bold tracking-wider text-white group-hover:text-primary transition-colors">
+                SAGA
+              </span>
+            </Link>
+          </div>
+        </nav>
+
+        <main className="flex-1 flex items-center justify-center px-4 py-12">
+          <div className="w-full max-w-md">
+            <div className="bg-card border border-red-500/30 rounded-xl p-8 backdrop-blur-sm shadow-2xl">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <Ban className="h-8 w-8 text-red-500" />
+              </div>
+              
+              <h1 className="text-2xl font-display font-bold text-white text-center mb-2">ACCESS BLOCKED</h1>
+              
+              <p className="text-muted-foreground text-center text-sm mb-6">
+                You have been temporarily banned from the login page due to too many failed login attempts.
+              </p>
+
+              <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6">
+                <div className="flex items-center justify-center gap-2 text-red-400">
+                  <Clock className="h-5 w-5" />
+                  <span className="font-medium">Try again in approximately {banMinutes} minute{banMinutes !== 1 ? 's' : ''}</span>
+                </div>
+              </div>
+
+              <p className="text-xs text-muted-foreground text-center">
+                This security measure protects against unauthorized access attempts.
+              </p>
+            </div>
+
+            <div className="mt-6 text-center">
+              <Link href="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                Back to Home
+              </Link>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary selection:text-white flex flex-col">
@@ -70,6 +158,14 @@ export default function Login() {
             <p className="text-muted-foreground text-center text-sm mb-8">
               This area is reserved for administrators only
             </p>
+
+            {attemptsRemaining !== null && attemptsRemaining < 5 && (
+              <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3 mb-6">
+                <p className="text-yellow-400 text-sm text-center">
+                  Warning: {attemptsRemaining} attempt{attemptsRemaining !== 1 ? 's' : ''} remaining before temporary ban
+                </p>
+              </div>
+            )}
 
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-2">
