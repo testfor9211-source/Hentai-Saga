@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { AnimeCard } from "@/components/anime-card";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -35,10 +36,10 @@ export default function SamplePage() {
     ],
     summary: `"Kanojo Face The Animation" is an adult anime series that delves into the intricate dynamics of intimate relationships. In episode 1, viewers are introduced to a narrative that intertwines passion with complex character interactions. The episode centers around the protagonist's evolving connection with a significant female character, exploring themes of desire, consent, and the nuances of personal boundaries. The animation quality is notable, with detailed character designs and fluid motion that enhance the storytelling. The episode's pacing allows for a deep exploration of the characters' emotions, providing a balance between explicit scenes and narrative development. The musical score complements the visual elements, adding depth to the viewing experience.`,
     relatedAnime: [
-      { title: "Bible Black Gaiden 2", image: imgDark },
-      { title: "Shadow Covenant", image: imgFantasy },
-      { title: "Steel Angel", image: imgMecha },
-      { title: "Cherry Blossom Arc", image: imgSchool },
+      { title: "Bible Black Gaiden 2", image: imgDark, episode: "4", rating: "8.5", type: "TV" },
+      { title: "Shadow Covenant", image: imgFantasy, episode: "12", rating: "9.2", type: "TV" },
+      { title: "Steel Angel", image: imgMecha, episode: "6", rating: "8.7", type: "OVA" },
+      { title: "Cherry Blossom Arc", image: imgSchool, episode: "2", rating: "9.0", type: "Movie" },
     ]
   };
 
@@ -218,26 +219,16 @@ export default function SamplePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
             {animeData.relatedAnime.map((anime, index) => (
-              <Card 
+              <AnimeCard 
                 key={index}
-                className="overflow-hidden hover-elevate cursor-pointer border-white/10 group"
-                data-testid={`card-related-${index}`}
-              >
-                <div className="aspect-[3/4] relative overflow-hidden">
-                  <img 
-                    src={anime.image} 
-                    alt={anime.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-3">
-                    <h3 className="font-bold text-white text-sm line-clamp-2" data-testid={`text-related-title-${index}`}>
-                      {anime.title}
-                    </h3>
-                  </div>
-                </div>
-              </Card>
+                title={anime.title}
+                image={anime.image}
+                episode={anime.episode}
+                rating={anime.rating}
+                type={anime.type}
+              />
             ))}
           </div>
         </section>
