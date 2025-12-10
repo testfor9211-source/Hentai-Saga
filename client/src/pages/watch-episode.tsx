@@ -95,34 +95,34 @@ export default function WatchEpisode() {
         </p>
 
         {/* Episode Navigation - Above Video Player */}
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <Button size="sm" className="gap-1.5 bg-primary hover:bg-primary/90 px-3 text-sm" data-testid="button-download">
-            <Download className="w-4 h-4" />
+        <div className="flex items-center justify-center gap-1.5 mb-4">
+          <button className="flex items-center gap-1 px-2.5 py-1.5 rounded-md border border-primary text-primary text-xs font-medium hover:bg-primary hover:text-white transition-colors" data-testid="button-download">
+            <Download className="w-3.5 h-3.5" />
             Download
-          </Button>
+          </button>
           
           {prevEpisode && (
             <Link href={`/watch/${animeSlug}/episode-${prevEpisode}`}>
-              <Button size="sm" className="gap-1 bg-primary hover:bg-primary/90 px-3 text-sm" data-testid="button-prev-episode">
-                <ChevronLeft className="w-4 h-4" />
+              <button className="flex items-center gap-0.5 px-2.5 py-1.5 rounded-md border border-primary text-primary text-xs font-medium hover:bg-primary hover:text-white transition-colors" data-testid="button-prev-episode">
+                <ChevronLeft className="w-3.5 h-3.5" />
                 Prev
-              </Button>
+              </button>
             </Link>
           )}
           
           <Link href={`/${animeSlug}`}>
-            <Button size="sm" className="gap-1.5 bg-primary hover:bg-primary/90 px-3 text-sm" data-testid="button-hentai-info">
-              <List className="w-4 h-4" />
+            <button className="flex items-center gap-1 px-2.5 py-1.5 rounded-md border border-primary text-primary text-xs font-medium hover:bg-primary hover:text-white transition-colors" data-testid="button-hentai-info">
+              <List className="w-3.5 h-3.5" />
               Hentai Info
-            </Button>
+            </button>
           </Link>
           
           {nextEpisode && (
             <Link href={`/watch/${animeSlug}/episode-${nextEpisode}`}>
-              <Button size="sm" className="gap-1 bg-primary hover:bg-primary/90 px-3 text-sm" data-testid="button-next-episode">
+              <button className="flex items-center gap-0.5 px-2.5 py-1.5 rounded-md border border-primary text-primary text-xs font-medium hover:bg-primary hover:text-white transition-colors" data-testid="button-next-episode">
                 Next
-                <ChevronRight className="w-4 h-4" />
-              </Button>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
             </Link>
           )}
         </div>
