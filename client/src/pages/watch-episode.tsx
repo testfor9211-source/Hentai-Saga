@@ -95,7 +95,7 @@ export default function WatchEpisode() {
         </p>
 
         {/* Episode Navigation - Above Video Player */}
-        <div className="flex items-center justify-center gap-1.5 mb-4">
+        <div className="flex items-center justify-end gap-1.5 mb-4">
           <button className="flex items-center gap-1 px-2.5 py-1.5 rounded-md bg-primary text-white text-xs font-medium hover:bg-primary/90 transition-colors" data-testid="button-download">
             <Download className="w-3.5 h-3.5" />
             Download
