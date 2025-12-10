@@ -95,15 +95,15 @@ export default function WatchEpisode() {
         </p>
 
         {/* Episode Navigation - Above Video Player */}
-        <div className="flex items-center justify-center gap-3 mb-4 flex-wrap">
-          <Button className="gap-2 bg-primary hover:bg-primary/90" data-testid="button-download">
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <Button size="sm" className="gap-1.5 bg-primary hover:bg-primary/90 px-3 text-sm" data-testid="button-download">
             <Download className="w-4 h-4" />
             Download
           </Button>
           
           {prevEpisode && (
             <Link href={`/watch/${animeSlug}/episode-${prevEpisode}`}>
-              <Button className="gap-2 bg-primary hover:bg-primary/90" data-testid="button-prev-episode">
+              <Button size="sm" className="gap-1 bg-primary hover:bg-primary/90 px-3 text-sm" data-testid="button-prev-episode">
                 <ChevronLeft className="w-4 h-4" />
                 Prev
               </Button>
@@ -111,7 +111,7 @@ export default function WatchEpisode() {
           )}
           
           <Link href={`/${animeSlug}`}>
-            <Button className="gap-2 bg-primary hover:bg-primary/90" data-testid="button-hentai-info">
+            <Button size="sm" className="gap-1.5 bg-primary hover:bg-primary/90 px-3 text-sm" data-testid="button-hentai-info">
               <List className="w-4 h-4" />
               Hentai Info
             </Button>
@@ -119,7 +119,7 @@ export default function WatchEpisode() {
           
           {nextEpisode && (
             <Link href={`/watch/${animeSlug}/episode-${nextEpisode}`}>
-              <Button className="gap-2 bg-primary hover:bg-primary/90" data-testid="button-next-episode">
+              <Button size="sm" className="gap-1 bg-primary hover:bg-primary/90 px-3 text-sm" data-testid="button-next-episode">
                 Next
                 <ChevronRight className="w-4 h-4" />
               </Button>
