@@ -12,7 +12,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Play,
-  Download
+  Download,
+  List
 } from "lucide-react";
 
 import imgFantasy from "@assets/generated_images/anime_poster_fantasy_adventure.png";
@@ -43,10 +44,11 @@ export default function WatchEpisode() {
     releaseYear: "2025",
     favorites: "2,510",
     currentEpisode: parseInt(episodeNumber),
-    totalEpisodes: 2,
+    totalEpisodes: 3,
     episodes: [
       { number: 1, title: "Episode 1", date: "February 6, 2025", thumbnail: imgSchool, duration: "23:45" },
       { number: 2, title: "Episode 2", date: "February 13, 2025", thumbnail: imgMecha, duration: "24:12" },
+      { number: 3, title: "Episode 3", date: "February 20, 2025", thumbnail: imgDark, duration: "24:30" },
     ],
     summary: `"Kanojo Face The Animation" is an anime series that delves into the intricate dynamics of relationships. In this episode, viewers are introduced to a narrative that intertwines passion with complex character interactions. The episode centers around the protagonist's evolving connection with a significant female character, exploring themes of love, understanding, and the nuances of personal boundaries. The animation quality is notable, with detailed character designs and fluid motion that enhance the storytelling.`,
     relatedAnime: [
@@ -62,6 +64,8 @@ export default function WatchEpisode() {
   const nextEpisode = animeData.currentEpisode < animeData.totalEpisodes ? animeData.currentEpisode + 1 : null;
 
   const allTags = ["Anime", "Subbed", "HD", "Romance", "Drama", "School", "Slice of Life", "Animation", "Series", "Popular"];
+  
+  const allGenres = ["Action", "Adventure", "Comedy", "Drama", "Fantasy", "Magic", "Mecha", "Music", "Romance", "Sci-Fi"];
 
   const renderStars = (rating: number) => {
     const stars = [];
@@ -91,32 +95,35 @@ export default function WatchEpisode() {
         </p>
 
         {/* Episode Navigation - Above Video Player */}
-        <div className="flex items-center justify-between mb-4">
-          {prevEpisode ? (
-            <Link href={`/watch/${animeSlug}/episode-${prevEpisode}`}>
-              <Button variant="outline" className="gap-2" data-testid="button-prev-episode">
-                <ChevronLeft className="w-4 h-4" />
-                Episode {prevEpisode}
-              </Button>
-            </Link>
-          ) : (
-            <div />
-          )}
-          
-          <Button variant="outline" className="gap-2" data-testid="button-download">
+        <div className="flex items-center justify-center gap-3 mb-4 flex-wrap">
+          <Button className="gap-2 bg-primary hover:bg-primary/90" data-testid="button-download">
             <Download className="w-4 h-4" />
             Download
           </Button>
           
-          {nextEpisode ? (
+          {prevEpisode && (
+            <Link href={`/watch/${animeSlug}/episode-${prevEpisode}`}>
+              <Button className="gap-2 bg-primary hover:bg-primary/90" data-testid="button-prev-episode">
+                <ChevronLeft className="w-4 h-4" />
+                Prev
+              </Button>
+            </Link>
+          )}
+          
+          <Link href={`/${animeSlug}`}>
+            <Button className="gap-2 bg-primary hover:bg-primary/90" data-testid="button-hentai-info">
+              <List className="w-4 h-4" />
+              Hentai Info
+            </Button>
+          </Link>
+          
+          {nextEpisode && (
             <Link href={`/watch/${animeSlug}/episode-${nextEpisode}`}>
-              <Button variant="outline" className="gap-2" data-testid="button-next-episode">
-                Episode {nextEpisode}
+              <Button className="gap-2 bg-primary hover:bg-primary/90" data-testid="button-next-episode">
+                Next
                 <ChevronRight className="w-4 h-4" />
               </Button>
             </Link>
-          ) : (
-            <div />
           )}
         </div>
 
@@ -229,7 +236,7 @@ export default function WatchEpisode() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {animeData.episodes.map((episode) => (
               <Link 
                 key={episode.number}
@@ -332,6 +339,27 @@ export default function WatchEpisode() {
                   data-testid={`badge-tag-${tag.toLowerCase().replace(/\s+/g, '-')}`}
                 >
                   {tag}
+                </Badge>
+              ))}
+            </div>
+          </Card>
+        </section>
+
+        {/* Genres Section */}
+        <section className="mb-8">
+          <Card className="p-6 border-white/10">
+            <h3 className="font-display font-bold text-sm text-muted-foreground mb-4" data-testid="heading-genres-box">
+              GENRES
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {allGenres.map((genre) => (
+                <Badge 
+                  key={genre} 
+                  variant="outline" 
+                  className="cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors"
+                  data-testid={`badge-genre-${genre.toLowerCase()}`}
+                >
+                  {genre}
                 </Badge>
               ))}
             </div>
