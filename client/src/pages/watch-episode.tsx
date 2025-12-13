@@ -6,6 +6,7 @@ import { AnimeCard } from "@/components/anime-card";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import VideoPlayer from "@/components/VideoPlayer";
 import { 
   Star, 
   ChevronDown,
@@ -29,7 +30,6 @@ export default function WatchEpisode() {
   const episodeNumber = episodeParam.replace("episode-", "") || "1";
   
   const [showFullSummary, setShowFullSummary] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   const animeData = {
     title: "Kanojo Face The Animation",
@@ -128,39 +128,11 @@ export default function WatchEpisode() {
         </div>
 
         {/* Video Player Section */}
-        <div className="mb-8">
-          <div 
-            className="relative w-full aspect-video bg-black rounded-lg overflow-hidden cursor-pointer group"
-            onClick={() => setIsPlaying(!isPlaying)}
-            data-testid="video-player"
-          >
-            {/* Video Thumbnail/Placeholder */}
-            <img 
-              src={currentEpisode.thumbnail} 
-              alt={`${animeData.title} Episode ${episodeNumber}`}
-              className="w-full h-full object-cover"
-            />
-            
-            {/* Play Button Overlay */}
-            {!isPlaying && (
-              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                <div className="w-20 h-20 rounded-full bg-primary/90 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Play className="w-10 h-10 text-white fill-white ml-1" />
-                </div>
-              </div>
-            )}
-
-            {/* Video Controls Bar */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-4">
-              <div className="flex items-center justify-between text-white text-sm">
-                <span data-testid="text-episode-duration">{currentEpisode.duration}</span>
-                <div className="flex items-center gap-4">
-                  <span className="text-muted-foreground">HD</span>
-                  <span className="text-muted-foreground">SUB</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="mb-8" data-testid="video-player">
+          <VideoPlayer 
+            thumbnail={currentEpisode.thumbnail}
+            embedded={true}
+          />
         </div>
 
         {/* Info Box */}
