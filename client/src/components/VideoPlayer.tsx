@@ -13,7 +13,6 @@ import {
   Loader2,
   AlertCircle
 } from 'lucide-react';
-import thumbnailImage from '@assets/generated_images/thumbnail.jpg';
 
 export default function VideoPlayer() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -32,8 +31,10 @@ export default function VideoPlayer() {
   const [showPlaylist, setShowPlaylist] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(0);
   const [showThumbnail, setShowThumbnail] = useState(true);
-  const [hasStartedOnce, setHasStartedOnce] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [seekAnimation, setSeekAnimation] = useState<{ show: boolean; direction: string | null }>({ show: false, direction: null });
   const [videoError, setVideoError] = useState(false);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   
   const controlsTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const leftTapRef = useRef<{ count: number; timer: ReturnType<typeof setTimeout> | null }>({ count: 0, timer: null });
@@ -55,19 +56,41 @@ export default function VideoPlayer() {
     const handleTimeUpdate = () => setCurrentTime(video.currentTime || 0);
     const handleLoadedMetadata = () => setDuration(video.duration || 0);
     const handleEnded = () => setIsPlaying(false);
+    const handleWaiting = () => setIsLoading(true);
+    const handleCanPlay = () => {
+      setIsLoading(false);
+      setVideoError(false);
+    };
+    const handleSeeking = () => setIsLoading(true);
+    const handleSeeked = () => setIsLoading(false);
+    const handlePlaying = () => {
+      setIsLoading(false);
+      setVideoError(false);
+    };
     const handleError = () => {
+      setIsLoading(false);
       setVideoError(true);
     };
 
     video.addEventListener('timeupdate', handleTimeUpdate);
     video.addEventListener('loadedmetadata', handleLoadedMetadata);
     video.addEventListener('ended', handleEnded);
+    video.addEventListener('waiting', handleWaiting);
+    video.addEventListener('canplay', handleCanPlay);
+    video.addEventListener('seeking', handleSeeking);
+    video.addEventListener('seeked', handleSeeked);
+    video.addEventListener('playing', handlePlaying);
     video.addEventListener('error', handleError);
 
     return () => {
       video.removeEventListener('timeupdate', handleTimeUpdate);
       video.removeEventListener('loadedmetadata', handleLoadedMetadata);
       video.removeEventListener('ended', handleEnded);
+      video.removeEventListener('waiting', handleWaiting);
+      video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('seeking', handleSeeking);
+      video.removeEventListener('seeked', handleSeeked);
+      video.removeEventListener('playing', handlePlaying);
       video.removeEventListener('error', handleError);
     };
   }, []);
@@ -78,7 +101,13 @@ export default function VideoPlayer() {
     
     setVideoError(false);
     
-    if (hasStartedOnce) {
+    if (isFirstLoad) {
+      setShowThumbnail(true);
+      setIsLoading(false);
+      setIsFirstLoad(false);
+    } else {
+      setShowThumbnail(false);
+      setIsLoading(true);
       video.load();
       video.play().then(() => {
         setIsPlaying(true);
@@ -128,9 +157,9 @@ export default function VideoPlayer() {
 
   const togglePlay = () => {
     if (!videoRef.current || videoError) return;
-    if (showThumbnail && !hasStartedOnce) {
+    if (showThumbnail) {
       setShowThumbnail(false);
-      setHasStartedOnce(true);
+      setIsLoading(true);
     }
     if (isPlaying) {
       videoRef.current.pause();
@@ -227,8 +256,6 @@ export default function VideoPlayer() {
       showSeekAnimationFn(seconds < 0 ? 'left' : 'right');
     }
   };
-
-  const [seekAnimation, setSeekAnimation] = useState<{ show: boolean; direction: string | null }>({ show: false, direction: null });
 
   const showSeekAnimationFn = (direction: string) => {
     setSeekAnimation({ show: true, direction });
@@ -327,14 +354,13 @@ export default function VideoPlayer() {
               ref={videoRef}
               className={`bg-black ${isFullscreen ? 'w-full h-full object-contain' : 'w-full aspect-video'}`}
               src={playlist[currentVideo].src}
-              poster={thumbnailImage}
             />
 
-            {showThumbnail && !hasStartedOnce && (
+            {showThumbnail && (
               <div 
-                className={`absolute inset-0 transition-opacity duration-500`}
+                className={`absolute ${isVertical ? 'w-full h-full' : 'inset-0'} transition-opacity duration-500`}
                 style={{
-                  backgroundImage: `url(${thumbnailImage})`,
+                  backgroundImage: 'url(/thumbnail.jpg)',
                   backgroundSize: isVertical ? 'contain' : 'cover',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
@@ -344,7 +370,7 @@ export default function VideoPlayer() {
               />
             )}
 
-            {showThumbnail && !hasStartedOnce && !videoError && (
+            {showThumbnail && !videoError && (
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
                 <button
                   onClick={togglePlay}
@@ -365,11 +391,17 @@ export default function VideoPlayer() {
               </div>
             )}
 
-            {!showThumbnail && !isPlaying && !videoError && (
-              <div className="absolute inset-0 flex items-center justify-center transition-opacity pointer-events-none">
+            {isLoading && !showThumbnail && !videoError && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 pointer-events-none z-30">
+                <Loader2 className="w-16 h-16 text-purple-500 animate-spin" />
+              </div>
+            )}
+
+            {!showThumbnail && !isPlaying && !isLoading && !videoError && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 transition-opacity">
                 <button
                   onClick={togglePlay}
-                  className="w-24 h-24 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110 shadow-2xl pointer-events-auto"
+                  className="w-24 h-24 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110 shadow-2xl"
                 >
                   <Play className="w-12 h-12 text-white ml-2" fill="white" />
                 </button>
@@ -571,6 +603,10 @@ export default function VideoPlayer() {
           cursor: pointer;
           border: none;
           box-shadow: 0 2px 8px rgba(147, 51, 234, 0.5);
+        }
+
+        body {
+          margin: 0;
         }
 
         @keyframes seekLeft {
