@@ -129,10 +129,7 @@ export default function WatchEpisode() {
 
         {/* Video Player Section */}
         <div className="mb-8" data-testid="video-player">
-          <VideoPlayer 
-            thumbnail={currentEpisode.thumbnail}
-            embedded={true}
-          />
+          <VideoPlayer />
         </div>
 
         {/* Info Box */}

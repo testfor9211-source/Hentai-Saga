@@ -14,26 +14,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 
-interface PlaylistItem {
-  id: number;
-  title: string;
-  duration: string;
-  src: string;
-}
-
-interface VideoPlayerProps {
-  playlist?: PlaylistItem[];
-  thumbnail?: string;
-  embedded?: boolean;
-}
-
-const defaultPlaylist: PlaylistItem[] = [
-  { id: 1, title: 'Demo Video 1', duration: '10:24', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' },
-  { id: 2, title: 'Demo Video 2', duration: '8:15', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' },
-  { id: 3, title: 'Demo Video 3', duration: '12:30', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' },
-];
-
-export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, embedded = true }: VideoPlayerProps) {
+export default function VideoPlayer() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const playerContainerRef = useRef<HTMLDivElement>(null);
 
@@ -46,18 +27,27 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
   const [showControls, setShowControls] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
-  const [orientation, setOrientation] = useState<'Horizontal' | 'Vertical'>('Horizontal');
+  const [orientation, setOrientation] = useState('Horizontal');
   const [showPlaylist, setShowPlaylist] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(0);
   const [showThumbnail, setShowThumbnail] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [seekAnimation, setSeekAnimation] = useState<{ show: boolean; direction: 'left' | 'right' | null }>({ show: false, direction: null });
+  const [seekAnimation, setSeekAnimation] = useState<{ show: boolean; direction: string | null }>({ show: false, direction: null });
   const [videoError, setVideoError] = useState(false);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   
-  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const leftTapRef = useRef({ count: 0, timer: null as NodeJS.Timeout | null });
-  const rightTapRef = useRef({ count: 0, timer: null as NodeJS.Timeout | null });
+  const controlsTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const leftTapRef = useRef<{ count: number; timer: ReturnType<typeof setTimeout> | null }>({ count: 0, timer: null });
+  const rightTapRef = useRef<{ count: number; timer: ReturnType<typeof setTimeout> | null }>({ count: 0, timer: null });
+
+  const defaultVideo = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+  const playlist = [
+    { id: 1, title: 'Demo Video 1', duration: '10:24', src: defaultVideo },
+    { id: 2, title: 'Demo Video 2', duration: '8:15', src: defaultVideo },
+    { id: 3, title: 'Demo Video 3', duration: '12:30', src: defaultVideo },
+    { id: 4, title: 'Demo 4', duration: '5:45', src: 'https://sample.mp4' },
+    { id: 5, title: 'Demo 5', duration: '7:20', src: defaultVideo },
+  ];
 
   useEffect(() => {
     const video = videoRef.current;
@@ -180,7 +170,7 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
   };
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const seekTime = (parseInt(e.target.value) / 100) * duration;
+    const seekTime = (Number(e.target.value) / 100) * duration;
     if (videoRef.current) {
       videoRef.current.currentTime = seekTime;
       setCurrentTime(seekTime);
@@ -198,7 +188,7 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
     }
   };
 
-  const lockOrientation = async (orient: 'Horizontal' | 'Vertical') => {
+  const lockOrientation = async (orient: string) => {
     try {
       if (window.screen.orientation && (window.screen.orientation as any).lock) {
         if (orient === 'Vertical') {
@@ -222,7 +212,7 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
     }
   };
 
-  const toggleFullscreen = async (orient: 'Horizontal' | 'Vertical' = 'Horizontal') => {
+  const toggleFullscreen = async (orient = 'Horizontal') => {
     const container = playerContainerRef.current;
     if (!container) return;
 
@@ -253,7 +243,7 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
     setShowSettings(false);
   };
 
-  const changeOrientation = async (orient: 'Horizontal' | 'Vertical') => {
+  const changeOrientation = async (orient: string) => {
     setOrientation(orient);
     if (isFullscreen) {
       await lockOrientation(orient);
@@ -267,7 +257,7 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
     }
   };
 
-  const showSeekAnimationFn = (direction: 'left' | 'right') => {
+  const showSeekAnimationFn = (direction: string) => {
     setSeekAnimation({ show: true, direction });
     setTimeout(() => {
       setSeekAnimation({ show: false, direction: null });
@@ -348,20 +338,14 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
 
   const isVertical = orientation === 'Vertical' && isFullscreen;
 
-  const containerClass = embedded 
-    ? 'w-full'
-    : `${isFullscreen ? 'fixed inset-0 z-50 bg-black' : 'min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900'} flex items-center justify-center ${isFullscreen ? '' : 'p-4'}`;
-
-  const wrapperClass = embedded
-    ? 'w-full'
-    : `${isFullscreen ? 'w-full h-full' : 'w-full max-w-6xl'}`;
-
   return (
-    <div className={containerClass}>
-      <div className={wrapperClass}>
+    <div
+      className={`${isFullscreen ? 'fixed inset-0 z-50 bg-black' : 'min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900'} flex items-center justify-center ${isFullscreen ? '' : 'p-4'}`}
+    >
+      <div className={`${isFullscreen ? 'w-full h-full' : 'w-full max-w-6xl'}`}>
         <div
           ref={playerContainerRef}
-          className={`relative bg-black overflow-hidden ${isFullscreen ? 'w-full h-full' : 'rounded-lg shadow-2xl'}`}
+          className={`relative bg-black overflow-hidden ${isFullscreen ? 'w-full h-full' : 'rounded-2xl shadow-2xl'}`}
           onMouseMove={handleMouseMove}
           onMouseLeave={() => isPlaying && setShowControls(false)}
         >
@@ -369,17 +353,18 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
             <video
               ref={videoRef}
               className={`bg-black ${isFullscreen ? 'w-full h-full object-contain' : 'w-full aspect-video'}`}
-              src={playlist[currentVideo]?.src}
+              src={playlist[currentVideo].src}
             />
 
-            {showThumbnail && thumbnail && (
+            {showThumbnail && (
               <div 
                 className={`absolute ${isVertical ? 'w-full h-full' : 'inset-0'} transition-opacity duration-500`}
                 style={{
-                  backgroundImage: `url(${thumbnail})`,
+                  backgroundImage: 'url(/thumbnail.jpg)',
                   backgroundSize: isVertical ? 'contain' : 'cover',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
+                  filter: 'blur(4px)',
                   backgroundColor: 'black',
                 }}
               />
@@ -389,9 +374,9 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
                 <button
                   onClick={togglePlay}
-                  className="w-20 h-20 bg-primary rounded-full flex items-center justify-center hover:bg-primary/80 transition-all transform hover:scale-110 shadow-2xl z-10"
+                  className="w-24 h-24 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110 shadow-2xl z-10"
                 >
-                  <Play className="w-10 h-10 text-white ml-1" fill="white" />
+                  <Play className="w-12 h-12 text-white ml-2" fill="white" />
                 </button>
               </div>
             )}
@@ -408,7 +393,7 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
 
             {isLoading && !showThumbnail && !videoError && (
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 pointer-events-none z-30">
-                <Loader2 className="w-16 h-16 text-primary animate-spin" />
+                <Loader2 className="w-16 h-16 text-purple-500 animate-spin" />
               </div>
             )}
 
@@ -416,9 +401,9 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 transition-opacity">
                 <button
                   onClick={togglePlay}
-                  className="w-20 h-20 bg-primary rounded-full flex items-center justify-center hover:bg-primary/80 transition-all transform hover:scale-110 shadow-2xl"
+                  className="w-24 h-24 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110 shadow-2xl"
                 >
-                  <Play className="w-10 h-10 text-white ml-1" fill="white" />
+                  <Play className="w-12 h-12 text-white ml-2" fill="white" />
                 </button>
               </div>
             )}
@@ -458,36 +443,36 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
               className={`absolute bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-black via-black/90 to-transparent transition-opacity duration-300 ${showControls || !isPlaying ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
               onClick={handleControlsAreaClick}
             >
-              <div className="px-4 pt-8 pb-2">
+              <div className="px-6 pt-8 pb-2">
                 <input
                   type="range"
                   min="0"
                   max="100"
                   value={progress}
                   onChange={handleSeek}
-                  className="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer video-slider"
+                  className="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
                   style={{
-                    background: `linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--primary)) ${progress}%, #374151 ${progress}%, #374151 100%)`
+                    background: `linear-gradient(to right, #9333ea 0%, #9333ea ${progress}%, #374151 ${progress}%, #374151 100%)`
                   }}
                 />
               </div>
 
-              <div className="flex items-center justify-between px-4 pb-4">
-                <div className="flex items-center gap-3">
-                  <button onClick={togglePlay} className="text-white hover:text-primary transition">
-                    {isPlaying ? <Pause className="w-7 h-7" /> : <Play className="w-7 h-7" />}
+              <div className="flex items-center justify-between px-6 pb-4">
+                <div className="flex items-center gap-4">
+                  <button onClick={togglePlay} className="text-white hover:text-purple-400 transition">
+                    {isPlaying ? <Pause className="w-8 h-8" /> : <Play className="w-8 h-8" />}
                   </button>
 
-                  <button onClick={() => skipTime(-10)} className="text-white hover:text-primary transition">
-                    <SkipBack className="w-5 h-5" />
+                  <button onClick={() => skipTime(-10)} className="text-white hover:text-purple-400 transition">
+                    <SkipBack className="w-6 h-6" />
                   </button>
 
-                  <button onClick={() => skipTime(10)} className="text-white hover:text-primary transition">
-                    <SkipForward className="w-5 h-5" />
+                  <button onClick={() => skipTime(10)} className="text-white hover:text-purple-400 transition">
+                    <SkipForward className="w-6 h-6" />
                   </button>
 
-                  <button onClick={toggleMute} className="text-white hover:text-primary transition">
-                    {isMuted || volume === 0 ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                  <button onClick={toggleMute} className="text-white hover:text-purple-400 transition">
+                    {isMuted || volume === 0 ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
                   </button>
 
                   <span className="text-white text-sm font-medium">
@@ -495,21 +480,19 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
                   </span>
                 </div>
 
-                <div className="flex items-center gap-3 relative">
-                  {playlist.length > 1 && (
-                    <button
-                      onClick={() => {
-                        if (!isFullscreen) return;
-                        setShowSettings(false);
-                        setShowPlaylist(!showPlaylist);
-                      }}
-                      className={`text-white transition ${
-                        isFullscreen ? "hover:text-primary" : "opacity-40 cursor-not-allowed"
-                      }`}
-                    >
-                      <ListVideo className="w-5 h-5" />
-                    </button>
-                  )}
+                <div className="flex items-center gap-4 relative">
+                  <button
+                    onClick={() => {
+                      if (!isFullscreen) return;
+                      setShowSettings(false);
+                      setShowPlaylist(!showPlaylist);
+                    }}
+                    className={`text-white transition ${
+                      isFullscreen ? "hover:text-purple-400" : "opacity-40 cursor-not-allowed"
+                    }`}
+                  >
+                    <ListVideo className="w-6 h-6" />
+                  </button>
 
                   <button
                     onClick={() => {
@@ -518,10 +501,10 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
                       setShowSettings(!showSettings);
                     }}
                     className={`text-white transition ${
-                      isFullscreen ? "hover:text-primary" : "opacity-40 cursor-not-allowed"
+                      isFullscreen ? "hover:text-purple-400" : "opacity-40 cursor-not-allowed"
                     }`}
                   >
-                    <Settings className="w-5 h-5" />
+                    <Settings className="w-6 h-6" />
                   </button>
 
                   <button
@@ -532,9 +515,9 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
                         toggleFullscreen('Horizontal');
                       }
                     }}
-                    className="text-white hover:text-primary transition"
+                    className="text-white hover:text-purple-400 transition"
                   >
-                    {isFullscreen ? <Minimize className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
+                    {isFullscreen ? <Minimize className="w-6 h-6" /> : <Maximize className="w-6 h-6" />}
                   </button>
 
                   {showSettings && (
@@ -550,7 +533,7 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
                           <button
                             key={rate}
                             onClick={() => changePlaybackRate(rate)}
-                            className={`px-2 py-1.5 rounded text-sm transition ${playbackRate === rate ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800'}`}
+                            className={`px-2 py-1.5 rounded text-sm transition ${playbackRate === rate ? 'bg-purple-600 text-white' : 'text-gray-300 hover:bg-gray-800'}`}
                           >
                             {rate}x
                           </button>
@@ -559,13 +542,13 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
                       <div className="text-white text-sm mt-3 mb-2 font-semibold border-t border-gray-700 pt-3">Fullscreen Mode</div>
                       <button
                         onClick={() => { changeOrientation('Horizontal'); toggleFullscreen('Horizontal'); }}
-                        className={`block w-full text-left px-3 py-2 rounded transition ${orientation === 'Horizontal' ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800'}`}
+                        className={`block w-full text-left px-3 py-2 rounded transition ${orientation === 'Horizontal' ? 'bg-purple-600 text-white' : 'text-gray-300 hover:bg-gray-800'}`}
                       >
                         Horizontal
                       </button>
                       <button
                         onClick={() => { changeOrientation('Vertical'); toggleFullscreen('Vertical'); }}
-                        className={`block w-full text-left px-3 py-2 rounded transition ${orientation === 'Vertical' ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800'}`}
+                        className={`block w-full text-left px-3 py-2 rounded transition ${orientation === 'Vertical' ? 'bg-purple-600 text-white' : 'text-gray-300 hover:bg-gray-800'}`}
                       >
                         Vertical
                       </button>
@@ -588,7 +571,7 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
                     <div
                       key={video.id}
                       onClick={() => { setCurrentVideo(idx); setShowPlaylist(false); }}
-                      className={`p-4 rounded-lg cursor-pointer transition ${currentVideo === idx ? 'bg-primary' : 'bg-gray-800 hover:bg-gray-700'}`}
+                      className={`p-4 rounded-lg cursor-pointer transition ${currentVideo === idx ? 'bg-purple-600' : 'bg-gray-800 hover:bg-gray-700'}`}
                     >
                       <div className="text-white font-medium">{video.title}</div>
                       <div className="text-gray-400 text-sm mt-1">{video.duration}</div>
@@ -599,26 +582,37 @@ export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail, emb
             )}
           </div>
         </div>
+
+        {!isFullscreen && (
+          <div className="mt-6 text-white">
+            <h2 className="text-2xl font-bold mb-2">{playlist[currentVideo].title}</h2>
+            <p className="text-gray-400">An advanced video player with modern UI and premium features</p>
+          </div>
+        )}
       </div>
 
       <style>{`
-        .video-slider::-webkit-slider-thumb {
+        .slider::-webkit-slider-thumb {
           appearance: none;
           width: 16px;
           height: 16px;
           border-radius: 50%;
-          background: hsl(var(--primary));
+          background: #9333ea;
           cursor: pointer;
           box-shadow: 0 2px 8px rgba(147, 51, 234, 0.5);
         }
-        .video-slider::-moz-range-thumb {
+        .slider::-moz-range-thumb {
           width: 16px;
           height: 16px;
           border-radius: 50%;
-          background: hsl(var(--primary));
+          background: #9333ea;
           cursor: pointer;
           border: none;
           box-shadow: 0 2px 8px rgba(147, 51, 234, 0.5);
+        }
+
+        body {
+          margin: 0;
         }
 
         @keyframes seekLeft {
