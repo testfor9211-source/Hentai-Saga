@@ -340,9 +340,9 @@ export default function VideoPlayer() {
 
   return (
     <div
-      className={`${isFullscreen ? 'fixed inset-0 z-50 bg-black' : 'min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900'} flex items-center justify-center ${isFullscreen ? '' : 'p-4'}`}
+      className={`${isFullscreen ? 'fixed inset-0 z-50 bg-black' : 'w-full'} flex items-center justify-center`}
     >
-      <div className={`${isFullscreen ? 'w-full h-full' : 'w-full max-w-6xl'}`}>
+      <div className={`${isFullscreen ? 'w-full h-full' : 'w-full'}`}>
         <div
           ref={playerContainerRef}
           className={`relative bg-black overflow-hidden ${isFullscreen ? 'w-full h-full' : 'rounded-2xl shadow-2xl'}`}
@@ -583,12 +583,6 @@ export default function VideoPlayer() {
           </div>
         </div>
 
-        {!isFullscreen && (
-          <div className="mt-6 text-white">
-            <h2 className="text-2xl font-bold mb-2">{playlist[currentVideo].title}</h2>
-            <p className="text-gray-400">An advanced video player with modern UI and premium features</p>
-          </div>
-        )}
       </div>
 
       <style>{`
