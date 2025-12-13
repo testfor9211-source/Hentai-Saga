@@ -23,13 +23,11 @@ export default function SamplePage() {
     alternativeTitle: "彼女フェイス THE ANIMATION",
     coverImage: imgFantasy,
     rating: 3.6,
-    totalRatings: "4.1K",
     views: "4651598",
     studio: "Pink Pineapple",
     genres: ["BBW", "Ecchi", "Femdom", "Hentai School"],
-    tags: ["Censored"],
+    tags: "Censored",
     releaseYear: "2025",
-    favorites: "2,510",
     episodes: [
       { number: 2, title: "Episode 2", date: "February 6, 2025", thumbnail: imgMecha },
       { number: 1, title: "Episode 1", date: "February 6, 2025", thumbnail: imgSchool },
@@ -60,7 +58,7 @@ export default function SamplePage() {
     }
     return stars;
   };
-
+          
   return (
     <div className="min-h-screen bg-background text-foreground font-sans">
       <Navbar />
@@ -101,7 +99,7 @@ export default function SamplePage() {
             <div className="flex">
               <span className="text-primary font-medium w-28 flex-shrink-0">Fapped</span>
               <span className="text-muted-foreground" data-testid="text-fapped">
-                Average {animeData.rating} / 5 out of {animeData.totalRatings}
+                Average {animeData.rating} / 5 
               </span>
             </div>
             <div className="flex">
@@ -136,7 +134,7 @@ export default function SamplePage() {
                 className="px-8 py-2 text-base border-primary text-primary cursor-pointer hover:bg-primary hover:text-white transition-colors"
                 data-testid="badge-censored"
               >
-                Censored
+                {animeData. tags}
               </Badge>
             </div>
             
