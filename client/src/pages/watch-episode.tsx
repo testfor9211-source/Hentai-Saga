@@ -6,7 +6,7 @@ import { AnimeCard } from "@/components/anime-card";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import VideoPlayer from "@/components/VideoPlayer";
+import VideoPlayer, { PlaylistItem } from "@/components/VideoPlayer";
 import { 
   Star, 
   ChevronDown,
@@ -22,6 +22,33 @@ import imgMecha from "@assets/generated_images/anime_poster_sci-fi_mecha.png";
 import imgSchool from "@assets/generated_images/anime_poster_slice_of_life_school.png";
 import imgDark from "@assets/generated_images/anime_poster_dark_fantasy.png";
 
+// Episode-specific video playlists
+const defaultVideo = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+
+const episodePlaylists: Record<string, PlaylistItem[]> = {
+  "1": [
+    { id: 1, title: 'Episode 1 - Main', duration: '23:45', src: defaultVideo },
+    { id: 2, title: 'Episode 1 - Alt 1', duration: '23:45', src: defaultVideo },
+    { id: 3, title: 'Episode 1 - Alt 2', duration: '23:45', src: defaultVideo },
+    { id: 4, title: 'Episode 1 - Backup', duration: '23:45', src: 'https://sample.mp4' },
+    { id: 5, title: 'Episode 1 - Mirror', duration: '23:45', src: defaultVideo },
+  ],
+  "2": [
+    { id: 1, title: 'Episode 2 - Main', duration: '24:12', src: defaultVideo },
+    { id: 2, title: 'Episode 2 - Alt 1', duration: '24:12', src: defaultVideo },
+    { id: 3, title: 'Episode 2 - Alt 2', duration: '24:12', src: defaultVideo },
+    { id: 4, title: 'Episode 2 - Backup', duration: '24:12', src: 'https://sample.mp4' },
+    { id: 5, title: 'Episode 2 - Mirror', duration: '24:12', src: defaultVideo },
+  ],
+  "3": [
+    { id: 1, title: 'Episode 3 - Main', duration: '24:30', src: defaultVideo },
+    { id: 2, title: 'Episode 3 - Alt 1', duration: '24:30', src: defaultVideo },
+    { id: 3, title: 'Episode 3 - Alt 2', duration: '24:30', src: defaultVideo },
+    { id: 4, title: 'Episode 3 - Backup', duration: '24:30', src: 'https://sample.mp4' },
+    { id: 5, title: 'Episode 3 - Mirror', duration: '24:30', src: defaultVideo },
+  ],
+};
+
 export default function WatchEpisode() {
   const params = useParams();
   const animeSlug = params.slug || "Sample-page";
@@ -30,6 +57,9 @@ export default function WatchEpisode() {
   const episodeNumber = episodeParam.replace("episode-", "") || "1";
   
   const [showFullSummary, setShowFullSummary] = useState(false);
+
+  // Get the playlist for the current episode
+  const currentPlaylist = episodePlaylists[episodeNumber] || episodePlaylists["1"];
 
   const animeData = {
     title: "Kanojo Face The Animation",
@@ -129,7 +159,7 @@ export default function WatchEpisode() {
 
         {/* Video Player Section */}
         <div className="mb-8" data-testid="video-player">
-          <VideoPlayer />
+          <VideoPlayer playlist={currentPlaylist} />
         </div>
 
         {/* Info Box */}

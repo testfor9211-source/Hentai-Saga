@@ -14,7 +14,27 @@ import {
   AlertCircle
 } from 'lucide-react';
 
-export default function VideoPlayer() {
+export interface PlaylistItem {
+  id: number;
+  title: string;
+  duration: string;
+  src: string;
+}
+
+interface VideoPlayerProps {
+  playlist: PlaylistItem[];
+}
+
+const defaultVideo = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+const defaultPlaylist: PlaylistItem[] = [
+  { id: 1, title: 'Demo Video 1', duration: '10:24', src: defaultVideo },
+  { id: 2, title: 'Demo Video 2', duration: '8:15', src: defaultVideo },
+  { id: 3, title: 'Demo Video 3', duration: '12:30', src: defaultVideo },
+  { id: 4, title: 'Demo 4', duration: '5:45', src: 'https://sample.mp4' },
+  { id: 5, title: 'Demo 5', duration: '7:20', src: defaultVideo },
+];
+
+export default function VideoPlayer({ playlist = defaultPlaylist }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const playerContainerRef = useRef<HTMLDivElement>(null);
 
@@ -41,15 +61,6 @@ export default function VideoPlayer() {
   const controlsTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const leftTapRef = useRef<{ count: number; timer: ReturnType<typeof setTimeout> | null }>({ count: 0, timer: null });
   const rightTapRef = useRef<{ count: number; timer: ReturnType<typeof setTimeout> | null }>({ count: 0, timer: null });
-
-  const defaultVideo = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
-  const playlist = [
-    { id: 1, title: 'Demo Video 1', duration: '10:24', src: defaultVideo },
-    { id: 2, title: 'Demo Video 2', duration: '8:15', src: defaultVideo },
-    { id: 3, title: 'Demo Video 3', duration: '12:30', src: defaultVideo },
-    { id: 4, title: 'Demo 4', duration: '5:45', src: 'https://sample.mp4' },
-    { id: 5, title: 'Demo 5', duration: '7:20', src: defaultVideo },
-  ];
 
   // Auto-generate thumbnail from playlist videos with fallback
   useEffect(() => {
