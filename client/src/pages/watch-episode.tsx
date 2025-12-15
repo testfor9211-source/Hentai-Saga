@@ -34,14 +34,14 @@ const episodePlaylists: Record<string, PlaylistItem[]> = {
     { id: 5, title: 'Episode 1 - Mirror', duration: '23:45', src: defaultVideo },
   ],
   "2": [
-    { id: 1, title: 'Episode 2 - Main', duration: '24:12', src: defaultVideo },
+    { id: 1, title: 'Episode 2 - Main', duration: '24:12', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4' },
     { id: 2, title: 'Episode 2 - Alt 1', duration: '24:12', src: defaultVideo },
     { id: 3, title: 'Episode 2 - Alt 2', duration: '24:12', src: defaultVideo },
     { id: 4, title: 'Episode 2 - Backup', duration: '24:12', src: 'https://sample.mp4' },
     { id: 5, title: 'Episode 2 - Mirror', duration: '24:12', src: defaultVideo },
   ],
   "3": [
-    { id: 1, title: 'Episode 3 - Main', duration: '24:30', src: defaultVideo },
+    { id: 1, title: 'Episode 3 - Main', duration: '24:30', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4' },
     { id: 2, title: 'Episode 3 - Alt 1', duration: '24:30', src: defaultVideo },
     { id: 3, title: 'Episode 3 - Alt 2', duration: '24:30', src: defaultVideo },
     { id: 4, title: 'Episode 3 - Backup', duration: '24:30', src: 'https://sample.mp4' },

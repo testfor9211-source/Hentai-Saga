@@ -62,6 +62,28 @@ export default function VideoPlayer({ playlist = defaultPlaylist }: VideoPlayerP
   const leftTapRef = useRef<{ count: number; timer: ReturnType<typeof setTimeout> | null }>({ count: 0, timer: null });
   const rightTapRef = useRef<{ count: number; timer: ReturnType<typeof setTimeout> | null }>({ count: 0, timer: null });
 
+  // Reset player state when playlist changes (e.g., navigating between episodes)
+  useEffect(() => {
+    // Reset all states for new episode
+    setIsPlaying(false);
+    setCurrentTime(0);
+    setDuration(0);
+    setCurrentVideo(0);
+    setShowThumbnail(true);
+    setIsLoading(false);
+    setVideoError(false);
+    setIsFirstLoad(true);
+    setAutoThumbnail(null);
+    setThumbnailLoading(true);
+    
+    // Reset video element
+    const video = videoRef.current;
+    if (video) {
+      video.pause();
+      video.currentTime = 0;
+    }
+  }, [playlist]);
+
   // Auto-generate thumbnail from playlist videos with fallback
   useEffect(() => {
     let cancelled = false;
@@ -117,6 +139,7 @@ export default function VideoPlayer({ playlist = defaultPlaylist }: VideoPlayerP
 
     const tryGenerateThumbnail = async () => {
       setThumbnailLoading(true);
+      setAutoThumbnail(null);
       
       // Try each playlist item in order (id 1, 2, 3, etc.)
       const sortedPlaylist = [...playlist].sort((a, b) => a.id - b.id);
@@ -147,7 +170,7 @@ export default function VideoPlayer({ playlist = defaultPlaylist }: VideoPlayerP
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [playlist]);
 
   useEffect(() => {
     const video = videoRef.current;
