@@ -67,8 +67,10 @@ export default function VideoPlayer() {
           reject(new Error('Thumbnail generation timeout'));
         }, 10000);
 
-        tempVideo.onloadeddata = () => {
-          tempVideo.currentTime = 1; // Capture frame at 1 second
+        tempVideo.onloadedmetadata = () => {
+          // Capture frame at the middle of the video
+          const midpoint = tempVideo.duration / 2;
+          tempVideo.currentTime = midpoint;
         };
 
         tempVideo.onseeked = () => {
