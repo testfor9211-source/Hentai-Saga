@@ -392,13 +392,13 @@ export default function VideoPlayer() {
             )}
 
             {isLoading && !showThumbnail && !videoError && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 pointer-events-none z-30">
-                <Loader2 className="w-16 h-16 text-purple-500 animate-spin" />
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
+                <Loader2 className="w-16 h-16 text-purple-500 animate-spin drop-shadow-lg" />
               </div>
             )}
 
             {!showThumbnail && !isPlaying && !isLoading && !videoError && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 transition-opacity">
+              <div className="absolute inset-0 flex items-center justify-center transition-opacity">
                 <button
                   onClick={togglePlay}
                   className="w-24 h-24 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110 shadow-2xl"
