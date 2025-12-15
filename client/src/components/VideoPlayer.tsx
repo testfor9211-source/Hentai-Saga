@@ -35,6 +35,8 @@ export default function VideoPlayer() {
   const [seekAnimation, setSeekAnimation] = useState<{ show: boolean; direction: string | null }>({ show: false, direction: null });
   const [videoError, setVideoError] = useState(false);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
+  const [autoThumbnail, setAutoThumbnail] = useState<string | null>(null);
+  const [thumbnailLoading, setThumbnailLoading] = useState(true);
   
   const controlsTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const leftTapRef = useRef<{ count: number; timer: ReturnType<typeof setTimeout> | null }>({ count: 0, timer: null });
@@ -48,6 +50,91 @@ export default function VideoPlayer() {
     { id: 4, title: 'Demo 4', duration: '5:45', src: 'https://sample.mp4' },
     { id: 5, title: 'Demo 5', duration: '7:20', src: defaultVideo },
   ];
+
+  // Auto-generate thumbnail from playlist videos with fallback
+  useEffect(() => {
+    let cancelled = false;
+
+    const generateThumbnailFromVideo = (videoSrc: string): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        const tempVideo = document.createElement('video');
+        tempVideo.crossOrigin = 'anonymous';
+        tempVideo.muted = true;
+        tempVideo.preload = 'metadata';
+
+        const timeoutId = setTimeout(() => {
+          tempVideo.src = '';
+          reject(new Error('Thumbnail generation timeout'));
+        }, 10000);
+
+        tempVideo.onloadeddata = () => {
+          tempVideo.currentTime = 1; // Capture frame at 1 second
+        };
+
+        tempVideo.onseeked = () => {
+          clearTimeout(timeoutId);
+          try {
+            const canvas = document.createElement('canvas');
+            canvas.width = tempVideo.videoWidth || 640;
+            canvas.height = tempVideo.videoHeight || 360;
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+              ctx.drawImage(tempVideo, 0, 0, canvas.width, canvas.height);
+              const thumbnailUrl = canvas.toDataURL('image/jpeg', 0.8);
+              tempVideo.src = '';
+              resolve(thumbnailUrl);
+            } else {
+              reject(new Error('Canvas context not available'));
+            }
+          } catch (err) {
+            reject(err);
+          }
+        };
+
+        tempVideo.onerror = () => {
+          clearTimeout(timeoutId);
+          tempVideo.src = '';
+          reject(new Error('Video failed to load'));
+        };
+
+        tempVideo.src = videoSrc;
+        tempVideo.load();
+      });
+    };
+
+    const tryGenerateThumbnail = async () => {
+      setThumbnailLoading(true);
+      
+      // Try each playlist item in order (id 1, 2, 3, etc.)
+      const sortedPlaylist = [...playlist].sort((a, b) => a.id - b.id);
+      
+      for (const video of sortedPlaylist) {
+        if (cancelled) return;
+        try {
+          const thumbnail = await generateThumbnailFromVideo(video.src);
+          if (!cancelled) {
+            setAutoThumbnail(thumbnail);
+            setThumbnailLoading(false);
+            return;
+          }
+        } catch (err) {
+          console.warn(`Failed to generate thumbnail from video id ${video.id}:`, err);
+          continue;
+        }
+      }
+      
+      // If all fail, set loading to false (will show fallback)
+      if (!cancelled) {
+        setThumbnailLoading(false);
+      }
+    };
+
+    tryGenerateThumbnail();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -360,24 +447,28 @@ export default function VideoPlayer() {
               <div 
                 className={`absolute ${isVertical ? 'w-full h-full' : 'inset-0'} transition-opacity duration-500`}
                 style={{
-                  backgroundImage: 'url(/thumbnail.jpg)',
+                  backgroundImage: autoThumbnail ? `url(${autoThumbnail})` : 'none',
                   backgroundSize: isVertical ? 'contain' : 'cover',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
-                  filter: 'blur(4px)',
                   backgroundColor: 'black',
                 }}
               />
             )}
 
             {showThumbnail && !videoError && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
-                <button
-                  onClick={togglePlay}
-                  className="w-24 h-24 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110 shadow-2xl z-10"
-                >
-                  <Play className="w-12 h-12 text-white ml-2" fill="white" />
-                </button>
+              <div className="absolute inset-0 flex items-center justify-center">
+                {thumbnailLoading ? (
+                  <Loader2 className="w-16 h-16 text-purple-500 animate-spin" />
+                ) : (
+                  <button
+                    onClick={togglePlay}
+                    className="w-24 h-24 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110 shadow-2xl z-10"
+                    data-testid="button-play-initial"
+                  >
+                    <Play className="w-12 h-12 text-white ml-2" fill="white" />
+                  </button>
+                )}
               </div>
             )}
 
