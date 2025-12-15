@@ -454,6 +454,7 @@ export default function VideoPlayer() {
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
                   backgroundColor: 'black',
+                  filter: 'blur(8px)',
                 }}
               />
             )}
