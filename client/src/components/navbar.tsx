@@ -35,7 +35,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-7 -ml-[65px]">
+        <div className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-7 md:-ml-4 lg:-ml-8 xl:-ml-[65px]">
           <Link href="/" className="flex items-center gap-2 text-sm font-medium text-white hover:text-primary transition-colors" data-testid="nav-home">
             <Home className="h-4 w-4" />
             Home

@@ -74,7 +74,6 @@ export default function WatchEpisode() {
     alternativeTitle: "彼女フェイス THE ANIMATION",
     coverImage: imgFantasy,
     rating: 3.6,
-    totalRatings: "4.1K",
     views: "4651598",
     studio: "Pink Pineapple",
     genres: ["Romance", "Drama", "School", "Slice of Life"],
@@ -178,7 +177,7 @@ export default function WatchEpisode() {
             <span className="text-2xl font-bold text-white ml-2" data-testid="text-rating-number">
               {animeData.rating.toFixed(1)}
             </span>
-            <span className="text-muted-foreground ml-2">({animeData.totalRatings} ratings)</span>
+            <span className="text-muted-foreground ml-2"></span>
           </div>
 
           {/* Info Grid */}
