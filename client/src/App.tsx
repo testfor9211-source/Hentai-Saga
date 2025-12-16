@@ -8,6 +8,10 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import SamplePage from "@/pages/sample-page";
 import WatchEpisode from "@/pages/watch-episode";
+import GenrePage from "@/pages/genre-page";
+import TagsPage from "@/pages/tags-page";
+import AuthorPage from "@/pages/author-page";
+import SeriesPage from "@/pages/series-page";
 import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
 import DMCACopyrightPolicy from "@/pages/dmca-copyright-policy";
@@ -25,6 +29,10 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/Sample-page" component={SamplePage} />
       <Route path="/watch/:slug/:episode" component={WatchEpisode} />
+      <Route path="/genre/:slug" component={GenrePage} />
+      <Route path="/tags/:slug" component={TagsPage} />
+      <Route path="/author/:slug" component={AuthorPage} />
+      <Route path="/Series/:slug" component={SeriesPage} />
       <Route path="/Privacy-Policy" component={PrivacyPolicy} />
       <Route path="/Terms-of-Service" component={TermsOfService} />
       <Route path="/DMCA-Copyright-Policy" component={DMCACopyrightPolicy} />
