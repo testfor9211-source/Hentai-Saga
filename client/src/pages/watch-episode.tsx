@@ -60,6 +60,14 @@ export default function WatchEpisode() {
 
   // Get the playlist for the current episode
   const currentPlaylist = episodePlaylists[episodeNumber] || episodePlaylists["1"];
+  
+  // Get the current episode's thumbnail
+  const episodeThumbnails: Record<string, string> = {
+    "1": "https://yavuzceliker.github.io/sample-images/image-5.jpg",
+    "2": "https://yavuzceliker.github.io/sample-images/image-6.jpg",
+    "3": "https://yavuzceliker.github.io/sample-images/image-7.jpg",
+  };
+  const currentThumbnail = episodeThumbnails[episodeNumber] || episodeThumbnails["1"];
 
   const animeData = {
     title: "Kanojo Face The Animation",
@@ -76,9 +84,9 @@ export default function WatchEpisode() {
     currentEpisode: parseInt(episodeNumber),
     totalEpisodes: 3,
     episodes: [
-      { number: 1, title: "Episode 1", date: "February 6, 2025", thumbnail: imgSchool, duration: "23:45" },
-      { number: 2, title: "Episode 2", date: "February 13, 2025", thumbnail: imgMecha, duration: "24:12" },
-      { number: 3, title: "Episode 3", date: "February 20, 2025", thumbnail: imgDark, duration: "24:30" },
+      { number: 1, title: "Episode 1", date: "February 6, 2025", thumbnail: "https://yavuzceliker.github.io/sample-images/image-5.jpg", duration: "23:45" },
+      { number: 2, title: "Episode 2", date: "February 13, 2025", thumbnail: "https://yavuzceliker.github.io/sample-images/image-6.jpg", duration: "24:12" },
+      { number: 3, title: "Episode 3", date: "February 20, 2025", thumbnail: "https://yavuzceliker.github.io/sample-images/image-7.jpg", duration: "24:30" },
     ],
     summary: `"Kanojo Face The Animation" is an anime series that delves into the intricate dynamics of relationships. In this episode, viewers are introduced to a narrative that intertwines passion with complex character interactions. The episode centers around the protagonist's evolving connection with a significant female character, exploring themes of love, understanding, and the nuances of personal boundaries. The animation quality is notable, with detailed character designs and fluid motion that enhance the storytelling.`,
     relatedAnime: [
@@ -159,7 +167,7 @@ export default function WatchEpisode() {
 
         {/* Video Player Section */}
         <div className="mb-8" data-testid="video-player">
-          <VideoPlayer playlist={currentPlaylist} />
+          <VideoPlayer playlist={currentPlaylist} thumbnail={currentThumbnail} />
         </div>
 
         {/* Info Box */}

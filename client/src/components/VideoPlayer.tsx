@@ -23,6 +23,7 @@ export interface PlaylistItem {
 
 interface VideoPlayerProps {
   playlist: PlaylistItem[];
+  thumbnail?: string;
 }
 
 const defaultVideo = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
@@ -34,7 +35,7 @@ const defaultPlaylist: PlaylistItem[] = [
   { id: 5, title: 'Demo 5', duration: '7:20', src: defaultVideo },
 ];
 
-export default function VideoPlayer({ playlist = defaultPlaylist }: VideoPlayerProps) {
+export default function VideoPlayer({ playlist = defaultPlaylist, thumbnail }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const playerContainerRef = useRef<HTMLDivElement>(null);
 
@@ -55,8 +56,6 @@ export default function VideoPlayer({ playlist = defaultPlaylist }: VideoPlayerP
   const [seekAnimation, setSeekAnimation] = useState<{ show: boolean; direction: string | null }>({ show: false, direction: null });
   const [videoError, setVideoError] = useState(false);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
-  const [autoThumbnail, setAutoThumbnail] = useState<string | null>(null);
-  const [thumbnailLoading, setThumbnailLoading] = useState(true);
   
   const controlsTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const leftTapRef = useRef<{ count: number; timer: ReturnType<typeof setTimeout> | null }>({ count: 0, timer: null });
@@ -73,8 +72,6 @@ export default function VideoPlayer({ playlist = defaultPlaylist }: VideoPlayerP
     setIsLoading(false);
     setVideoError(false);
     setIsFirstLoad(true);
-    setAutoThumbnail(null);
-    setThumbnailLoading(true);
     
     // Reset video element
     const video = videoRef.current;
@@ -82,94 +79,6 @@ export default function VideoPlayer({ playlist = defaultPlaylist }: VideoPlayerP
       video.pause();
       video.currentTime = 0;
     }
-  }, [playlist]);
-
-  // Auto-generate thumbnail from playlist videos with fallback
-  useEffect(() => {
-    let cancelled = false;
-
-    const generateThumbnailFromVideo = (videoSrc: string): Promise<string> => {
-      return new Promise((resolve, reject) => {
-        const tempVideo = document.createElement('video');
-        tempVideo.crossOrigin = 'anonymous';
-        tempVideo.muted = true;
-        tempVideo.preload = 'metadata';
-
-        const timeoutId = setTimeout(() => {
-          tempVideo.src = '';
-          reject(new Error('Thumbnail generation timeout'));
-        }, 10000);
-
-        tempVideo.onloadedmetadata = () => {
-          // Capture frame at the middle of the video
-          const midpoint = tempVideo.duration / 2;
-          tempVideo.currentTime = midpoint;
-        };
-
-        tempVideo.onseeked = () => {
-          clearTimeout(timeoutId);
-          try {
-            const canvas = document.createElement('canvas');
-            canvas.width = tempVideo.videoWidth || 640;
-            canvas.height = tempVideo.videoHeight || 360;
-            const ctx = canvas.getContext('2d');
-            if (ctx) {
-              ctx.drawImage(tempVideo, 0, 0, canvas.width, canvas.height);
-              const thumbnailUrl = canvas.toDataURL('image/jpeg', 0.8);
-              tempVideo.src = '';
-              resolve(thumbnailUrl);
-            } else {
-              reject(new Error('Canvas context not available'));
-            }
-          } catch (err) {
-            reject(err);
-          }
-        };
-
-        tempVideo.onerror = () => {
-          clearTimeout(timeoutId);
-          tempVideo.src = '';
-          reject(new Error('Video failed to load'));
-        };
-
-        tempVideo.src = videoSrc;
-        tempVideo.load();
-      });
-    };
-
-    const tryGenerateThumbnail = async () => {
-      setThumbnailLoading(true);
-      setAutoThumbnail(null);
-      
-      // Try each playlist item in order (id 1, 2, 3, etc.)
-      const sortedPlaylist = [...playlist].sort((a, b) => a.id - b.id);
-      
-      for (const video of sortedPlaylist) {
-        if (cancelled) return;
-        try {
-          const thumbnail = await generateThumbnailFromVideo(video.src);
-          if (!cancelled) {
-            setAutoThumbnail(thumbnail);
-            setThumbnailLoading(false);
-            return;
-          }
-        } catch (err) {
-          console.warn(`Failed to generate thumbnail from video id ${video.id}:`, err);
-          continue;
-        }
-      }
-      
-      // If all fail, set loading to false (will show fallback)
-      if (!cancelled) {
-        setThumbnailLoading(false);
-      }
-    };
-
-    tryGenerateThumbnail();
-
-    return () => {
-      cancelled = true;
-    };
   }, [playlist]);
 
   useEffect(() => {
@@ -479,11 +388,11 @@ export default function VideoPlayer({ playlist = defaultPlaylist }: VideoPlayerP
               src={playlist[currentVideo].src}
             />
 
-            {showThumbnail && (
+            {showThumbnail && thumbnail && (
               <div 
                 className={`absolute ${isVertical ? 'w-full h-full' : 'inset-0'} transition-opacity duration-500`}
                 style={{
-                  backgroundImage: autoThumbnail ? `url(${autoThumbnail})` : 'none',
+                  backgroundImage: `url(${thumbnail})`,
                   backgroundSize: isVertical ? 'contain' : 'cover',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
@@ -495,17 +404,13 @@ export default function VideoPlayer({ playlist = defaultPlaylist }: VideoPlayerP
 
             {showThumbnail && !videoError && (
               <div className="absolute inset-0 flex items-center justify-center">
-                {thumbnailLoading ? (
-                  <Loader2 className="w-16 h-16 text-purple-500 animate-spin" />
-                ) : (
-                  <button
-                    onClick={togglePlay}
-                    className="w-24 h-24 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110 shadow-2xl z-10"
-                    data-testid="button-play-initial"
-                  >
-                    <Play className="w-12 h-12 text-white ml-2" fill="white" />
-                  </button>
-                )}
+                <button
+                  onClick={togglePlay}
+                  className="w-24 h-24 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-all transform hover:scale-110 shadow-2xl z-10"
+                  data-testid="button-play-initial"
+                >
+                  <Play className="w-12 h-12 text-white ml-2" fill="white" />
+                </button>
               </div>
             )}
 
