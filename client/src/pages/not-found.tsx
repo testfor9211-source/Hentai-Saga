@@ -51,25 +51,16 @@ export default function NotFound() {
             <p className="text-xs text-muted-foreground">The requested URL does not exist on this server</p>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-in fade-in delay-300" data-testid="div-action-buttons">
+          {/* Action Button */}
+          <div className="flex justify-center animate-in fade-in delay-300" data-testid="div-action-buttons">
             <Button
               onClick={() => navigate("/")}
               size="lg"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8 h-12 gap-2 font-bold text-md shadow-[0_0_20px_rgba(236,72,153,0.4)] hover:shadow-[0_0_30px_rgba(236,72,153,0.6)] transition-all duration-300 transform hover:-translate-y-1 flex-1 sm:flex-none"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8 h-12 gap-2 font-bold text-md shadow-[0_0_20px_rgba(236,72,153,0.4)] hover:shadow-[0_0_30px_rgba(236,72,153,0.6)] transition-all duration-300 transform hover:-translate-y-1"
               data-testid="button-go-home"
             >
               <ChevronLeft className="h-5 w-5" />
               Back to Home
-            </Button>
-            <Button
-              onClick={() => window.history.back()}
-              variant="outline"
-              size="lg"
-              className="rounded-full px-8 h-12 font-bold text-md transition-all duration-300 transform hover:-translate-y-1 flex-1 sm:flex-none"
-              data-testid="button-go-back"
-            >
-              Previous Page
             </Button>
           </div>
 
@@ -79,9 +70,6 @@ export default function NotFound() {
           </p>
         </div>
 
-        {/* Decorative Lines */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
       </main>
 
       <Footer />
