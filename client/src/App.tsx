@@ -22,14 +22,12 @@ import AdvertisementPolicy from "@/pages/advertisement-policy";
 import AgeRestrictionPolicy from "@/pages/age-restriction-policy";
 import ParentalControls from "@/pages/parental-controls";
 import Login from "@/pages/login";
-import SearchPage from "@/pages/search";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/Sample-page" component={SamplePage} />
-      <Route path="/search" component={SearchPage} />
       <Route path="/watch/:slug/:episode" component={WatchEpisode} />
       <Route path="/genre/:slug" component={GenrePage} />
       <Route path="/tags/:slug" component={TagsPage} />
