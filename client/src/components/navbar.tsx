@@ -104,51 +104,51 @@ export function Navbar() {
         {/* Search & Actions */}
         <div className="flex items-center gap-2 md:gap-4">
           {/* Desktop Search */}
-          <div className="hidden md:flex relative">
-            {isSearchOpen ? (
-              <div className="flex items-center gap-2 animate-in fade-in slide-in-from-right-4 duration-300">
-                <div className="relative">
+          <div className="hidden md:flex relative w-auto">
+            <div className={`flex items-center gap-2 transition-all duration-300 ease-out ${isSearchOpen ? "w-72" : "w-10"} overflow-hidden`}>
+              {isSearchOpen ? (
+                <div className="flex items-center gap-2 w-full animate-in slide-in-from-right-4 duration-300">
                   <Input 
                     placeholder="Search anime..." 
-                    className="pl-4 bg-secondary border-transparent focus-visible:ring-primary text-sm w-64"
+                    className="flex-1 pl-3 bg-secondary border-transparent focus-visible:ring-primary text-sm"
                     data-testid="input-search"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyPress={handleKeyPress}
                     autoFocus
                   />
+                  <Button 
+                    size="sm" 
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground rounded gap-1 px-2 flex-shrink-0"
+                    onClick={handleSearch}
+                    data-testid="button-search-submit"
+                  >
+                    <ArrowRight className="h-3 w-3" />
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    onClick={() => {
+                      setIsSearchOpen(false);
+                      setSearchQuery("");
+                    }}
+                    data-testid="button-search-close"
+                    className="flex-shrink-0"
+                  >
+                    <span className="text-lg">×</span>
+                  </Button>
                 </div>
-                <Button 
-                  size="sm" 
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground rounded gap-1 px-3"
-                  onClick={handleSearch}
-                  data-testid="button-search-submit"
-                >
-                  <span>Search</span>
-                  <ArrowRight className="h-3 w-3" />
-                </Button>
+              ) : (
                 <Button 
                   variant="ghost" 
                   size="icon" 
-                  onClick={() => {
-                    setIsSearchOpen(false);
-                    setSearchQuery("");
-                  }}
-                  data-testid="button-search-close"
+                  onClick={() => setIsSearchOpen(true)}
+                  data-testid="button-search-open"
                 >
-                  <span className="text-lg">×</span>
+                  <Search className="h-5 w-5" />
                 </Button>
-              </div>
-            ) : (
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => setIsSearchOpen(true)}
-                data-testid="button-search-open"
-              >
-                <Search className="h-5 w-5" />
-              </Button>
-            )}
+              )}
+            </div>
           </div>
 
           {/* Mobile Search */}
@@ -251,31 +251,6 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Search Bar Expanded */}
-      {isSearchOpen && (
-        <div className="md:hidden border-t border-white/10 bg-background/95 backdrop-blur-sm p-3 animate-in slide-in-from-top-2 duration-300">
-          <div className="container mx-auto px-0 flex gap-2">
-            <Input 
-              placeholder="Search anime..." 
-              className="flex-1 bg-secondary border-transparent focus-visible:ring-primary text-sm"
-              data-testid="input-search-mobile-expanded"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyPress={handleKeyPress}
-              autoFocus
-            />
-            <Button 
-              size="sm"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground rounded gap-1 px-3"
-              onClick={handleSearch}
-              data-testid="button-search-submit-expanded"
-            >
-              <span>Search</span>
-              <ArrowRight className="h-3 w-3" />
-            </Button>
-          </div>
-        </div>
-      )}
     </nav>
   );
 }
