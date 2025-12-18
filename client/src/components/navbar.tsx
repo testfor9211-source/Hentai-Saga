@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Search, Menu, Home, Flame, Monitor, Lock, LockOpen, Calendar, ChevronDown, ArrowRight, X } from "lucide-react";
+import { Search, Menu, Home, Flame, Monitor, Lock, LockOpen, Calendar, ChevronDown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -37,128 +37,119 @@ export function Navbar() {
     }
   };
 
-  const closeSearch = () => {
-    setIsSearchOpen(false);
-    setSearchQuery("");
-  };
-
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
-        {/* Logo - Mobile Only / Desktop Search Area */}
-        {isSearchOpen ? (
-          <div className="hidden md:flex flex-1 animate-in slide-in-from-left-4 duration-300">
-            <div className="flex items-center gap-2 flex-1">
-              <div className="flex-1 flex gap-2">
-                <Input 
-                  placeholder="Search anime..." 
-                  className="bg-secondary border-transparent focus-visible:ring-primary text-sm"
-                  data-testid="input-search-desktop"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  autoFocus
-                />
+        {/* Logo - Mobile Only */}
+        <Link href="/" className="flex items-center gap-2 group md:hidden">
+          <div className="w-8 h-8 bg-primary rounded flex items-center justify-center text-primary-foreground font-display font-bold text-xl group-hover:bg-primary/80 transition-colors">
+            H
+          </div>
+          <span className="font-display text-lg font-bold tracking-wider text-white group-hover:text-primary transition-colors">
+            HENTAI SAGA
+          </span>
+        </Link>
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-7 md:-ml-4 lg:-ml-8 xl:-ml-[65px]">
+          <Link href="/" className="flex items-center gap-2 text-sm font-medium text-white hover:text-primary transition-colors" data-testid="nav-home">
+            <Home className="h-4 w-4" />
+            Home
+          </Link>
+          
+          <Link href="/trending" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="nav-trending">
+            <Flame className="h-4 w-4" />
+            Trending
+          </Link>
+          
+          {/* Genres Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="nav-genres">
+              <Monitor className="h-4 w-4" />
+              Genres
+              <ChevronDown className="h-3 w-3" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-80 max-h-96 overflow-y-auto bg-card border-white/10">
+              <div className="grid grid-cols-2 gap-1 p-2">
+                {genres.map((genre) => (
+                  <DropdownMenuItem 
+                    key={genre} 
+                    className="cursor-pointer hover:bg-primary/20 hover:text-primary"
+                    data-testid={`nav-genre-${genre.toLowerCase().replace(/\s+/g, '-')}`}
+                  >
+                    <span className="text-muted-foreground mr-2">-</span>
+                    {genre}
+                  </DropdownMenuItem>
+                ))}
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          
+          <Link href="/censored" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="nav-censored">
+            <Lock className="h-4 w-4" />
+            Censored
+          </Link>
+          
+          <Link href="/uncensored" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="nav-uncensored">
+            <LockOpen className="h-4 w-4" />
+            Uncensored
+          </Link>
+          
+          <Link href="/2025" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="nav-2025">
+            <Calendar className="h-4 w-4" />
+            2025
+          </Link>
+        </div>
+
+        {/* Search & Actions */}
+        <div className="flex items-center gap-2 md:gap-4">
+          {/* Desktop Search */}
+          <div className="hidden md:flex relative">
+            {isSearchOpen ? (
+              <div className="flex items-center gap-2 animate-in fade-in slide-in-from-right-4 duration-300">
+                <div className="relative">
+                  <Input 
+                    placeholder="Search anime..." 
+                    className="pl-4 bg-secondary border-transparent focus-visible:ring-primary text-sm w-64"
+                    data-testid="input-search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    autoFocus
+                  />
+                </div>
                 <Button 
                   size="sm" 
                   className="bg-primary hover:bg-primary/90 text-primary-foreground rounded gap-1 px-3"
                   onClick={handleSearch}
                   data-testid="button-search-submit"
                 >
+                  <span>Search</span>
                   <ArrowRight className="h-3 w-3" />
                 </Button>
                 <Button 
                   variant="ghost" 
                   size="icon" 
-                  onClick={closeSearch}
+                  onClick={() => {
+                    setIsSearchOpen(false);
+                    setSearchQuery("");
+                  }}
                   data-testid="button-search-close"
                 >
-                  <X className="h-5 w-5" />
+                  <span className="text-lg">×</span>
                 </Button>
               </div>
-            </div>
+            ) : (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setIsSearchOpen(true)}
+                data-testid="button-search-open"
+              >
+                <Search className="h-5 w-5" />
+              </Button>
+            )}
           </div>
-        ) : (
-          <>
-            {/* Logo Section */}
-            <div className="flex items-center gap-2">
-              <Link href="/" className="flex items-center gap-2 group md:flex">
-                <div className="w-8 h-8 bg-primary rounded flex items-center justify-center text-primary-foreground font-display font-bold text-xl group-hover:bg-primary/80 transition-colors">
-                  H
-                </div>
-                <span className="font-display text-lg font-bold tracking-wider text-white group-hover:text-primary transition-colors hidden md:inline">
-                  HENTAI SAGA
-                </span>
-              </Link>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-7 md:-ml-4 lg:-ml-8 xl:-ml-[65px]">
-              <Link href="/" className="flex items-center gap-2 text-sm font-medium text-white hover:text-primary transition-colors" data-testid="nav-home">
-                <Home className="h-4 w-4" />
-                Home
-              </Link>
-              
-              <Link href="/trending" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="nav-trending">
-                <Flame className="h-4 w-4" />
-                Trending
-              </Link>
-              
-              {/* Genres Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="nav-genres">
-                  <Monitor className="h-4 w-4" />
-                  Genres
-                  <ChevronDown className="h-3 w-3" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-80 max-h-96 overflow-y-auto bg-card border-white/10">
-                  <div className="grid grid-cols-2 gap-1 p-2">
-                    {genres.map((genre) => (
-                      <DropdownMenuItem 
-                        key={genre} 
-                        className="cursor-pointer hover:bg-primary/20 hover:text-primary"
-                        data-testid={`nav-genre-${genre.toLowerCase().replace(/\s+/g, '-')}`}
-                      >
-                        <span className="text-muted-foreground mr-2">-</span>
-                        {genre}
-                      </DropdownMenuItem>
-                    ))}
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              
-              <Link href="/censored" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="nav-censored">
-                <Lock className="h-4 w-4" />
-                Censored
-              </Link>
-              
-              <Link href="/uncensored" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="nav-uncensored">
-                <LockOpen className="h-4 w-4" />
-                Uncensored
-              </Link>
-              
-              <Link href="/2025" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="nav-2025">
-                <Calendar className="h-4 w-4" />
-                2025
-              </Link>
-            </div>
-          </>
-        )}
-
-        {/* Search & Actions */}
-        <div className="flex items-center gap-2 md:gap-4 ml-auto">
-          {/* Desktop Search Icon */}
-          {!isSearchOpen && (
-            <Button 
-              variant="ghost" 
-              size="icon"
-              className="hidden md:flex"
-              onClick={() => setIsSearchOpen(true)}
-              data-testid="button-search-open"
-            >
-              <Search className="h-5 w-5" />
-            </Button>
-          )}
 
           {/* Mobile Search */}
           <Button 
@@ -279,6 +270,7 @@ export function Navbar() {
               onClick={handleSearch}
               data-testid="button-search-submit-expanded"
             >
+              <span>Search</span>
               <ArrowRight className="h-3 w-3" />
             </Button>
           </div>
