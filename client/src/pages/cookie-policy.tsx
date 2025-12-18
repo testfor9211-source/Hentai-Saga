@@ -68,16 +68,16 @@ export default function CookiePolicy() {
           <p className="text-muted-foreground leading-relaxed mb-4">
             Hentai Saga does NOT use:
           </p>
-          <ul className="list-none text-muted-foreground space-y-2 ml-4">
-            <li>❌ Analytics cookies</li>
-            <li>❌ Tracking cookies</li>
-            <li>❌ Marketing cookies</li>
-            <li>❌ Social media cookies</li>
-            <li>❌ Performance monitoring cookies</li>
-            <li>❌ User behavior tracking</li>
-            <li>❌ Personalization cookies (beyond theme preference)</li>
-            <li>❌ Cross-site tracking</li>
-            <li>❌ Session cookies for user accounts (we have no accounts)</li>
+          <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4 mb-4">
+            <li>Analytics cookies</li>
+            <li>Tracking cookies</li>
+            <li>Marketing cookies</li>
+            <li>Social media cookies</li>
+            <li>Performance monitoring cookies</li>
+            <li>User behavior tracking</li>
+            <li>Personalization cookies (beyond theme preference)</li>
+            <li>Cross-site tracking</li>
+            <li>Session cookies for user accounts (we have no accounts)</li>
           </ul>
         </section>
 
