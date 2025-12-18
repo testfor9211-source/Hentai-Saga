@@ -1,5 +1,5 @@
-import { Link } from "wouter";
-import { Search, Menu, Home, Flame, Monitor, Lock, LockOpen, Calendar, ChevronDown } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import { Search, Menu, Home, Flame, Monitor, Lock, LockOpen, Calendar, ChevronDown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -20,6 +20,22 @@ const genres = [
 
 export function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [, navigate] = useLocation();
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      navigate(`/search?s=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery("");
+      setIsSearchOpen(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
@@ -87,19 +103,64 @@ export function Navbar() {
 
         {/* Search & Actions */}
         <div className="flex items-center gap-2 md:gap-4">
-          <div className="hidden md:flex relative w-64">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input 
-              placeholder="Search anime..." 
-              className="pl-9 bg-secondary border-transparent focus-visible:ring-primary text-sm"
-              data-testid="input-search"
-            />
+          {/* Desktop Search */}
+          <div className="hidden md:flex relative">
+            {isSearchOpen ? (
+              <div className="flex items-center gap-2 animate-in fade-in slide-in-from-right-4 duration-300">
+                <div className="relative">
+                  <Input 
+                    placeholder="Search anime..." 
+                    className="pl-4 bg-secondary border-transparent focus-visible:ring-primary text-sm w-64"
+                    data-testid="input-search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    autoFocus
+                  />
+                </div>
+                <Button 
+                  size="sm" 
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground rounded gap-1 px-3"
+                  onClick={handleSearch}
+                  data-testid="button-search-submit"
+                >
+                  <span>Search</span>
+                  <ArrowRight className="h-3 w-3" />
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => {
+                    setIsSearchOpen(false);
+                    setSearchQuery("");
+                  }}
+                  data-testid="button-search-close"
+                >
+                  <span className="text-lg">×</span>
+                </Button>
+              </div>
+            ) : (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setIsSearchOpen(true)}
+                data-testid="button-search-open"
+              >
+                <Search className="h-5 w-5" />
+              </Button>
+            )}
           </div>
 
-          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsSearchOpen(!isSearchOpen)} data-testid="button-search-mobile">
+          {/* Mobile Search */}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="md:hidden" 
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            data-testid="button-search-mobile"
+          >
             <Search className="h-5 w-5" />
           </Button>
-
 
           {/* Mobile Menu */}
           <Sheet>
@@ -110,6 +171,28 @@ export function Navbar() {
             </SheetTrigger>
             <SheetContent side="right" className="bg-card border-l border-white/10 overflow-y-auto">
               <div className="flex flex-col gap-4 mt-8">
+                {/* Search Input for Mobile */}
+                <div className="flex gap-2 mb-4">
+                  <Input 
+                    placeholder="Search anime..." 
+                    className="flex-1 bg-secondary border-transparent focus-visible:ring-primary text-sm"
+                    data-testid="input-search-mobile"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                  />
+                  <Button 
+                    size="icon"
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                    onClick={handleSearch}
+                    data-testid="button-search-submit-mobile"
+                  >
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </div>
+
+                <div className="h-px bg-white/10" />
+
                 {/* Home */}
                 <Link href="/" className="flex items-center gap-3 text-lg font-medium text-primary" data-testid="mobile-nav-home">
                   <Home className="h-5 w-5" />
@@ -167,6 +250,32 @@ export function Navbar() {
           </Sheet>
         </div>
       </div>
+
+      {/* Mobile Search Bar Expanded */}
+      {isSearchOpen && (
+        <div className="md:hidden border-t border-white/10 bg-background/95 backdrop-blur-sm p-3 animate-in slide-in-from-top-2 duration-300">
+          <div className="container mx-auto px-0 flex gap-2">
+            <Input 
+              placeholder="Search anime..." 
+              className="flex-1 bg-secondary border-transparent focus-visible:ring-primary text-sm"
+              data-testid="input-search-mobile-expanded"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={handleKeyPress}
+              autoFocus
+            />
+            <Button 
+              size="sm"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground rounded gap-1 px-3"
+              onClick={handleSearch}
+              data-testid="button-search-submit-expanded"
+            >
+              <span>Search</span>
+              <ArrowRight className="h-3 w-3" />
+            </Button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
