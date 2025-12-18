@@ -12,7 +12,7 @@ export default function NotFound() {
       <Navbar />
       
       {/* Main Content */}
-      <main className="flex-1 w-full flex items-center justify-center overflow-hidden relative py-20">
+      <main className="flex-1 w-full flex items-center justify-center overflow-hidden relative">
         {/* Animated Background Gradient */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/30 rounded-full blur-3xl animate-pulse" />
@@ -64,10 +64,6 @@ export default function NotFound() {
             </Button>
           </div>
 
-          {/* Footer Text */}
-          <p className="mt-12 text-sm text-muted-foreground/70 animate-in fade-in delay-500" data-testid="text-footer-message">
-            Lost in the digital void? Our support team is here to help if you believe this is an error.
-          </p>
         </div>
 
       </main>
