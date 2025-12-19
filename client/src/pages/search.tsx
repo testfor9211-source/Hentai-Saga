@@ -5,13 +5,11 @@ import { Card } from "@/components/ui/card";
 import { Search as SearchIcon } from "lucide-react";
 
 export default function SearchPage() {
-  const [location] = useLocation();
-  const queryPart = location.split("?")[1] || "";
-  const searchQuery = queryPart
-    .split("&")[0]
-    .split("=")[1]
-    ? decodeURIComponent(queryPart.split("&")[0].split("=")[1]).replace(/\+/g, " ")
-    : queryPart.replace(/\+/g, " ");
+  // Parse search query from URL - handles ?=query format from navbar
+  const searchQuery = window.location.search
+    .replace("?=", "")
+    .replace(/\+/g, " ")
+    .split("&")[0];
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
