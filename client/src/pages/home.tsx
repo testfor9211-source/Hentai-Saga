@@ -16,15 +16,10 @@ import imgDark from "@assets/generated_images/anime_poster_dark_fantasy.png";
 export default function Home() {
   // Mock Data
   const trendingAnime = [
-    { title: "Blade of the Spirit", image: imgFantasy, episode: "12", rating: "9.8", type: "TV" },
-    { title: "Mecha Horizon Zero", image: imgMecha, episode: "05", rating: "9.5", type: "TV" },
-    { title: "School Days Remix", image: imgSchool, episode: "08", rating: "8.9", type: "TV" },
-    { title: "Shadow Covenant", image: imgDark, episode: "24", rating: "9.2", type: "TV" },
-    { title: "Crystal Warrior", image: imgFantasy, episode: "03", rating: "8.7", type: "OVA" },
-    { title: "Steel Angel", image: imgMecha, episode: "11", rating: "8.5", type: "TV" },
-    { title: "Midnight Soul", image: imgDark, episode: "09", rating: "9.0", type: "TV" },
-    { title: "Cherry Blossom Arc", image: imgSchool, episode: "01", rating: "9.1", type: "Movie" },
-  ];
+    { title: "Blade of the Spirit", image: imgFantasy, episode: "12", rating: "9.8", type: "JP" },
+    { title: "Mecha Horizon Zero", image: imgMecha, episode: "05", rating: "9.5", type: "ENG" },
+    { title: "School Days Remix", image: imgSchool, episode: "08", rating: "8.9", type: "JP" },
+    { title: "Shadow Covenant", image: imgDark, episode: "24", rating: "9.2", type: "ENg" },];
 
   const topTen = [
     { rank: 1, title: "Blade of the Spirit", views: "1.2M", image: imgFantasy },
