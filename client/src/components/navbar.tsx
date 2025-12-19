@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Search, Menu, Home, Flame, Monitor, Lock, LockOpen, Calendar, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +19,20 @@ const genres = [
 ];
 
 export function Navbar() {
+  const [, navigate] = useLocation();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [desktopSearchValue, setDesktopSearchValue] = useState("");
+  const [mobileSearchValue, setMobileSearchValue] = useState("");
+
+  const handleSearch = (query: string) => {
+    if (query.trim()) {
+      const encodedQuery = query.trim().replace(/\s+/g, "+");
+      navigate(`/s?=${encodedQuery}`);
+      setDesktopSearchValue("");
+      setMobileSearchValue("");
+      setIsSearchOpen(false);
+    }
+  };
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
@@ -86,86 +99,135 @@ export function Navbar() {
         </div>
 
         {/* Search & Actions */}
-        <div className="flex items-center gap-2 md:gap-4">
+        <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 flex-1 md:flex-none">
+          {/* Desktop Search */}
           <div className="hidden md:flex relative w-64">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input 
               placeholder="Search anime..." 
-              className="pl-9 bg-secondary border-transparent focus-visible:ring-primary text-sm"
+              className="pl-4 pr-10 bg-secondary border-transparent focus-visible:ring-primary text-sm"
               data-testid="input-search"
+              value={desktopSearchValue}
+              onChange={(e) => setDesktopSearchValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch(desktopSearchValue);
+                }
+              }}
             />
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="absolute right-0 top-0 h-full px-2"
+              onClick={() => handleSearch(desktopSearchValue)}
+              data-testid="button-search-submit"
+            >
+              <Search className="h-4 w-4 text-muted-foreground" />
+            </Button>
           </div>
 
-          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsSearchOpen(!isSearchOpen)} data-testid="button-search-mobile">
-            <Search className="h-5 w-5" />
-          </Button>
-
-
-          {/* Mobile Menu */}
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden" data-testid="button-mobile-menu">
-                <Menu className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="bg-card border-l border-white/10 overflow-y-auto">
-              <div className="flex flex-col gap-4 mt-8">
-                {/* Home */}
-                <Link href="/" className="flex items-center gap-3 text-lg font-medium text-primary" data-testid="mobile-nav-home">
-                  <Home className="h-5 w-5" />
-                  Home
-                </Link>
-                
-                {/* Trending */}
-                <Link href="/trending" className="flex items-center gap-3 text-lg font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="mobile-nav-trending">
-                  <Flame className="h-5 w-5" />
-                  Trending
-                </Link>
-                
-                <div className="h-px bg-white/10 my-2" />
-                
-                {/* Genres Section */}
-                <div className="flex items-center gap-3 text-lg font-medium text-white">
-                  <Monitor className="h-5 w-5" />
-                  Genres
-                </div>
-                <div className="grid grid-cols-2 gap-2 pl-2">
-                  {genres.map((genre) => (
-                    <Link 
-                      key={genre} 
-                      href={`/genre/${genre.toLowerCase().replace(/\s+/g, '-')}`}
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors py-1"
-                      data-testid={`mobile-genre-${genre.toLowerCase().replace(/\s+/g, '-')}`}
-                    >
-                      <span className="mr-2">-</span>
-                      {genre}
-                    </Link>
-                  ))}
-                </div>
-                
-                <div className="h-px bg-white/10 my-2" />
-                
-                {/* Censored */}
-                <Link href="/censored" className="flex items-center gap-3 text-lg font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="mobile-nav-censored">
-                  <Lock className="h-5 w-5" />
-                  Censored
-                </Link>
-                
-                {/* Uncensored */}
-                <Link href="/uncensored" className="flex items-center gap-3 text-lg font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="mobile-nav-uncensored">
-                  <LockOpen className="h-5 w-5" />
-                  Uncensored
-                </Link>
-                
-                {/* 2025 */}
-                <Link href="/2025" className="flex items-center gap-3 text-lg font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="mobile-nav-2025">
-                  <Calendar className="h-5 w-5" />
-                  2025
-                </Link>
+          {/* Mobile Search Toggle */}
+          <div className="flex md:hidden items-center gap-2 w-full">
+            {isSearchOpen ? (
+              <div className="flex w-full gap-2">
+                <Input 
+                  placeholder="Search anime..." 
+                  className="flex-1 bg-secondary border-transparent focus-visible:ring-primary text-sm"
+                  data-testid="input-search-mobile"
+                  value={mobileSearchValue}
+                  onChange={(e) => setMobileSearchValue(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSearch(mobileSearchValue);
+                    }
+                  }}
+                  autoFocus
+                />
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => handleSearch(mobileSearchValue)}
+                  data-testid="button-search-submit-mobile"
+                >
+                  <Search className="h-5 w-5" />
+                </Button>
               </div>
-            </SheetContent>
-          </Sheet>
+            ) : (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setIsSearchOpen(true)} 
+                data-testid="button-search-mobile"
+              >
+                <Search className="h-5 w-5" />
+              </Button>
+            )}
+          </div>
         </div>
+
+        {/* Mobile Menu */}
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="md:hidden" data-testid="button-mobile-menu">
+              <Menu className="h-5 w-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="bg-card border-l border-white/10 overflow-y-auto">
+            <div className="flex flex-col gap-4 mt-8">
+              {/* Home */}
+              <Link href="/" className="flex items-center gap-3 text-lg font-medium text-primary" data-testid="mobile-nav-home">
+                <Home className="h-5 w-5" />
+                Home
+              </Link>
+              
+              {/* Trending */}
+              <Link href="/trending" className="flex items-center gap-3 text-lg font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="mobile-nav-trending">
+                <Flame className="h-5 w-5" />
+                Trending
+              </Link>
+              
+              <div className="h-px bg-white/10 my-2" />
+              
+              {/* Genres Section */}
+              <div className="flex items-center gap-3 text-lg font-medium text-white">
+                <Monitor className="h-5 w-5" />
+                Genres
+              </div>
+              <div className="grid grid-cols-2 gap-2 pl-2">
+                {genres.map((genre) => (
+                  <Link 
+                    key={genre} 
+                    href={`/genre/${genre.toLowerCase().replace(/\s+/g, '-')}`}
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors py-1"
+                    data-testid={`mobile-genre-${genre.toLowerCase().replace(/\s+/g, '-')}`}
+                  >
+                    <span className="mr-2">-</span>
+                    {genre}
+                  </Link>
+                ))}
+              </div>
+              
+              <div className="h-px bg-white/10 my-2" />
+              
+              {/* Censored */}
+              <Link href="/censored" className="flex items-center gap-3 text-lg font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="mobile-nav-censored">
+                <Lock className="h-5 w-5" />
+                Censored
+              </Link>
+              
+              {/* Uncensored */}
+              <Link href="/uncensored" className="flex items-center gap-3 text-lg font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="mobile-nav-uncensored">
+                <LockOpen className="h-5 w-5" />
+                Uncensored
+              </Link>
+              
+              {/* 2025 */}
+              <Link href="/2025" className="flex items-center gap-3 text-lg font-medium text-muted-foreground hover:text-primary transition-colors" data-testid="mobile-nav-2025">
+                <Calendar className="h-5 w-5" />
+                2025
+              </Link>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
     </nav>
   );
