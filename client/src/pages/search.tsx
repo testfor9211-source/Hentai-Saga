@@ -1,15 +1,22 @@
-import { useLocation } from "wouter";
+import { useEffect, useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Card } from "@/components/ui/card";
 import { Search as SearchIcon } from "lucide-react";
 
 export default function SearchPage() {
-  // Parse search query from URL - handles ?=query format from navbar
-  const searchQuery = window.location.search
-    .replace("?=", "")
-    .replace(/\+/g, " ")
-    .split("&")[0];
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    // Extract search query from URL
+    // Navbar sends: /s?=query+with+spaces
+    const search = window.location.search.substring(1); // Remove leading ?
+    if (search.startsWith("=")) {
+      // Handle ?=query format
+      const query = search.substring(1).replace(/\+/g, " ");
+      setSearchQuery(decodeURIComponent(query));
+    }
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
