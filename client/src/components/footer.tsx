@@ -15,7 +15,7 @@ export function Footer() {
                 <span className="font-display text-xl font-bold text-white">HENTAI SAGA</span>
               </div>
               <p className="text-muted-foreground text-sm">
-                © 2024 Hentai Saga. All rights reserved.
+                © 2025 Hentai Saga. All rights reserved.
               </p>
             </div>
             <Separator className="bg-white/10" />
@@ -43,7 +43,7 @@ export function Footer() {
               <span className="font-display text-lg font-bold text-white">HENTAI SAGA</span>
             </div>
             <p className="text-muted-foreground text-xs">
-              © 2024 Hentai Saga. All rights reserved.
+              © 2025 Hentai Saga. All rights reserved.
             </p>
             <Separator className="bg-white/10 w-full" />
             <div className="grid grid-cols-3 gap-x-6 gap-y-3 text-muted-foreground text-xs text-center">

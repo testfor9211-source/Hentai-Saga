@@ -7,7 +7,11 @@ import { Search as SearchIcon } from "lucide-react";
 export default function SearchPage() {
   const [location] = useLocation();
   const queryPart = location.split("?")[1] || "";
-  const searchQuery = queryPart.startsWith("=") ? queryPart.substring(1).replace(/\+/g, " ") : "";
+  const searchQuery = queryPart
+    .split("&")[0]
+    .split("=")[1]
+    ? decodeURIComponent(queryPart.split("&")[0].split("=")[1]).replace(/\+/g, " ")
+    : queryPart.replace(/\+/g, " ");
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
