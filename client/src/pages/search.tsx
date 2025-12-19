@@ -16,7 +16,7 @@ export default function SearchPage() {
       const query = search.substring(1).replace(/\+/g, " ");
       setSearchQuery(decodeURIComponent(query));
     }
-  }, []);
+  }, [window.location.search]);
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
