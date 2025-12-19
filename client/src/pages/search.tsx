@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "wouter";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Card } from "@/components/ui/card";
@@ -6,6 +7,7 @@ import { Search as SearchIcon } from "lucide-react";
 
 export default function SearchPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [location] = useLocation();
 
   useEffect(() => {
     // Extract search query from URL
@@ -16,7 +18,7 @@ export default function SearchPage() {
       const query = search.substring(1).replace(/\+/g, " ");
       setSearchQuery(decodeURIComponent(query));
     }
-  }, [window.location.search]);
+  }, [location]);
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
