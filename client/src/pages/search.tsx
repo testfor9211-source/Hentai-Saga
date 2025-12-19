@@ -1,24 +1,53 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "wouter";
+import { useEffect, useState, useMemo } from "react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Card } from "@/components/ui/card";
 import { Search as SearchIcon } from "lucide-react";
 
-export default function SearchPage() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [location] = useLocation();
+function useSearchQuery() {
+  const [searchQuery, setSearchQuery] = useState(() => {
+    const search = window.location.search.substring(1);
+    if (search.startsWith("=")) {
+      const query = search.substring(1).replace(/\+/g, " ");
+      return decodeURIComponent(query);
+    }
+    return "";
+  });
 
   useEffect(() => {
-    // Extract search query from URL
-    // Navbar sends: /s?=query+with+spaces
-    const search = window.location.search.substring(1); // Remove leading ?
-    if (search.startsWith("=")) {
-      // Handle ?=query format
-      const query = search.substring(1).replace(/\+/g, " ");
-      setSearchQuery(decodeURIComponent(query));
-    }
-  }, [location]);
+    const handleNavigate = () => {
+      const search = window.location.search.substring(1);
+      if (search.startsWith("=")) {
+        const query = search.substring(1).replace(/\+/g, " ");
+        setSearchQuery(decodeURIComponent(query));
+      } else {
+        setSearchQuery("");
+      }
+    };
+
+    // Handle both popstate and any URL changes
+    window.addEventListener("popstate", handleNavigate);
+    
+    // For client-side navigation, check URL every 50ms during the effect lifecycle
+    let lastUrl = window.location.href;
+    const interval = setInterval(() => {
+      if (window.location.href !== lastUrl) {
+        lastUrl = window.location.href;
+        handleNavigate();
+      }
+    }, 50);
+
+    return () => {
+      window.removeEventListener("popstate", handleNavigate);
+      clearInterval(interval);
+    };
+  }, []);
+
+  return searchQuery;
+}
+
+export default function SearchPage() {
+  const searchQuery = useSearchQuery();
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
