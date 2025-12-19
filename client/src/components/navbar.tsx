@@ -172,27 +172,6 @@ export function Navbar() {
             </SheetTrigger>
             <SheetContent side="right" className="bg-card border-l border-white/10 overflow-y-auto">
               <div className="flex flex-col gap-4 mt-8">
-                {/* Search Input for Mobile */}
-                <div className="flex gap-2 mb-4">
-                  <Input 
-                    placeholder="Search anime..." 
-                    className="flex-1 bg-secondary border-transparent focus-visible:ring-primary text-sm"
-                    data-testid="input-search-mobile"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                  />
-                  <Button 
-                    size="icon"
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                    onClick={handleSearch}
-                    data-testid="button-search-submit-mobile"
-                  >
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                <div className="h-px bg-white/10" />
 
                 {/* Home */}
                 <Link href="/" className="flex items-center gap-3 text-lg font-medium text-primary" data-testid="mobile-nav-home">
