@@ -25,7 +25,8 @@ export function Navbar() {
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
-      navigate(`/search?s=${encodeURIComponent(searchQuery)}`);
+      const encodedQuery = searchQuery.trim().replace(/\s+/g, "+");
+      navigate(`/s?=${encodedQuery}`);
       setSearchQuery("");
       setIsSearchOpen(false);
     }
