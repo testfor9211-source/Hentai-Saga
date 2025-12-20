@@ -117,53 +117,26 @@ export function Navbar() {
         </div>
 
         {/* Search & Actions */}
-        <div className="flex items-center gap-2 md:gap-4">
-          {/* Desktop Search */}
-          <div className="hidden md:flex relative">
-            {isSearchOpen ? (
-              <div className="flex items-center gap-2 animate-in fade-in slide-in-from-right-4 duration-300">
-                <div className="relative">
-                  <Input 
-                    placeholder="Search anime..." 
-                    className="pl-4 bg-secondary border-transparent focus-visible:ring-primary text-sm w-64"
-                    data-testid="input-search"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    autoFocus
-                  />
-                </div>
-                <Button 
-                  size="sm" 
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground rounded gap-1 px-3"
-                  onClick={handleSearch}
-                  data-testid="button-search-submit"
-                >
-                  <span>Search</span>
-                  <ArrowRight className="h-3 w-3" />
-                </Button>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={() => {
-                    setIsSearchOpen(false);
-                    setSearchQuery("");
-                  }}
-                  data-testid="button-search-close"
-                >
-                  <span className="text-lg">×</span>
-                </Button>
-              </div>
-            ) : (
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={handleSearchIconClick}
-                data-testid="button-search-open"
-              >
-                <Search className="h-5 w-5" />
-              </Button>
-            )}
+        <div className="flex items-center gap-2 md:gap-3">
+          {/* Desktop Search - Always Visible */}
+          <div className="hidden md:flex items-center gap-1 bg-secondary rounded px-2 py-1">
+            <Input 
+              placeholder="Search anime..." 
+              className="bg-secondary border-transparent focus-visible:ring-primary text-sm w-48 px-0 py-1"
+              data-testid="input-search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
+            <Button 
+              size="icon" 
+              variant="ghost"
+              className="h-7 w-7"
+              onClick={handleSearch}
+              data-testid="button-search-submit"
+            >
+              <Search className="h-4 w-4" />
+            </Button>
           </div>
 
           {/* Mobile Search */}
