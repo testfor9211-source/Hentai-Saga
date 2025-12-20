@@ -144,10 +144,7 @@ export function Navbar() {
               <Button 
                 variant="ghost" 
                 size="icon" 
-                onClick={() => {
-                  setIsSearchOpen(true);
-                  setSearchQuery("");
-                }}
+                onClick={() => setIsSearchOpen(true)}
                 data-testid="button-search-open"
               >
                 <Search className="h-5 w-5" />
@@ -160,12 +157,7 @@ export function Navbar() {
             variant="ghost" 
             size="icon" 
             className="md:hidden" 
-            onClick={() => {
-              setIsSearchOpen(!isSearchOpen);
-              if (!isSearchOpen) {
-                setSearchQuery("");
-              }
-            }}
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
             data-testid="button-search-mobile"
           >
             <Search className="h-5 w-5" />
