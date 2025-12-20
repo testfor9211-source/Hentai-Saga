@@ -18,6 +18,15 @@ const genres = [
   "Virgins", "X-Ray", "Yuri",  "Dub Hentai", "SUB Hentai"
 ];
 
+function getSearchQueryFromURL(): string {
+  const search = window.location.search.substring(1);
+  if (search.startsWith("=")) {
+    const query = search.substring(1).replace(/\+/g, " ");
+    return decodeURIComponent(query);
+  }
+  return "";
+}
+
 export function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -27,7 +36,6 @@ export function Navbar() {
     if (searchQuery.trim()) {
       const encodedQuery = searchQuery.trim().replace(/\s+/g, "+");
       navigate(`/s?=${encodedQuery}`);
-      setSearchQuery("");
       setIsSearchOpen(false);
     }
   };
@@ -36,6 +44,12 @@ export function Navbar() {
     if (e.key === "Enter") {
       handleSearch();
     }
+  };
+
+  const handleSearchIconClick = () => {
+    setIsSearchOpen(true);
+    const currentQuery = getSearchQueryFromURL();
+    setSearchQuery(currentQuery);
   };
 
   return (
@@ -144,7 +158,7 @@ export function Navbar() {
               <Button 
                 variant="ghost" 
                 size="icon" 
-                onClick={() => setIsSearchOpen(true)}
+                onClick={handleSearchIconClick}
                 data-testid="button-search-open"
               >
                 <Search className="h-5 w-5" />
@@ -157,7 +171,13 @@ export function Navbar() {
             variant="ghost" 
             size="icon" 
             className="md:hidden" 
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            onClick={() => {
+              if (!isSearchOpen) {
+                handleSearchIconClick();
+              } else {
+                setIsSearchOpen(false);
+              }
+            }}
             data-testid="button-search-mobile"
           >
             <Search className="h-5 w-5" />
