@@ -23,6 +23,7 @@ import AgeRestrictionPolicy from "@/pages/age-restriction-policy";
 import ParentalControls from "@/pages/parental-controls";
 import Login from "@/pages/login";
 import SearchPage from "@/pages/search";
+import DownloadPage from "@/pages/download-page";
 
 function Router() {
   return (
@@ -31,6 +32,7 @@ function Router() {
       <Route path="/Sample-page" component={SamplePage} />
       <Route path="/s" component={SearchPage} />
       <Route path="/watch/:slug/:episode" component={WatchEpisode} />
+      <Route path="/download/:slug/:episode" component={DownloadPage} />
       <Route path="/genre/:slug" component={GenrePage} />
       <Route path="/tags/:slug" component={TagsPage} />
       <Route path="/author/:slug" component={AuthorPage} />
