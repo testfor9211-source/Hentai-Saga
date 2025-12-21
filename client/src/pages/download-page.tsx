@@ -4,7 +4,7 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, ArrowRight } from "lucide-react";
+import { Download, ArrowRight, Clock } from "lucide-react";
 
 interface DownloadSource {
   id: number;
@@ -12,6 +12,13 @@ interface DownloadSource {
   url: string;
   countdown: number;
   isActive: boolean;
+  showOpenLink: boolean;
+}
+
+interface ButtonColors {
+  normal: string;
+  hover: string;
+  waiting: string;
 }
 
 export default function DownloadPage() {
@@ -29,22 +36,58 @@ export default function DownloadPage() {
   const episodeNumber = episode.replace("episode-", "") || "1";
   const thumbnail = episodeThumbnails[episodeNumber] || episodeThumbnails["1"];
 
+  // Color schemes for each button
+  const buttonColors: Record<number, ButtonColors> = {
+    1: {
+      normal: "bg-gradient-to-r from-pink-500 via-pink-400 to-pink-500",
+      hover: "hover:from-pink-600 hover:via-pink-500 hover:to-pink-600",
+      waiting: "bg-gradient-to-r from-pink-600 via-pink-500 to-pink-600"
+    },
+    2: {
+      normal: "bg-gradient-to-r from-cyan-500 via-cyan-400 to-cyan-500",
+      hover: "hover:from-cyan-600 hover:via-cyan-500 hover:to-cyan-600",
+      waiting: "bg-gradient-to-r from-cyan-600 via-cyan-500 to-cyan-600"
+    },
+    3: {
+      normal: "bg-gradient-to-r from-violet-500 via-violet-400 to-violet-500",
+      hover: "hover:from-violet-600 hover:via-violet-500 hover:to-violet-600",
+      waiting: "bg-gradient-to-r from-violet-600 via-violet-500 to-violet-600"
+    },
+    4: {
+      normal: "bg-gradient-to-r from-orange-500 via-orange-400 to-orange-500",
+      hover: "hover:from-orange-600 hover:via-orange-500 hover:to-orange-600",
+      waiting: "bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600"
+    },
+    5: {
+      normal: "bg-gradient-to-r from-teal-500 via-teal-400 to-teal-500",
+      hover: "hover:from-teal-600 hover:via-teal-500 hover:to-teal-600",
+      waiting: "bg-gradient-to-r from-teal-600 via-teal-500 to-teal-600"
+    },
+  };
+
   const [sources, setSources] = useState<DownloadSource[]>([
-    { id: 1, label: "Download 1", url: "https://sample1.com", countdown: 0, isActive: false },
-    { id: 2, label: "Download 2", url: "https://sample2.com", countdown: 0, isActive: false },
-    { id: 3, label: "Download 3", url: "https://sample3.com", countdown: 0, isActive: false },
-    { id: 4, label: "Download 4", url: "https://sample4.com", countdown: 0, isActive: false },
-    { id: 5, label: "Download 5", url: "https://sample5.com", countdown: 0, isActive: false },
+    { id: 1, label: "Download 1", url: "https://sample1.com", countdown: 0, isActive: false, showOpenLink: false },
+    { id: 2, label: "Download 2", url: "https://sample2.com", countdown: 0, isActive: false, showOpenLink: false },
+    { id: 3, label: "Download 3", url: "https://sample3.com", countdown: 0, isActive: false, showOpenLink: false },
+    { id: 4, label: "Download 4", url: "https://sample4.com", countdown: 0, isActive: false, showOpenLink: false },
+    { id: 5, label: "Download 5", url: "https://sample5.com", countdown: 0, isActive: false, showOpenLink: false },
   ]);
 
   // Handle countdown timer
   useEffect(() => {
     const interval = setInterval(() => {
       setSources((prevSources) =>
-        prevSources.map((source) => ({
-          ...source,
-          countdown: source.isActive && source.countdown > 0 ? source.countdown - 1 : source.countdown,
-        }))
+        prevSources.map((source) => {
+          if (source.isActive && source.countdown > 0) {
+            const newCountdown = source.countdown - 1;
+            return {
+              ...source,
+              countdown: newCountdown,
+              showOpenLink: newCountdown === 0 // Show Open Link when countdown reaches 0
+            };
+          }
+          return source;
+        })
       );
     }, 1000);
 
@@ -52,12 +95,12 @@ export default function DownloadPage() {
   }, []);
 
   const handleDownloadClick = (sourceId: number) => {
-    // Reset all other sources and set the current one as active
+    // Only reset other countdowns, don't touch showOpenLink
     setSources((prevSources) =>
       prevSources.map((source) =>
         source.id === sourceId 
-          ? { ...source, countdown: 15, isActive: true }
-          : { ...source, countdown: 0, isActive: false }
+          ? { ...source, countdown: 15, isActive: true, showOpenLink: false }
+          : { ...source, countdown: 0, isActive: false } // Keep showOpenLink intact
       )
     );
   };
@@ -65,14 +108,15 @@ export default function DownloadPage() {
   const handleOpenLink = (sourceId: number) => {
     const source = sources.find((s) => s.id === sourceId);
     if (source) {
-      // Reset button state
-      setSources((prevSources) =>
-        prevSources.map((s) =>
-          s.id === sourceId ? { ...s, countdown: 0, isActive: false } : s
-        )
-      );
       // Open the URL
       window.open(source.url, "_blank");
+      
+      // Reset button state after opening
+      setSources((prevSources) =>
+        prevSources.map((s) =>
+          s.id === sourceId ? { ...s, countdown: 0, isActive: false, showOpenLink: false } : s
+        )
+      );
     }
   };
 
@@ -97,53 +141,60 @@ export default function DownloadPage() {
 
             {/* Download Buttons */}
             <div className="space-y-3 mb-6">
-              {sources.map((source) => (
-                <div key={source.id}>
-                  {source.isActive && source.countdown === 0 ? (
-                    // Show "Open Link" button after countdown completes
-                    <Button
-                      onClick={() => handleOpenLink(source.id)}
-                      className="w-full py-6 text-base font-semibold rounded-md bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
-                      data-testid={`button-open-link-${source.id}`}
-                    >
-                      <span className="flex items-center justify-center gap-2">
-                        <ArrowRight className="h-5 w-5" />
-                        <span>Open Link</span>
-                      </span>
-                    </Button>
-                  ) : (
-                    // Show download button or countdown
-                    <Button
-                      onClick={() => {
-                        if (!source.isActive) {
-                          handleDownloadClick(source.id);
-                        }
-                      }}
-                      disabled={source.isActive}
-                      className={`w-full py-6 text-base font-semibold rounded-md transition-all transform ${
-                        source.isActive
-                          ? "bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg cursor-wait"
-                          : "bg-gradient-to-r from-primary via-primary/90 to-primary/80 hover:from-primary/90 hover:via-primary/80 hover:to-primary/70 text-primary-foreground shadow-lg hover:shadow-xl hover:scale-105"
-                      }`}
-                      data-testid={`button-download-${source.id}`}
-                    >
-                      <span className="flex items-center justify-center gap-2">
-                        {source.isActive ? (
-                          <>
-                            <span className="inline-block h-2 w-2 bg-white rounded-full animate-pulse" />
-                            <span>Wait {source.countdown}s</span>
-                          </>
-                        ) : (
-                          <>
-                            <Download className="h-5 w-5" />
-                            <span>{source.label}</span>
-                          </>
-                        )}
-                      </span>
-                    </Button>
-                  )}
-                </div>
-              ))}
+              {sources.map((source) => {
+                const colors = buttonColors[source.id];
+
+                return (
+                  <div key={source.id}>
+                    {source.showOpenLink ? (
+                      // Show "Open Link" button after countdown completes
+                      <Button
+                        onClick={() => handleOpenLink(source.id)}
+                        className="w-full py-6 text-base font-semibold rounded-md bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
+                        data-testid={`button-open-link-${source.id}`}
+                      >
+                        <span className="flex items-center justify-center gap-2">
+                          <ArrowRight className="h-5 w-5" />
+                          <span>Open Link</span>
+                        </span>
+                      </Button>
+                    ) : (
+                      // Show download button or countdown
+                      <Button
+                        onClick={() => {
+                          if (!source.isActive) {
+                            handleDownloadClick(source.id);
+                          }
+                        }}
+                        disabled={source.isActive}
+                        className={`w-full py-6 text-base font-semibold rounded-md transition-all transform ${
+                          source.isActive
+                            ? `${colors.waiting} text-white shadow-lg hover:shadow-xl`
+                            : `${colors.normal} ${colors.hover} text-white shadow-lg hover:shadow-xl hover:scale-105`
+                        }`}
+                        data-testid={`button-download-${source.id}`}
+                      >
+                        <span className="flex items-center justify-center gap-2">
+                          {source.isActive ? (
+                            <>
+                              <div className="flex items-center gap-1">
+                                <Clock className="h-4 w-4" />
+                                <span className="font-bold">{source.countdown}</span>
+                              </div>
+                              <span className="text-sm">Seconds Remaining</span>
+                            </>
+                          ) : (
+                            <>
+                              <Download className="h-5 w-5" />
+                              <span>{source.label}</span>
+                            </>
+                          )}
+                        </span>
+                      </Button>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
             <div className="border-t border-white/10 my-6" />
