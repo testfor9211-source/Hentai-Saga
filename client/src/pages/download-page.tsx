@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, ArrowRight, Clock } from "lucide-react";
+import { episodeData } from "@/pages/watch-episode";
 
 interface DownloadSource {
   id: number;
@@ -26,15 +27,17 @@ export default function DownloadPage() {
   const slug = params.slug || "Sample-page";
   const episode = params.episode || "episode-1";
 
-  // Episode thumbnails (same as in watch-episode)
-  const episodeThumbnails: Record<string, string> = {
-    "1": "https://yavuzceliker.github.io/sample-images/image-5.jpg",
-    "2": "https://yavuzceliker.github.io/sample-images/image-6.jpg",
-    "3": "https://yavuzceliker.github.io/sample-images/image-7.jpg",
-  };
-  
   const episodeNumber = episode.replace("episode-", "") || "1";
-  const thumbnail = episodeThumbnails[episodeNumber] || episodeThumbnails["1"];
+  const episodeInfo = episodeData[episodeNumber] || episodeData["1"];
+  const thumbnail = episodeInfo.thumbnail;
+  const downloadLinks = episodeInfo.downloadLinks;
+
+  // Generate random indices for download links (different for each button)
+  const getRandomDownloadLink = (sourceId: number) => {
+    // Use sourceId as seed for consistent random selection per button
+    const randomIndex = (sourceId * 7 + parseInt(episodeNumber)) % downloadLinks.length;
+    return downloadLinks[randomIndex];
+  };
 
   // Color schemes for each button
   const buttonColors: Record<number, ButtonColors> = {
@@ -66,11 +69,11 @@ export default function DownloadPage() {
   };
 
   const [sources, setSources] = useState<DownloadSource[]>([
-    { id: 1, label: "Download 1", url: "https://sample1.com", countdown: 0, isActive: false, showOpenLink: false },
-    { id: 2, label: "Download 2", url: "https://sample2.com", countdown: 0, isActive: false, showOpenLink: false },
-    { id: 3, label: "Download 3", url: "https://sample3.com", countdown: 0, isActive: false, showOpenLink: false },
-    { id: 4, label: "Download 4", url: "https://sample4.com", countdown: 0, isActive: false, showOpenLink: false },
-    { id: 5, label: "Download 5", url: "https://sample5.com", countdown: 0, isActive: false, showOpenLink: false },
+    { id: 1, label: "Download 1", url: getRandomDownloadLink(1), countdown: 0, isActive: false, showOpenLink: false },
+    { id: 2, label: "Download 2", url: getRandomDownloadLink(2), countdown: 0, isActive: false, showOpenLink: false },
+    { id: 3, label: "Download 3", url: getRandomDownloadLink(3), countdown: 0, isActive: false, showOpenLink: false },
+    { id: 4, label: "Download 4", url: getRandomDownloadLink(4), countdown: 0, isActive: false, showOpenLink: false },
+    { id: 5, label: "Download 5", url: getRandomDownloadLink(5), countdown: 0, isActive: false, showOpenLink: false },
   ]);
 
   // Handle countdown timer

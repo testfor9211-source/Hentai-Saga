@@ -49,6 +49,40 @@ const episodePlaylists: Record<string, PlaylistItem[]> = {
   ],
 };
 
+// Episode thumbnails and download links
+export const episodeData: Record<string, { thumbnail: string; downloadLinks: string[] }> = {
+  "1": {
+    thumbnail: "https://yavuzceliker.github.io/sample-images/image-5.jpg",
+    downloadLinks: [
+      "https://dl1.example.com/ep1",
+      "https://dl2.example.com/ep1",
+      "https://dl3.example.com/ep1",
+      "https://dl4.example.com/ep1",
+      "https://dl5.example.com/ep1"
+    ]
+  },
+  "2": {
+    thumbnail: "https://yavuzceliker.github.io/sample-images/image-6.jpg",
+    downloadLinks: [
+      "https://dl1.example.com/ep2",
+      "https://dl2.example.com/ep2",
+      "https://dl3.example.com/ep2",
+      "https://dl4.example.com/ep2",
+      "https://dl5.example.com/ep2"
+    ]
+  },
+  "3": {
+    thumbnail: "https://yavuzceliker.github.io/sample-images/image-7.jpg",
+    downloadLinks: [
+      "https://dl1.example.com/ep3",
+      "https://dl2.example.com/ep3",
+      "https://dl3.example.com/ep3",
+      "https://dl4.example.com/ep3",
+      "https://dl5.example.com/ep3"
+    ]
+  }
+};
+
 export default function WatchEpisode() {
   const params = useParams();
   const animeSlug = params.slug || "Sample-page";
@@ -61,13 +95,8 @@ export default function WatchEpisode() {
   // Get the playlist for the current episode
   const currentPlaylist = episodePlaylists[episodeNumber] || episodePlaylists["1"];
   
-  // Get the current episode's thumbnail
-  const episodeThumbnails: Record<string, string> = {
-    "1": "https://yavuzceliker.github.io/sample-images/image-5.jpg",
-    "2": "https://yavuzceliker.github.io/sample-images/image-6.jpg",
-    "3": "https://yavuzceliker.github.io/sample-images/image-7.jpg",
-  };
-  const currentThumbnail = episodeThumbnails[episodeNumber] || episodeThumbnails["1"];
+  // Get the current episode's thumbnail from episodeData
+  const currentThumbnail = episodeData[episodeNumber]?.thumbnail || episodeData["1"].thumbnail;
 
   const animeData = {
     title: "Kanojo Face The Animation",

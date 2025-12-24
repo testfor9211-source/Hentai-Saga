@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const genres = [
   "3D", "Ahegao", "Anal", "Blackmail", "Blowjob", "Bondage", 
@@ -31,6 +31,12 @@ export function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [, navigate] = useLocation();
+
+  // Sync search query with current URL on component mount and URL changes
+  useEffect(() => {
+    const currentQuery = getSearchQueryFromURL();
+    setSearchQuery(currentQuery);
+  }, [window.location.search]);
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
