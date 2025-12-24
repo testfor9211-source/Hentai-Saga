@@ -37,6 +37,7 @@ export function Navbar() {
       const encodedQuery = searchQuery.trim().replace(/\s+/g, "+");
       navigate(`/s?=${encodedQuery}`);
       setIsSearchOpen(false);
+      setSearchQuery("");
     }
   };
 

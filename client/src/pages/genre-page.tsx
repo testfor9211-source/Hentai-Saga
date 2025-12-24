@@ -1,4 +1,5 @@
-import { useParams } from "wouter";
+import { useParams, useLocation } from "wouter";
+import { useEffect } from "react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { AnimeCard } from "@/components/anime-card";
@@ -13,7 +14,16 @@ import imgDark from "@assets/generated_images/anime_poster_dark_fantasy.png";
 
 export default function GenrePage() {
   const params = useParams();
-  const genreSlug = params.slug || "Sample-page";
+  const [, navigate] = useLocation();
+  const genreSlug = params.slug || "sample-page";
+
+  // Redirect if slug is not lowercase
+  useEffect(() => {
+    if (genreSlug !== genreSlug.toLowerCase()) {
+      navigate(`/genre/${genreSlug.toLowerCase()}`);
+    }
+  }, [genreSlug, navigate]);
+
   const genreName = genreSlug.replace(/-/g, " ");
 
   const animeList = [

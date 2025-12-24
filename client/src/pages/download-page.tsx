@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, ArrowRight, Clock } from "lucide-react";
+import { episodes, episodeThumbnails } from "@/data/episodeData";
 
 interface DownloadSource {
   id: number;
@@ -23,18 +24,12 @@ interface ButtonColors {
 
 export default function DownloadPage() {
   const params = useParams();
-  const slug = params.slug || "Sample-page";
+  const slug = params.slug || "sample-page";
   const episode = params.episode || "episode-1";
 
-  // Episode thumbnails (same as in watch-episode)
-  const episodeThumbnails: Record<string, string> = {
-    "1": "https://yavuzceliker.github.io/sample-images/image-5.jpg",
-    "2": "https://yavuzceliker.github.io/sample-images/image-6.jpg",
-    "3": "https://yavuzceliker.github.io/sample-images/image-7.jpg",
-  };
-  
   const episodeNumber = episode.replace("episode-", "") || "1";
-  const thumbnail = episodeThumbnails[episodeNumber] || episodeThumbnails["1"];
+  const currentEpisode = episodes.find(ep => ep.number === parseInt(episodeNumber)) || episodes[0];
+  const thumbnail = currentEpisode.thumbnail;
 
   // Color schemes for each button
   const buttonColors: Record<number, ButtonColors> = {
@@ -65,13 +60,16 @@ export default function DownloadPage() {
     },
   };
 
-  const [sources, setSources] = useState<DownloadSource[]>([
-    { id: 1, label: "Download 1", url: "https://sample1.com", countdown: 0, isActive: false, showOpenLink: false },
-    { id: 2, label: "Download 2", url: "https://sample2.com", countdown: 0, isActive: false, showOpenLink: false },
-    { id: 3, label: "Download 3", url: "https://sample3.com", countdown: 0, isActive: false, showOpenLink: false },
-    { id: 4, label: "Download 4", url: "https://sample4.com", countdown: 0, isActive: false, showOpenLink: false },
-    { id: 5, label: "Download 5", url: "https://sample5.com", countdown: 0, isActive: false, showOpenLink: false },
-  ]);
+  const [sources, setSources] = useState<DownloadSource[]>(
+    currentEpisode.downloadLinks.map((url, index) => ({
+      id: index + 1,
+      label: `Download ${index + 1}`,
+      url: url,
+      countdown: 0,
+      isActive: false,
+      showOpenLink: false,
+    }))
+  );
 
   // Handle countdown timer
   useEffect(() => {

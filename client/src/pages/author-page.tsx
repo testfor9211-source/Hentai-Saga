@@ -1,4 +1,5 @@
-import { useParams } from "wouter";
+import { useParams, useLocation } from "wouter";
+import { useEffect } from "react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { AnimeCard } from "@/components/anime-card";
@@ -13,7 +14,16 @@ import imgDark from "@assets/generated_images/anime_poster_dark_fantasy.png";
 
 export default function AuthorPage() {
   const params = useParams();
-  const authorSlug = params.slug || "Sample-page";
+  const [, navigate] = useLocation();
+  const authorSlug = params.slug || "sample-page";
+
+  // Redirect if slug is not lowercase
+  useEffect(() => {
+    if (authorSlug !== authorSlug.toLowerCase()) {
+      navigate(`/author/${authorSlug.toLowerCase()}`);
+    }
+  }, [authorSlug, navigate]);
+
   const authorName = authorSlug.replace(/-/g, " ");
 
   const authorInfo = {
@@ -44,29 +54,13 @@ export default function AuthorPage() {
         <div className="flex items-center gap-3 mb-6">
           <User className="h-6 w-6 text-primary" />
           <h1 className="text-2xl md:text-3xl font-display font-bold text-white capitalize" data-testid="heading-author-title">
-            Author: {authorName}
+            {authorName}
           </h1>
         </div>
 
-        <Card className="p-6 border-white/10 mb-8">
-          <div className="space-y-3">
-            <div className="flex">
-              <span className="text-primary font-medium w-28 flex-shrink-0">Total Works</span>
-              <span className="text-muted-foreground" data-testid="text-total-works">
-                {authorInfo.totalWorks} titles
-              </span>
-            </div>
-            <div className="flex">
-              <span className="text-primary font-medium w-28 flex-shrink-0">Total Views</span>
-              <span className="text-muted-foreground" data-testid="text-total-views">
-                {authorInfo.totalViews}
-              </span>
-            </div>
-            <p className="text-muted-foreground pt-2" data-testid="text-author-description">
-              {authorInfo.description}
-            </p>
-          </div>
-        </Card>
+        <p className="text-muted-foreground mb-8" data-testid="text-author-description">
+          {authorInfo.description}
+        </p>
 
         <section className="mb-8">
           <div className="flex items-center gap-2 mb-4">
