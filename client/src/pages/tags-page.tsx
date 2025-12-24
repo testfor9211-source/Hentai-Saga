@@ -1,5 +1,4 @@
-import { useParams, useLocation } from "wouter";
-import { useEffect } from "react";
+import { useParams } from "wouter";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { AnimeCard } from "@/components/anime-card";
@@ -14,16 +13,7 @@ import imgDark from "@assets/generated_images/anime_poster_dark_fantasy.png";
 
 export default function TagsPage() {
   const params = useParams();
-  const [, navigate] = useLocation();
-  const tagSlug = params.slug || "sample-page";
-
-  // Redirect if slug is not lowercase
-  useEffect(() => {
-    if (tagSlug !== tagSlug.toLowerCase()) {
-      navigate(`/tag/${tagSlug.toLowerCase()}`);
-    }
-  }, [tagSlug, navigate]);
-
+  const tagSlug = params.slug || "Sample-page";
   const tagName = tagSlug.replace(/-/g, " ");
 
   const animeList = [

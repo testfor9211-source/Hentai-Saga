@@ -29,24 +29,24 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/watch/sample-page" component={SamplePage} />
+      <Route path="/Sample-page" component={SamplePage} />
       <Route path="/s" component={SearchPage} />
       <Route path="/watch/:slug/:episode" component={WatchEpisode} />
       <Route path="/download/:slug/:episode" component={DownloadPage} />
       <Route path="/genre/:slug" component={GenrePage} />
-      <Route path="/tag/:slug" component={TagsPage} />
+      <Route path="/tags/:slug" component={TagsPage} />
       <Route path="/author/:slug" component={AuthorPage} />
-      <Route path="/series/:slug" component={SeriesPage} />
-      <Route path="/privacy-policy" component={PrivacyPolicy} />
-      <Route path="/terms-of-service" component={TermsOfService} />
-      <Route path="/dmca-copyright-policy" component={DMCACopyrightPolicy} />
-      <Route path="/usc-2257" component={USC2257} />
-      <Route path="/cookie-policy" component={CookiePolicy} />
-      <Route path="/disclaimer" component={Disclaimer} />
-      <Route path="/advertisement-policy" component={AdvertisementPolicy} />
-      <Route path="/18-age-restriction-policy" component={AgeRestrictionPolicy} />
-      <Route path="/parental-controls" component={ParentalControls} />
-      <Route path="/login" component={Login} />
+      <Route path="/Series/:slug" component={SeriesPage} />
+      <Route path="/Privacy-Policy" component={PrivacyPolicy} />
+      <Route path="/Terms-of-Service" component={TermsOfService} />
+      <Route path="/DMCA-Copyright-Policy" component={DMCACopyrightPolicy} />
+      <Route path="/USC-2257" component={USC2257} />
+      <Route path="/Cookie-Policy" component={CookiePolicy} />
+      <Route path="/Disclaimer" component={Disclaimer} />
+      <Route path="/Advertisement-Policy" component={AdvertisementPolicy} />
+      <Route path="/18-Age-Restriction-Policy" component={AgeRestrictionPolicy} />
+      <Route path="/Parental-Controls" component={ParentalControls} />
+      <Route path="/Login" component={Login} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
