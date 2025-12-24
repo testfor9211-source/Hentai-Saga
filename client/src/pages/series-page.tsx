@@ -54,47 +54,9 @@ export default function SeriesPage() {
           </h1>
         </div>
 
-        <Card className="p-6 border-white/10 mb-8">
-          <div className="space-y-3">
-            <div className="flex">
-              <span className="text-primary font-medium w-28 flex-shrink-0">Status</span>
-              <Badge 
-                variant="outline" 
-                className="border-green-500 text-green-500"
-                data-testid="badge-status"
-              >
-                {seriesInfo.status}
-              </Badge>
-            </div>
-            <div className="flex">
-              <span className="text-primary font-medium w-28 flex-shrink-0">Seasons</span>
-              <span className="text-muted-foreground" data-testid="text-total-seasons">
-                {seriesInfo.totalSeasons}
-              </span>
-            </div>
-            <div className="flex">
-              <span className="text-primary font-medium w-28 flex-shrink-0">Episodes</span>
-              <span className="text-muted-foreground" data-testid="text-total-episodes">
-                {seriesInfo.totalEpisodes}
-              </span>
-            </div>
-            <div className="flex">
-              <span className="text-primary font-medium w-28 flex-shrink-0">Released</span>
-              <span className="text-muted-foreground" data-testid="text-release-year">
-                {seriesInfo.releaseYear}
-              </span>
-            </div>
-            <div className="flex">
-              <span className="text-primary font-medium w-28 flex-shrink-0">Studio</span>
-              <span className="text-muted-foreground" data-testid="text-studio">
-                {seriesInfo.studio}
-              </span>
-            </div>
-            <p className="text-muted-foreground pt-2" data-testid="text-series-description">
-              {seriesInfo.description}
-            </p>
-          </div>
-        </Card>
+        <p className="text-muted-foreground mb-8" data-testid="text-series-description">
+          {seriesInfo.description}
+        </p>
 
         <section className="mb-8">
           <div className="flex items-center gap-2 mb-4">

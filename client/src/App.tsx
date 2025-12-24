@@ -29,12 +29,12 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/Sample-page" component={SamplePage} />
+      <Route path="/watch/Sample-page" component={SamplePage} />
       <Route path="/s" component={SearchPage} />
       <Route path="/watch/:slug/:episode" component={WatchEpisode} />
       <Route path="/download/:slug/:episode" component={DownloadPage} />
       <Route path="/genre/:slug" component={GenrePage} />
-      <Route path="/tags/:slug" component={TagsPage} />
+      <Route path="/tag/:slug" component={TagsPage} />
       <Route path="/author/:slug" component={AuthorPage} />
       <Route path="/Series/:slug" component={SeriesPage} />
       <Route path="/Privacy-Policy" component={PrivacyPolicy} />

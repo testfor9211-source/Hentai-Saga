@@ -36,7 +36,11 @@ export function Navbar() {
     if (searchQuery.trim()) {
       const encodedQuery = searchQuery.trim().replace(/\s+/g, "+");
       navigate(`/s?=${encodedQuery}`);
-      setIsSearchOpen(false);
+      // Blur the input but keep the search bar visible and text intact
+      const searchInput = document.querySelector('[data-testid="input-search"]') as HTMLInputElement;
+      if (searchInput) {
+        searchInput.blur();
+      }
     }
   };
 

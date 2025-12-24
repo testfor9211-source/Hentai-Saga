@@ -48,25 +48,9 @@ export default function AuthorPage() {
           </h1>
         </div>
 
-        <Card className="p-6 border-white/10 mb-8">
-          <div className="space-y-3">
-            <div className="flex">
-              <span className="text-primary font-medium w-28 flex-shrink-0">Total Works</span>
-              <span className="text-muted-foreground" data-testid="text-total-works">
-                {authorInfo.totalWorks} titles
-              </span>
-            </div>
-            <div className="flex">
-              <span className="text-primary font-medium w-28 flex-shrink-0">Total Views</span>
-              <span className="text-muted-foreground" data-testid="text-total-views">
-                {authorInfo.totalViews}
-              </span>
-            </div>
-            <p className="text-muted-foreground pt-2" data-testid="text-author-description">
-              {authorInfo.description}
-            </p>
-          </div>
-        </Card>
+        <p className="text-muted-foreground mb-8" data-testid="text-author-description">
+          {authorInfo.description}
+        </p>
 
         <section className="mb-8">
           <div className="flex items-center gap-2 mb-4">
