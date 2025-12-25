@@ -1,10 +1,10 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { AnimeCard } from "@/components/anime-card";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { 
   Star, 
   ChevronDown
@@ -30,8 +30,8 @@ export default function SamplePage() {
     releaseYear: "2025",
     favorites: "2,510",
     episodes: [
-      { number: 2, title: "Episode 2", date: "February 6, 2025", thumbnail: imgMecha },
-      { number: 1, title: "Episode 1", date: "February 6, 2025", thumbnail: imgSchool },
+      { number: 2, title: "Episode 2", date: "February 6, 2025", thumbnail: imgMecha, duration: "24:12" },
+      { number: 1, title: "Episode 1", date: "February 6, 2025", thumbnail: imgSchool, duration: "23:45" },
     ],
     summary: `"Kanojo Face The Animation" is an adult anime series that delves into the intricate dynamics of intimate relationships. In episode 1, viewers are introduced to a narrative that intertwines passion with complex character interactions. The episode centers around the protagonist's evolving connection with a significant female character, exploring themes of desire, consent, and the nuances of personal boundaries. The animation quality is notable, with detailed character designs and fluid motion that enhance the storytelling. The episode's pacing allows for a deep exploration of the characters' emotions, providing a balance between explicit scenes and narrative development. The musical score complements the visual elements, adding depth to the viewing experience.`,
     relatedAnime: [
@@ -158,29 +158,36 @@ export default function SamplePage() {
             </h2>
           </div>
 
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {animeData.episodes.map((episode) => (
-              <div 
+              <Link 
                 key={episode.number}
-                className="flex items-center gap-4 hover-elevate cursor-pointer p-2 rounded-lg"
-                data-testid={`row-episode-${episode.number}`}
+                href={`/watch/Sample-page/episode-${episode.number}`}
               >
-                <div className="w-28 h-20 flex-shrink-0 overflow-hidden rounded-md">
-                  <img 
-                    src={episode.thumbnail} 
-                    alt={episode.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-white" data-testid={`text-episode-title-${episode.number}`}>
-                    {episode.title}
-                  </h3>
-                </div>
-                <div className="text-sm text-muted-foreground" data-testid={`text-episode-date-${episode.number}`}>
-                  {episode.date}
-                </div>
-              </div>
+                <Card 
+                  className="flex items-center gap-4 p-3 hover-elevate cursor-pointer border-white/10"
+                  data-testid={`card-episode-${episode.number}`}
+                >
+                  <div className="w-24 h-16 flex-shrink-0 overflow-hidden rounded-md relative">
+                    <img 
+                      src={episode.thumbnail} 
+                      alt={episode.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-white truncate" data-testid={`text-episode-title-${episode.number}`}>
+                      {episode.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground" data-testid={`text-episode-date-${episode.number}`}>
+                      {episode.date}
+                    </p>
+                  </div>
+                  <div className="text-sm text-muted-foreground flex-shrink-0">
+                    {episode.duration}
+                  </div>
+                </Card>
+              </Link>
             ))}
           </div>
         </section>
