@@ -30,8 +30,9 @@ export default function SamplePage() {
     releaseYear: "2025",
     favorites: "2,510",
     episodes: [
-      { number: 2, title: "Episode 2", date: "February 6, 2025", thumbnail: imgMecha, duration: "24:12" },
-      { number: 1, title: "Episode 1", date: "February 6, 2025", thumbnail: imgSchool, duration: "23:45" },
+      { number: 1, title: "Episode 1", date: "February 6, 2025", thumbnail: "https://yavuzceliker.github.io/sample-images/image-5.jpg", duration: "23:45" },
+      { number: 2, title: "Episode 2", date: "February 6, 2025", thumbnail: "https://yavuzceliker.github.io/sample-images/image-6.jpg", duration: "24:12" },
+      { number: 3, title: "Episode 3", date: "February 6, 2025", thumbnail: "https://yavuzceliker.github.io/sample-images/image-7.jpg", duration: "24:30" },
     ],
     summary: `"Kanojo Face The Animation" is an adult anime series that delves into the intricate dynamics of intimate relationships. In episode 1, viewers are introduced to a narrative that intertwines passion with complex character interactions. The episode centers around the protagonist's evolving connection with a significant female character, exploring themes of desire, consent, and the nuances of personal boundaries. The animation quality is notable, with detailed character designs and fluid motion that enhance the storytelling. The episode's pacing allows for a deep exploration of the characters' emotions, providing a balance between explicit scenes and narrative development. The musical score complements the visual elements, adding depth to the viewing experience.`,
     relatedAnime: [
