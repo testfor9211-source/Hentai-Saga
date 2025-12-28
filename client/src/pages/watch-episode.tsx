@@ -31,7 +31,7 @@ const episodePlaylists: Record<string, PlaylistItem[]> = {
     { id: 2, title: 'Episode 1 - Alt 1', duration: '23:45', src: defaultVideo },
     { id: 3, title: 'Episode 1 - Alt 2', duration: '23:45', src: defaultVideo },
     { id: 4, title: 'Episode 1 - Backup', duration: '23:45', src: 'https://sample.mp4' },
-    { id: 5, title: 'Episode 1 - Mirror', duration: '23:45', src: defaultVideo },
+    { id: 5, title: 'Episode 1 - Mirror', duration: '23:45', src: 'https://hentaihaven.xxx/wp-content/plugins/player-logic/player.php?data=SVlOekcyK1NqU3F6TGZGbGpLa0V4LzR1RCtuN2E4YzdhUlZtQVdRaXFpV0l4ZTBUNWk1clQweHBkWHlqZ3ZxL0lsRHphdjdLK1UxRXF2Yjg4OXpsYW5XM2N3MXFWVHhyQ3dtQ2F6M3hreHcvb1hPd0YvRlpoc0N2M29iRUhCS0VaSUdEUFN5MlU4UVYzcHVtVWRuS3BSU2paSVdYR1E0UjJ6cG90Wi9pN3VmN1NTZ2dDeDlCVCtYKy9KQUlCVG1EeHpCMkVlK3VsZitKb2h6Szlabkh5bXpZVk95MnlJZUtRblB2VUVuREJaYkJUL003enQrSUlnN0NBeUZLejhYMDp8Ojp8OmJ2TkZadG1HTjhsaFpCZnhvMStJSWc9PQ==' },
   ],
   "2": [
     { id: 1, title: 'Episode 2 - Main', duration: '24:12', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4' },
