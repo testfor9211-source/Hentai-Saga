@@ -7,7 +7,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const caCertPath = path.join(__dirname, '../certs/ca-certificate.crt');
-const caCert = fs.readFileSync(caCertPath);
+let caCert: Buffer | undefined;
+try {
+  caCert = fs.readFileSync(caCertPath);
+} catch (error) {
+  console.warn("CA certificate not found, database connection might fail if SSL is required.");
+}
 
 export const dbConfig = {
   host: process.env.DB_HOST,
@@ -15,10 +20,10 @@ export const dbConfig = {
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  ssl: {
+  ssl: caCert ? {
     ca: caCert,
-    rejectUnauthorized: true
-  }
+    rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED !== 'false'
+  } : undefined
 };
 
 export const dbConfig2 = {
@@ -27,10 +32,10 @@ export const dbConfig2 = {
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME_2,
-  ssl: {
+  ssl: caCert ? {
     ca: caCert,
-    rejectUnauthorized: true
-  }
+    rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED !== 'false'
+  } : undefined
 };
 
 let pool: mysql.Pool | null = null;
