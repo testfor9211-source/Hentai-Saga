@@ -16,6 +16,11 @@ interface BanRecord {
   created_at: Date;
 }
 
+interface Genre {
+  genre_id: number;
+  genre_name: string;
+}
+
 interface Show {
   show_id: number;
   title: string;
@@ -220,6 +225,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching shows:", error);
       res.status(500).json({ message: "Failed to fetch shows" });
+    }
+  });
+
+  app.get("/api/genres", async (_req, res) => {
+    try {
+      const genres = await query3<Genre[]>("SELECT genre_id, genre_name FROM genres");
+      res.json(genres);
+    } catch (error) {
+      console.error("Error fetching genres:", error);
+      res.status(500).json({ message: "Failed to fetch genres" });
+    }
+  });
+
+  app.get("/api/genres/:slug/shows", async (req, res) => {
+    try {
+      const slug = req.params.slug;
+      const shows = await query3<Show[]>(`
+        SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.years, s.time 
+        FROM shows s
+        JOIN show_genres sg ON s.show_id = sg.show_id
+        JOIN genres g ON sg.genre_id = g.genre_id
+        WHERE g.genre_name = ?
+      `, [slug]);
+      res.json(shows);
+    } catch (error) {
+      console.error("Error fetching shows by genre:", error);
+      res.status(500).json({ message: "Failed to fetch shows by genre" });
     }
   });
 

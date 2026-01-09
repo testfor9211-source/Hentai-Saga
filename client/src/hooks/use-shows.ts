@@ -11,8 +11,20 @@ export interface Show {
   time: string;
 }
 
-export function useShows() {
+export interface Genre {
+  genre_id: number;
+  genre_name: string;
+}
+
+export function useGenres() {
+  return useQuery<Genre[]>({
+    queryKey: ["/api/genres"],
+  });
+}
+
+export function useShowsByGenre(genreName: string) {
   return useQuery<Show[]>({
-    queryKey: ["/api/shows"],
+    queryKey: ["/api/genres", genreName, "shows"],
+    enabled: !!genreName,
   });
 }
