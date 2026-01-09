@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronRight, Flame, Trophy } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { useGenres } from "@/hooks/use-shows";
+import { Link } from "wouter";
 
 // Import generated assets
 import imgFantasy from "@assets/generated_images/anime_poster_fantasy_adventure.png";
@@ -14,6 +16,7 @@ import imgSchool from "@assets/generated_images/anime_poster_slice_of_life_schoo
 import imgDark from "@assets/generated_images/anime_poster_dark_fantasy.png";
 
 export default function Home() {
+  const { data: genres } = useGenres();
   // Mock Data
   const trendingAnime = [
     { title: "Blade of the Spirit", image: imgFantasy, episode: "12", rating: "9.8", type: "JP" },
@@ -171,13 +174,21 @@ export default function Home() {
               
               <Separator className="my-6 bg-white/10" />
               
-              <div className="space-y-2">
-                <h4 className="font-display font-bold text-sm text-muted-foreground mb-3">GENRES</h4>
+              <div className="space-y-4">
+                <h4 className="font-display font-bold text-sm text-muted-foreground mb-4">GENRES</h4>
                 <div className="flex flex-wrap gap-2">
-                  {["Action", "Adventure", "Comedy", "Drama", "Fantasy", "Magic", "Mecha", "Music", "Romance", "Sci-Fi"].map((genre) => (
-                    <Badge key={genre} variant="outline" className="cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors">
-                      {genre}
-                    </Badge>
+                  {genres?.map((genre) => (
+                    <Link 
+                      key={genre.genre_id} 
+                      href={`/genre/${genre.genre_name.replace(/\s+/g, '-')}`}
+                    >
+                      <Badge 
+                        variant="outline" 
+                        className="cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors px-3 py-1 text-xs"
+                      >
+                        {genre.genre_name}
+                      </Badge>
+                    </Link>
                   ))}
                 </div>
               </div>
