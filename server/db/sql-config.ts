@@ -38,21 +38,8 @@ export const dbConfig2 = {
   } : undefined
 };
 
-export const dbConfig3 = {
-  host: process.env.DB_HOST,
-  port: parseInt(process.env.DB_PORT || '14315'),
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME_3,
-  ssl: caCert ? {
-    ca: caCert,
-    rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED !== 'false'
-  } : undefined
-};
-
 let pool: mysql.Pool | null = null;
 let pool2: mysql.Pool | null = null;
-let pool3: mysql.Pool | null = null;
 
 export async function getConnection(): Promise<mysql.PoolConnection> {
   if (!pool) {
@@ -78,18 +65,6 @@ export async function getConnection2(): Promise<mysql.PoolConnection> {
   return pool2.getConnection();
 }
 
-export async function getConnection3(): Promise<mysql.PoolConnection> {
-  if (!pool3) {
-    pool3 = mysql.createPool({
-      ...dbConfig3,
-      waitForConnections: true,
-      connectionLimit: 10,
-      queueLimit: 0
-    });
-  }
-  return pool3.getConnection();
-}
-
 export async function query<T>(sql: string, params?: any[]): Promise<T> {
   const connection = await getConnection();
   try {
@@ -110,16 +85,6 @@ export async function query2<T>(sql: string, params?: any[]): Promise<T> {
   }
 }
 
-export async function query3<T>(sql: string, params?: any[]): Promise<T> {
-  const connection = await getConnection3();
-  try {
-    const [results] = await connection.execute(sql, params);
-    return results as T;
-  } finally {
-    connection.release();
-  }
-}
-
 export async function closePool(): Promise<void> {
   if (pool) {
     await pool.end();
@@ -128,9 +93,5 @@ export async function closePool(): Promise<void> {
   if (pool2) {
     await pool2.end();
     pool2 = null;
-  }
-  if (pool3) {
-    await pool3.end();
-    pool3 = null;
   }
 }
