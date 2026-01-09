@@ -1,0 +1,199 @@
+-- ====================
+-- TABLE 1: SHOWS (Main anime information)
+-- ====================
+-- This stores basic information about each anime show
+CREATE TABLE shows (
+    -- Unique ID for each anime (auto-generates: 1, 2, 3, ...)
+    show_id INT AUTO_INCREMENT PRIMARY KEY,
+    
+    -- Main title in English/Romaji (max 250 characters)
+    title VARCHAR(250) NOT NULL,
+    
+    -- Japanese title (max 250 characters, supports Japanese text)
+    alternative_title VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    
+    -- URL to anime poster/cover image (can be very long)
+    image_url VARCHAR(7) NOT NULL,
+    
+    -- Total view count (up to 10 digits: 9,999,999,999)
+    views BIGINT UNSIGNED DEFAULT 0,
+    
+    -- Summary/description (can be very long text)
+    summary TEXT,
+    
+    -- Average episode duration (e.g., "24min", "12min")
+    time VARCHAR(6) NOT NULL,
+    
+    -- Release year (e.g., 2024)
+    years VARCHAR(20) NOT NULL,
+    
+    -- Origin of Medium: 'SUB' for Japanese, 'DUB' for English or 'BOTH'
+    originality ENUM('SUB', 'DUB', 'BOTH') NOT NULL,
+    
+    -- Total number of episodes (0-255)
+    total_episodes TINYINT UNSIGNED NOT NULL,
+    
+    -- Average rating (0.0 to 5.0, e.g., 4.5)
+    rating DECIMAL(2,1) NOT NULL DEFAULT 0.0,
+    
+    -- Series type: Censored or Uncensored content
+    series_type ENUM('Censored', 'Uncensored') NOT NULL,
+    
+    -- Timestamps
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    -- Indexes for faster searching
+    INDEX idx_title (title),
+    INDEX idx_alt_title (alternative_title),
+    INDEX idx_year (years),
+    INDEX idx_rating (rating)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- ====================
+-- TABLE 2: AUTHORS (People who created the anime)
+-- ====================
+-- Stores information about anime creators/authors
+CREATE TABLE authors (
+    -- Unique ID for each author
+    author_id INT AUTO_INCREMENT PRIMARY KEY,
+    
+    -- Author's name
+    author_name VARCHAR(200) NOT NULL,
+    
+    
+    INDEX idx_author_name (author_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- ====================
+-- TABLE 3: GENRES (Categories like Action, Romance, etc.)
+-- ====================
+CREATE TABLE genres (
+    -- Unique ID for each genre
+    genre_id INT AUTO_INCREMENT PRIMARY KEY,
+    
+    -- Genre name (e.g., "Action", "Romance", "Comedy")
+    genre_name VARCHAR(100) NOT NULL UNIQUE,
+    
+    INDEX idx_genre_name (genre_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- ====================
+-- TABLE 4: TAGS (Keywords like "School", "Magic", etc.)
+-- ====================
+CREATE TABLE tags (
+    -- Unique ID for each tag
+    tag_id INT AUTO_INCREMENT PRIMARY KEY,
+    
+    -- Tag name (e.g., "School Life", "Magic", "Isekai")
+    tag_name VARCHAR(200) NOT NULL UNIQUE,
+    
+    INDEX idx_tag_name (tag_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- ====================
+-- TABLE 5: SHOW_AUTHORS (Links shows to their authors)
+-- ====================
+-- This is a "junction table" because one show can have multiple authors,
+-- and one author can create multiple shows (many-to-many relationship)
+CREATE TABLE show_authors (
+    show_id INT NOT NULL,
+    author_id INT NOT NULL,
+    
+    -- Combination of show_id + author_id must be unique
+    PRIMARY KEY (show_id, author_id),
+    
+    -- Foreign keys ensure data integrity
+    FOREIGN KEY (show_id) REFERENCES shows(show_id) ON DELETE CASCADE,
+    FOREIGN KEY (author_id) REFERENCES authors(author_id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+
+-- ====================
+-- TABLE 6: SHOW_GENRES (Links shows to their genres)
+-- ====================
+-- One show can have multiple genres (e.g., Action + Comedy)
+CREATE TABLE show_genres (
+    show_id INT NOT NULL,
+    genre_id INT NOT NULL,
+    
+    PRIMARY KEY (show_id, genre_id),
+    
+    FOREIGN KEY (show_id) REFERENCES shows(show_id) ON DELETE CASCADE,
+    FOREIGN KEY (genre_id) REFERENCES genres(genre_id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+
+-- ====================
+-- TABLE 7: SHOW_TAGS (Links shows to their tags)
+-- ====================
+-- One show can have multiple tags
+CREATE TABLE show_tags (
+    show_id INT NOT NULL,
+    tag_id INT NOT NULL,
+    
+    PRIMARY KEY (show_id, tag_id),
+    
+    FOREIGN KEY (show_id) REFERENCES shows(show_id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES tags(tag_id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+
+-- ====================
+-- TABLE 8: EPISODES (Individual episodes of each show)
+-- ====================
+-- This is THE KEY TABLE that solves your problem!
+-- Each episode gets its own row
+CREATE TABLE episodes (
+    -- Unique ID for each episode
+    episode_id INT AUTO_INCREMENT PRIMARY KEY,
+    
+    -- Which show does this episode belong to?
+    show_id INT NOT NULL,
+    
+    -- Episode number (e.g., 1, 2, 3, or can be decimals like 1.5 for OVAs)
+    episode_number DECIMAL(5,1) NOT NULL,
+    
+    -- Episode type (e.g., Does the episode is raw or not)
+    episode_type ENUM('NO', 'YES') NOT NULL,
+    
+    -- Thumbnail image for this specific episode
+    thumbnail_url VARCHAR(7) NOT NULL,
+    
+    -- Video source URLs (5 different sources for redundancy)
+    source_1 VARCHAR(50) NOT NULL,
+    source_2 VARCHAR(50) NOT NULL,
+    source_3 VARCHAR(50) NOT NULL,
+    source_4 VARCHAR(50) NOT NULL,
+    source_5 VARCHAR(50) NOT NULL,
+
+    -- Direct download link(5 different sources for redundancy)
+    download_url_1 VARCHAR(50) NOT NULL,
+    download_url_2 VARCHAR(50) NOT NULL,
+    download_url_3 VARCHAR(50) NOT NULL,
+    download_url_4 VARCHAR(50) NOT NULL,
+    download_url_5 VARCHAR(50) NOT NULL,
+    
+    -- Episode duration in minutes
+    duration INT UNSIGNED,
+    
+    -- View count for this specific episode
+    episode_views BIGINT UNSIGNED DEFAULT 0,
+    
+    -- When was this episode added?
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Foreign key links to the show
+    FOREIGN KEY (show_id) REFERENCES shows(show_id) ON DELETE CASCADE,
+    
+    -- Ensure no duplicate episode numbers for same show
+    UNIQUE KEY unique_episode (show_id, episode_number),
+    
+    -- Indexes for faster queries
+    INDEX idx_show_id (show_id),
+    INDEX idx_episode_number (episode_number)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
