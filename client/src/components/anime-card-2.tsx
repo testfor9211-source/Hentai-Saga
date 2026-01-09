@@ -1,31 +1,18 @@
 import { Play, Star, Clock, Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { type Show } from "@/hooks/use-shows";
 
 interface AnimeCardProps {
-  title: string;
-  image: string;
-  episode: string | number;
-  rating: string | number;
-  status: string;
-  year: string | number;
-  time: string;
+  show: Show;
 }
 
-export function AnimeCard2({ 
-  title, 
-  image, 
-  episode, 
-  rating, 
-  status, 
-  year, 
-  time 
-}: AnimeCardProps) {
+export function AnimeCard2({ show }: AnimeCardProps) {
   return (
     <div className="group relative w-full">
       <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-muted">
         <img 
-          src={image} 
-          alt={title} 
+          src={show.image_url} 
+          alt={show.title} 
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
         />
         
@@ -39,30 +26,30 @@ export function AnimeCard2({
         {/* Tags */}
         <div className="absolute top-2 left-2 flex flex-col gap-1">
           <Badge className="bg-primary/90 hover:bg-primary text-white border-none text-[10px] font-bold px-1.5 py-0.5 uppercase tracking-wider">
-            {status}
+            {show.originality}
           </Badge>
           <Badge className="bg-green-500/90 hover:bg-green-500 text-white border-none text-[10px] font-bold px-1.5 py-0.5 uppercase tracking-wider">
-            EP {episode}
+            EP {show.total_episodes}
           </Badge>
         </div>
 
         {/* Rating Badge */}
         <div className="absolute bottom-2 right-2 bg-black/80 backdrop-blur-sm px-2 py-1 rounded flex items-center gap-1">
           <Star className="h-3 w-3 text-yellow-500 fill-yellow-500" />
-          <span className="text-xs font-bold text-white">{rating}</span>
+          <span className="text-xs font-bold text-white">{show.rating}</span>
         </div>
       </div>
 
       <div className="mt-3 space-y-1">
         <h3 className="font-bold text-white text-sm line-clamp-1 group-hover:text-primary transition-colors font-ui text-lg">
-          {title}
+          {show.title}
         </h3>
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span className="flex items-center gap-1">
-            <Clock className="h-3 w-3" /> {time}
+            <Clock className="h-3 w-3" /> {show.time}
           </span>
           <span className="flex items-center gap-1">
-            <Calendar className="h-3 w-3" /> {year}
+            <Calendar className="h-3 w-3" /> {show.years}
           </span>
         </div>
       </div>
