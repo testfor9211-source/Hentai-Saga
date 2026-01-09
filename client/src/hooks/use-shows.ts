@@ -16,6 +16,16 @@ export interface Genre {
   genre_name: string;
 }
 
+export interface Tag {
+  tag_id: number;
+  tag_name: string;
+}
+
+export interface Author {
+  author_id: number;
+  author_name: string;
+}
+
 export function useGenres() {
   return useQuery<Genre[]>({
     queryKey: ["/api/genres"],
@@ -26,5 +36,31 @@ export function useShowsByGenre(genreName: string) {
   return useQuery<Show[]>({
     queryKey: ["/api/genres", genreName, "shows"],
     enabled: !!genreName,
+  });
+}
+
+export function useTags() {
+  return useQuery<Tag[]>({
+    queryKey: ["/api/tags"],
+  });
+}
+
+export function useShowsByTag(tagName: string) {
+  return useQuery<Show[]>({
+    queryKey: ["/api/tags", tagName, "shows"],
+    enabled: !!tagName,
+  });
+}
+
+export function useAuthors() {
+  return useQuery<Author[]>({
+    queryKey: ["/api/authors"],
+  });
+}
+
+export function useShowsByAuthor(authorName: string) {
+  return useQuery<Show[]>({
+    queryKey: ["/api/authors", authorName, "shows"],
+    enabled: !!authorName,
   });
 }

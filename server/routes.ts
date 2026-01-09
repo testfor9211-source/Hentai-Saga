@@ -21,6 +21,16 @@ interface Genre {
   genre_name: string;
 }
 
+interface Tag {
+  tag_id: number;
+  tag_name: string;
+}
+
+interface Author {
+  author_id: number;
+  author_name: string;
+}
+
 interface Show {
   show_id: number;
   title: string;
@@ -252,6 +262,60 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching shows by genre:", error);
       res.status(500).json({ message: "Failed to fetch shows by genre" });
+    }
+  });
+
+  app.get("/api/tags", async (_req, res) => {
+    try {
+      const tags = await query3<Tag[]>("SELECT tag_id, tag_name FROM tags");
+      res.json(tags);
+    } catch (error) {
+      console.error("Error fetching tags:", error);
+      res.status(500).json({ message: "Failed to fetch tags" });
+    }
+  });
+
+  app.get("/api/tags/:slug/shows", async (req, res) => {
+    try {
+      const slug = req.params.slug;
+      const shows = await query3<Show[]>(`
+        SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.years, s.time 
+        FROM shows s
+        JOIN show_tags st ON s.show_id = st.show_id
+        JOIN tags t ON st.tag_id = t.tag_id
+        WHERE t.tag_name = ?
+      `, [slug]);
+      res.json(shows);
+    } catch (error) {
+      console.error("Error fetching shows by tag:", error);
+      res.status(500).json({ message: "Failed to fetch shows by tag" });
+    }
+  });
+
+  app.get("/api/authors", async (_req, res) => {
+    try {
+      const authors = await query3<Author[]>("SELECT author_id, author_name FROM authors");
+      res.json(authors);
+    } catch (error) {
+      console.error("Error fetching authors:", error);
+      res.status(500).json({ message: "Failed to fetch authors" });
+    }
+  });
+
+  app.get("/api/authors/:slug/shows", async (req, res) => {
+    try {
+      const slug = req.params.slug;
+      const shows = await query3<Show[]>(`
+        SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.years, s.time 
+        FROM shows s
+        JOIN show_authors sa ON s.show_id = sa.show_id
+        JOIN authors a ON sa.author_id = a.author_id
+        WHERE a.author_name = ?
+      `, [slug]);
+      res.json(shows);
+    } catch (error) {
+      console.error("Error fetching shows by author:", error);
+      res.status(500).json({ message: "Failed to fetch shows by author" });
     }
   });
 

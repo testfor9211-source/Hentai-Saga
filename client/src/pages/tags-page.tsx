@@ -1,33 +1,27 @@
-import { useParams } from "wouter";
+import { useParams, Link } from "wouter";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
-import { AnimeCard } from "@/components/anime-card";
+import { AnimeCard2 } from "@/components/anime-card-2";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Star, Hash } from "lucide-react";
-
-import imgFantasy from "@assets/generated_images/anime_poster_fantasy_adventure.png";
-import imgMecha from "@assets/generated_images/anime_poster_sci-fi_mecha.png";
-import imgSchool from "@assets/generated_images/anime_poster_slice_of_life_school.png";
-import imgDark from "@assets/generated_images/anime_poster_dark_fantasy.png";
+import { Star, Hash, Loader2 } from "lucide-react";
+import { useTags, useShowsByTag } from "@/hooks/use-shows";
 
 export default function TagsPage() {
   const params = useParams();
-  const tagSlug = params.slug || "Sample-page";
+  const tagSlug = params.slug || "";
   const tagName = tagSlug.replace(/-/g, " ");
 
-  const animeList = [
-    { title: "Midnight Chronicles", image: imgDark, episode: "4", rating: "8.5", type: "TV" },
-    { title: "Shadow Covenant", image: imgFantasy, episode: "12", rating: "9.2", type: "TV" },
-    { title: "Steel Angel", image: imgMecha, episode: "6", rating: "8.7", type: "OVA" },
-    { title: "Cherry Blossom Arc", image: imgSchool, episode: "2", rating: "9.0", type: "Movie" },
-    { title: "Dragon's Path", image: imgFantasy, episode: "8", rating: "8.9", type: "TV" },
-    { title: "Cyber Dreams", image: imgMecha, episode: "3", rating: "8.4", type: "OVA" },
-    { title: "School Days", image: imgSchool, episode: "5", rating: "8.6", type: "TV" },
-    { title: "Dark Ritual", image: imgDark, episode: "2", rating: "9.1", type: "Movie" },
-  ];
+  const { data: tags, isLoading: tagsLoading } = useTags();
+  const { data: animeList, isLoading: showsLoading } = useShowsByTag(tagName);
 
-  const allTags = ["Anime Hentai", "Anime Porn", "Big Boobs", "Big Tits Hentai", "Blow Job", "Censored", "Creampie", "Free Hentai", "HD", "Hentai", "Hentai Anime", "Hentai Haven", "Hentai Stream", "School", "School Girl", "Uncensored"];
+  if (tagsLoading || showsLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans">
@@ -54,16 +48,17 @@ export default function TagsPage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {animeList.map((anime, index) => (
-              <AnimeCard 
-                key={index}
-                title={anime.title}
-                image={anime.image}
-                episode={anime.episode}
-                rating={anime.rating}
-                type={anime.type}
+            {animeList?.map((show) => (
+              <AnimeCard2 
+                key={show.show_id}
+                show={show}
               />
             ))}
+            {(!animeList || animeList.length === 0) && (
+              <div className="col-span-full py-12 text-center text-muted-foreground">
+                No anime found with this tag.
+              </div>
+            )}
           </div>
         </section>
 
@@ -73,17 +68,22 @@ export default function TagsPage() {
               ALL TAGS
             </h3>
             <div className="flex flex-wrap gap-2">
-              {allTags.map((tag) => (
-                <Badge 
-                  key={tag} 
-                  variant="outline" 
-                  className={`cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors ${
-                    tag.toLowerCase() === tagName.toLowerCase() ? 'bg-primary text-white border-primary' : ''
-                  }`}
-                  data-testid={`badge-tag-${tag.toLowerCase().replace(/\s+/g, '-')}`}
+              {tags?.map((tag) => (
+                <Link 
+                  key={tag.tag_id} 
+                  href={`/tag/${tag.tag_name.replace(/\s+/g, '-')}`}
                 >
-                  {tag}
-                </Badge>
+                  <Badge 
+                    key={tag.tag_id} 
+                    variant="outline" 
+                    className={`cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors ${
+                      tag.tag_name.toLowerCase() === tagName.toLowerCase() ? 'bg-primary text-white border-primary' : ''
+                    }`}
+                    data-testid={`badge-tag-${tag.tag_name.toLowerCase().replace(/\s+/g, '-')}`}
+                  >
+                    {tag.tag_name}
+                  </Badge>
+                </Link>
               ))}
             </div>
           </Card>

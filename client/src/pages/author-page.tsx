@@ -1,40 +1,36 @@
-import { useParams } from "wouter";
+import { useParams, Link } from "wouter";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
-import { AnimeCard } from "@/components/anime-card";
+import { AnimeCard2 } from "@/components/anime-card-2";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Star, User } from "lucide-react";
-
-import imgFantasy from "@assets/generated_images/anime_poster_fantasy_adventure.png";
-import imgMecha from "@assets/generated_images/anime_poster_sci-fi_mecha.png";
-import imgSchool from "@assets/generated_images/anime_poster_slice_of_life_school.png";
-import imgDark from "@assets/generated_images/anime_poster_dark_fantasy.png";
+import { Star, User, Loader2 } from "lucide-react";
+import { useAuthors, useShowsByAuthor } from "@/hooks/use-shows";
 
 export default function AuthorPage() {
   const params = useParams();
-  const authorSlug = params.slug || "Sample-page";
+  const authorSlug = params.slug || "";
   const authorName = authorSlug.replace(/-/g, " ");
+
+  const { data: authors, isLoading: authorsLoading } = useAuthors();
+  const { data: animeList, isLoading: showsLoading } = useShowsByAuthor(authorName);
+
+  if (authorsLoading || showsLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  const currentAuthor = authors?.find(a => a.author_name.toLowerCase() === authorName.toLowerCase());
 
   const authorInfo = {
     name: authorName,
-    totalWorks: 24,
-    totalViews: "12.5M",
-    description: `${authorName} is a renowned creator known for producing high-quality anime content. With years of experience in the industry, they have developed a unique style that has garnered a dedicated following.`
+    description: currentAuthor 
+      ? `${authorName} is a renowned creator known for producing high-quality anime content. With years of experience in the industry, they have developed a unique style that has garnered a dedicated following.`
+      : "Author not found in our database."
   };
-
-  const animeList = [
-    { title: "Midnight Chronicles", image: imgDark, episode: "4", rating: "8.5", type: "TV" },
-    { title: "Shadow Covenant", image: imgFantasy, episode: "12", rating: "9.2", type: "TV" },
-    { title: "Steel Angel", image: imgMecha, episode: "6", rating: "8.7", type: "OVA" },
-    { title: "Cherry Blossom Arc", image: imgSchool, episode: "2", rating: "9.0", type: "Movie" },
-    { title: "Dragon's Path", image: imgFantasy, episode: "8", rating: "8.9", type: "TV" },
-    { title: "Cyber Dreams", image: imgMecha, episode: "3", rating: "8.4", type: "OVA" },
-    { title: "School Days", image: imgSchool, episode: "5", rating: "8.6", type: "TV" },
-    { title: "Dark Ritual", image: imgDark, episode: "2", rating: "9.1", type: "Movie" },
-  ];
-
-  const popularAuthors = ["Pink Pineapple", "Studio Eromatick", "Collaboration Works", "PoRO", "Bunnywalker", "Mary Jane", "T-Rex", "Suzuki Mirano"];
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans">
@@ -61,16 +57,17 @@ export default function AuthorPage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {animeList.map((anime, index) => (
-              <AnimeCard 
-                key={index}
-                title={anime.title}
-                image={anime.image}
-                episode={anime.episode}
-                rating={anime.rating}
-                type={anime.type}
+            {animeList?.map((show) => (
+              <AnimeCard2 
+                key={show.show_id}
+                show={show}
               />
             ))}
+            {(!animeList || animeList.length === 0) && (
+              <div className="col-span-full py-12 text-center text-muted-foreground">
+                No works found for this author.
+              </div>
+            )}
           </div>
         </section>
 
@@ -80,17 +77,21 @@ export default function AuthorPage() {
               POPULAR AUTHORS
             </h3>
             <div className="flex flex-wrap gap-2">
-              {popularAuthors.map((author) => (
-                <Badge 
-                  key={author} 
-                  variant="outline" 
-                  className={`cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors ${
-                    author.toLowerCase() === authorName.toLowerCase() ? 'bg-primary text-white border-primary' : ''
-                  }`}
-                  data-testid={`badge-author-${author.toLowerCase().replace(/\s+/g, '-')}`}
+              {authors?.map((author) => (
+                <Link 
+                  key={author.author_id} 
+                  href={`/author/${author.author_name.replace(/\s+/g, '-')}`}
                 >
-                  {author}
-                </Badge>
+                  <Badge 
+                    variant="outline" 
+                    className={`cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors ${
+                      author.author_name.toLowerCase() === authorName.toLowerCase() ? 'bg-primary text-white border-primary' : ''
+                    }`}
+                    data-testid={`badge-author-${author.author_name.toLowerCase().replace(/\s+/g, '-')}`}
+                  >
+                    {author.author_name}
+                  </Badge>
+                </Link>
               ))}
             </div>
           </Card>
