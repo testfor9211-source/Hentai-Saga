@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { query, query2 } from "./db/sql-config";
+import { query, query2, query3 } from "./db/sql-config";
 import bcrypt from "bcrypt";
 
 interface AdminUser {
@@ -14,6 +14,17 @@ interface BanRecord {
   id: number;
   ip_address: string;
   created_at: Date;
+}
+
+interface Show {
+  show_id: number;
+  title: string;
+  image_url: string;
+  total_episodes: number;
+  rating: string | number;
+  originality: string;
+  years: string;
+  time: string;
 }
 
 const failedAttempts: Map<string, { count: number; lastAttempt: number }> = new Map();
@@ -199,6 +210,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Ban check error:", error);
       return res.json({ banned: false, remainingMinutes: 0 });
+    }
+  });
+
+  app.get("/api/shows", async (_req, res) => {
+    try {
+      const shows = await query3<Show[]>("SELECT title, image_url, total_episodes, rating, originality, years, time FROM shows");
+      res.json(shows);
+    } catch (error) {
+      console.error("Error fetching shows:", error);
+      res.status(500).json({ message: "Failed to fetch shows" });
     }
   });
 

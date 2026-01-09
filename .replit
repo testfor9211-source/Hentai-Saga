@@ -49,5 +49,6 @@ expertMode = true
 [userenv]
 
 [userenv.shared]
+DB_NAME_3 = "Test"
 
 [userenv.production]
