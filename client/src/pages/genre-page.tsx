@@ -75,7 +75,7 @@ export default function GenrePage() {
                 >
                   <Badge 
                     variant="outline" 
-                    className={`cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors ${
+                    className={`cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors px-3 py-1 text-xs ${
                       genre.genre_name.toLowerCase() === genreName.toLowerCase() ? 'bg-primary text-white border-primary' : ''
                     }`}
                     data-testid={`badge-genre-${genre.genre_name.toLowerCase()}`}

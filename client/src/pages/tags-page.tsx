@@ -76,7 +76,7 @@ export default function TagsPage() {
                   <Badge 
                     key={tag.tag_id} 
                     variant="outline" 
-                    className={`cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors ${
+                    className={`cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors px-3 py-1 text-xs ${
                       tag.tag_name.toLowerCase() === tagName.toLowerCase() ? 'bg-primary text-white border-primary' : ''
                     }`}
                     data-testid={`badge-tag-${tag.tag_name.toLowerCase().replace(/\s+/g, '-')}`}

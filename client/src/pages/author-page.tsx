@@ -84,7 +84,7 @@ export default function AuthorPage() {
                 >
                   <Badge 
                     variant="outline" 
-                    className={`cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors ${
+                    className={`cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors px-3 py-1 text-xs ${
                       author.author_name.toLowerCase() === authorName.toLowerCase() ? 'bg-primary text-white border-primary' : ''
                     }`}
                     data-testid={`badge-author-${author.author_name.toLowerCase().replace(/\s+/g, '-')}`}
