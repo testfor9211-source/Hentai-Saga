@@ -27,11 +27,11 @@ export default function Home() {
   const { data: test3Shows, isLoading: loadingTest3 } = useShowsByGenreId(9);
   const { data: test4Shows, isLoading: loadingTest4 } = useShowsByGenreId(15);
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ axis: 'x', loop: true, align: 'start' });
-  const [emblaRef1, emblaApi1] = useEmblaCarousel({ axis: 'x', loop: true, align: 'start' });
-  const [emblaRef2, emblaApi2] = useEmblaCarousel({ axis: 'x', loop: true, align: 'start' });
-  const [emblaRef3, emblaApi3] = useEmblaCarousel({ axis: 'x', loop: true, align: 'start' });
-  const [emblaRef4, emblaApi4] = useEmblaCarousel({ axis: 'x', loop: true, align: 'start' });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ axis: 'x', loop: false, align: 'start' });
+  const [emblaRef1, emblaApi1] = useEmblaCarousel({ axis: 'x', loop: false, align: 'start' });
+  const [emblaRef2, emblaApi2] = useEmblaCarousel({ axis: 'x', loop: false, align: 'start' });
+  const [emblaRef3, emblaApi3] = useEmblaCarousel({ axis: 'x', loop: false, align: 'start' });
+  const [emblaRef4, emblaApi4] = useEmblaCarousel({ axis: 'x', loop: false, align: 'start' });
 
   const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
