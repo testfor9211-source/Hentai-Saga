@@ -2,11 +2,12 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { HeroSection } from "@/components/hero-section";
 import { AnimeCard } from "@/components/anime-card";
+import { AnimeCard2 } from "@/components/anime-card-2";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronRight, Flame, Trophy, ChevronLeft, ChevronRight as ChevronRightIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { useGenres } from "@/hooks/use-shows";
+import { useGenres, useRecentShows } from "@/hooks/use-shows";
 import { Link } from "wouter";
 import useEmblaCarousel from 'embla-carousel-react';
 import { useCallback } from 'react';
@@ -19,6 +20,7 @@ import imgDark from "@assets/generated_images/anime_poster_dark_fantasy.png";
 
 export default function Home() {
   const { data: genres } = useGenres();
+  const { data: recentShows, isLoading: loadingRecent } = useRecentShows();
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     axis: 'x', 
     loop: true,
@@ -79,11 +81,19 @@ export default function Home() {
 
               <div className="overflow-hidden" ref={emblaRef}>
                 <div className="flex -ml-6">
-                  {trendingAnime.map((anime, i) => (
-                    <div key={i} className="flex-[0_0_50%] sm:flex-[0_0_33.33%] md:flex-[0_0_25%] min-w-0 pl-6">
-                      <AnimeCard {...anime} />
-                    </div>
-                  ))}
+                  {loadingRecent ? (
+                    Array(4).fill(0).map((_, i) => (
+                      <div key={i} className="flex-[0_0_50%] sm:flex-[0_0_33.33%] md:flex-[0_0_25%] min-w-0 pl-6">
+                        <div className="aspect-[3/4] bg-muted animate-pulse rounded-lg" />
+                      </div>
+                    ))
+                  ) : (
+                    recentShows?.map((show, i) => (
+                      <div key={i} className="flex-[0_0_50%] sm:flex-[0_0_33.33%] md:flex-[0_0_25%] min-w-0 pl-6">
+                        <AnimeCard2 show={show} />
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </section>

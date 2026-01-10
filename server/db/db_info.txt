@@ -13,7 +13,7 @@ CREATE TABLE shows (
     alternative_title VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     
     -- URL to anime poster/cover image (can be very long)
-    image_url VARCHAR(7) NOT NULL,
+    image_url VARCHAR(250) NOT NULL,
     
     -- Total view count (up to 10 digits: 9,999,999,999)
     views BIGINT UNSIGNED DEFAULT 0,
@@ -162,21 +162,21 @@ CREATE TABLE episodes (
     episode_type ENUM('NO', 'YES') NOT NULL,
     
     -- Thumbnail image for this specific episode
-    thumbnail_url VARCHAR(7) NOT NULL,
+    thumbnail_url VARCHAR(250) NOT NULL,
     
     -- Video source URLs (5 different sources for redundancy)
-    source_1 VARCHAR(50) NOT NULL,
-    source_2 VARCHAR(50) NOT NULL,
-    source_3 VARCHAR(50) NOT NULL,
-    source_4 VARCHAR(50) NOT NULL,
-    source_5 VARCHAR(50) NOT NULL,
+    source_1 VARCHAR(250) NOT NULL,
+    source_2 VARCHAR(250) NOT NULL,
+    source_3 VARCHAR(250) NOT NULL,
+    source_4 VARCHAR(250) NOT NULL,
+    source_5 VARCHAR(250) NOT NULL,
 
     -- Direct download link(5 different sources for redundancy)
-    download_url_1 VARCHAR(50) NOT NULL,
-    download_url_2 VARCHAR(50) NOT NULL,
-    download_url_3 VARCHAR(50) NOT NULL,
-    download_url_4 VARCHAR(50) NOT NULL,
-    download_url_5 VARCHAR(50) NOT NULL,
+    download_url_1 VARCHAR(250) NOT NULL,
+    download_url_2 VARCHAR(250) NOT NULL,
+    download_url_3 VARCHAR(250) NOT NULL,
+    download_url_4 VARCHAR(250) NOT NULL,
+    download_url_5 VARCHAR(250) NOT NULL,
     
     -- Episode duration in minutes
     duration INT UNSIGNED,

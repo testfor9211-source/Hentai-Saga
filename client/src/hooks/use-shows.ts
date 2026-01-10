@@ -58,6 +58,12 @@ export function useAuthors() {
   });
 }
 
+export function useRecentShows() {
+  return useQuery<Show[]>({
+    queryKey: ["/api/shows/recent"],
+  });
+}
+
 export function useShowsByAuthor(authorName: string) {
   return useQuery<Show[]>({
     queryKey: ["/api/authors", authorName, "shows"],

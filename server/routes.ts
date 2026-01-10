@@ -228,6 +228,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/shows/recent", async (_req, res) => {
+    try {
+      const shows = await query3<Show[]>("SELECT title, image_url, total_episodes, rating, originality, years, time FROM shows ORDER BY updated_at DESC LIMIT 10");
+      res.json(shows);
+    } catch (error) {
+      console.error("Error fetching recent shows:", error);
+      res.status(500).json({ message: "Failed to fetch recent shows" });
+    }
+  });
+
   app.get("/api/shows", async (_req, res) => {
     try {
       const shows = await query3<Show[]>("SELECT title, image_url, total_episodes, rating, originality, years, time FROM shows");
