@@ -27,14 +27,26 @@ export default function Home() {
   const { data: test3Shows, isLoading: loadingTest3 } = useShowsByGenreId(9);
   const { data: test4Shows, isLoading: loadingTest4 } = useShowsByGenreId(15);
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ 
-    axis: 'x', 
-    loop: true,
-    align: 'start'
-  });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ axis: 'x', loop: true, align: 'start' });
+  const [emblaRef1, emblaApi1] = useEmblaCarousel({ axis: 'x', loop: true, align: 'start' });
+  const [emblaRef2, emblaApi2] = useEmblaCarousel({ axis: 'x', loop: true, align: 'start' });
+  const [emblaRef3, emblaApi3] = useEmblaCarousel({ axis: 'x', loop: true, align: 'start' });
+  const [emblaRef4, emblaApi4] = useEmblaCarousel({ axis: 'x', loop: true, align: 'start' });
 
   const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+  
+  const scrollPrev1 = useCallback(() => emblaApi1 && emblaApi1.scrollPrev(), [emblaApi1]);
+  const scrollNext1 = useCallback(() => emblaApi1 && emblaApi1.scrollNext(), [emblaApi1]);
+
+  const scrollPrev2 = useCallback(() => emblaApi2 && emblaApi2.scrollPrev(), [emblaApi2]);
+  const scrollNext2 = useCallback(() => emblaApi2 && emblaApi2.scrollNext(), [emblaApi2]);
+
+  const scrollPrev3 = useCallback(() => emblaApi3 && emblaApi3.scrollPrev(), [emblaApi3]);
+  const scrollNext3 = useCallback(() => emblaApi3 && emblaApi3.scrollNext(), [emblaApi3]);
+
+  const scrollPrev4 = useCallback(() => emblaApi4 && emblaApi4.scrollPrev(), [emblaApi4]);
+  const scrollNext4 = useCallback(() => emblaApi4 && emblaApi4.scrollNext(), [emblaApi4]);
 
   // Mock Data
   const trendingAnime = [
@@ -111,21 +123,35 @@ export default function Home() {
                   <Flame className="h-6 w-6 text-red-500" />
                   <h2 className="text-2xl font-display font-bold text-white">Test 1</h2>
                 </div>
-                <Button variant="link" className="text-muted-foreground hover:text-primary group">
-                  View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button size="icon" variant="outline" onClick={scrollPrev1} className="h-8 w-8">
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <Button size="icon" variant="outline" onClick={scrollNext1} className="h-8 w-8">
+                    <ChevronRightIcon className="h-4 w-4" />
+                  </Button>
+                  <Button variant="link" className="text-muted-foreground hover:text-primary group px-2">
+                    View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </div>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                {loadingTest1 ? (
-                  Array(4).fill(0).map((_, i) => (
-                    <div key={i} className="aspect-[3/4] bg-muted animate-pulse rounded-lg" />
-                  ))
-                ) : (
-                  test1Shows?.slice(0, 4).map((show, i) => (
-                    <AnimeCard2 key={`test1-${i}`} show={show} />
-                  ))
-                )}
+              <div className="overflow-hidden" ref={emblaRef1}>
+                <div className="flex -ml-6">
+                  {loadingTest1 ? (
+                    Array(4).fill(0).map((_, i) => (
+                      <div key={i} className="flex-[0_0_50%] sm:flex-[0_0_33.33%] md:flex-[0_0_25%] min-w-0 pl-6">
+                        <div className="aspect-[3/4] bg-muted animate-pulse rounded-lg" />
+                      </div>
+                    ))
+                  ) : (
+                    test1Shows?.map((show, i) => (
+                      <div key={i} className="flex-[0_0_50%] sm:flex-[0_0_33.33%] md:flex-[0_0_25%] min-w-0 pl-6">
+                        <AnimeCard2 show={show} />
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </section>
 
@@ -136,21 +162,35 @@ export default function Home() {
                   <Flame className="h-6 w-6 text-pink-500" />
                   <h2 className="text-2xl font-display font-bold text-white">Test 2</h2>
                 </div>
-                <Button variant="link" className="text-muted-foreground hover:text-primary group">
-                  View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button size="icon" variant="outline" onClick={scrollPrev2} className="h-8 w-8">
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <Button size="icon" variant="outline" onClick={scrollNext2} className="h-8 w-8">
+                    <ChevronRightIcon className="h-4 w-4" />
+                  </Button>
+                  <Button variant="link" className="text-muted-foreground hover:text-primary group px-2">
+                    View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </div>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                {loadingTest2 ? (
-                  Array(4).fill(0).map((_, i) => (
-                    <div key={i} className="aspect-[3/4] bg-muted animate-pulse rounded-lg" />
-                  ))
-                ) : (
-                  test2Shows?.slice(0, 4).map((show, i) => (
-                    <AnimeCard2 key={`test2-${i}`} show={show} />
-                  ))
-                )}
+              <div className="overflow-hidden" ref={emblaRef2}>
+                <div className="flex -ml-6">
+                  {loadingTest2 ? (
+                    Array(4).fill(0).map((_, i) => (
+                      <div key={i} className="flex-[0_0_50%] sm:flex-[0_0_33.33%] md:flex-[0_0_25%] min-w-0 pl-6">
+                        <div className="aspect-[3/4] bg-muted animate-pulse rounded-lg" />
+                      </div>
+                    ))
+                  ) : (
+                    test2Shows?.map((show, i) => (
+                      <div key={i} className="flex-[0_0_50%] sm:flex-[0_0_33.33%] md:flex-[0_0_25%] min-w-0 pl-6">
+                        <AnimeCard2 show={show} />
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </section>
 
@@ -161,21 +201,35 @@ export default function Home() {
                   <Flame className="h-6 w-6 text-purple-500" />
                   <h2 className="text-2xl font-display font-bold text-white">Test 3</h2>
                 </div>
-                <Button variant="link" className="text-muted-foreground hover:text-primary group">
-                  View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button size="icon" variant="outline" onClick={scrollPrev3} className="h-8 w-8">
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <Button size="icon" variant="outline" onClick={scrollNext3} className="h-8 w-8">
+                    <ChevronRightIcon className="h-4 w-4" />
+                  </Button>
+                  <Button variant="link" className="text-muted-foreground hover:text-primary group px-2">
+                    View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </div>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                {loadingTest3 ? (
-                  Array(4).fill(0).map((_, i) => (
-                    <div key={i} className="aspect-[3/4] bg-muted animate-pulse rounded-lg" />
-                  ))
-                ) : (
-                  test3Shows?.slice(0, 4).map((show, i) => (
-                    <AnimeCard2 key={`test3-${i}`} show={show} />
-                  ))
-                )}
+              <div className="overflow-hidden" ref={emblaRef3}>
+                <div className="flex -ml-6">
+                  {loadingTest3 ? (
+                    Array(4).fill(0).map((_, i) => (
+                      <div key={i} className="flex-[0_0_50%] sm:flex-[0_0_33.33%] md:flex-[0_0_25%] min-w-0 pl-6">
+                        <div className="aspect-[3/4] bg-muted animate-pulse rounded-lg" />
+                      </div>
+                    ))
+                  ) : (
+                    test3Shows?.map((show, i) => (
+                      <div key={i} className="flex-[0_0_50%] sm:flex-[0_0_33.33%] md:flex-[0_0_25%] min-w-0 pl-6">
+                        <AnimeCard2 show={show} />
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </section>
 
@@ -186,21 +240,35 @@ export default function Home() {
                   <Flame className="h-6 w-6 text-orange-500" />
                   <h2 className="text-2xl font-display font-bold text-white">Test 4</h2>
                 </div>
-                <Button variant="link" className="text-muted-foreground hover:text-primary group">
-                  View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button size="icon" variant="outline" onClick={scrollPrev4} className="h-8 w-8">
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <Button size="icon" variant="outline" onClick={scrollNext4} className="h-8 w-8">
+                    <ChevronRightIcon className="h-4 w-4" />
+                  </Button>
+                  <Button variant="link" className="text-muted-foreground hover:text-primary group px-2">
+                    View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </div>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                {loadingTest4 ? (
-                  Array(4).fill(0).map((_, i) => (
-                    <div key={i} className="aspect-[3/4] bg-muted animate-pulse rounded-lg" />
-                  ))
-                ) : (
-                  test4Shows?.slice(0, 4).map((show, i) => (
-                    <AnimeCard2 key={`test4-${i}`} show={show} />
-                  ))
-                )}
+              <div className="overflow-hidden" ref={emblaRef4}>
+                <div className="flex -ml-6">
+                  {loadingTest4 ? (
+                    Array(4).fill(0).map((_, i) => (
+                      <div key={i} className="flex-[0_0_50%] sm:flex-[0_0_33.33%] md:flex-[0_0_25%] min-w-0 pl-6">
+                        <div className="aspect-[3/4] bg-muted animate-pulse rounded-lg" />
+                      </div>
+                    ))
+                  ) : (
+                    test4Shows?.map((show, i) => (
+                      <div key={i} className="flex-[0_0_50%] sm:flex-[0_0_33.33%] md:flex-[0_0_25%] min-w-0 pl-6">
+                        <AnimeCard2 show={show} />
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </section>
 
