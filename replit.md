@@ -32,6 +32,13 @@ The frontend follows a component-based architecture with:
 - Page components in `client/src/pages/`
 - Custom hooks in `client/src/hooks/`
 
+#### Key Page Components
+- `client/src/pages/home.tsx`: Main landing page with hero section, recently uploaded vertical slider, and genre sidebar.
+- `client/src/pages/genre-page.tsx`: Dynamic genre browsing page with database integration.
+- `client/src/pages/author-page.tsx`: Dynamic author works page with database integration.
+- `client/src/pages/tags-page.tsx`: Dynamic tags browsing page with database integration.
+- `client/src/pages/login.tsx`: Admin authentication page.
+
 ### Backend Architecture
 - **Runtime**: Node.js with Express
 - **Language**: TypeScript with ES modules

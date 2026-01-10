@@ -4,10 +4,12 @@ import { HeroSection } from "@/components/hero-section";
 import { AnimeCard } from "@/components/anime-card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, Flame, Trophy } from "lucide-react";
+import { ChevronRight, Flame, Trophy, ChevronUp, ChevronDown } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useGenres } from "@/hooks/use-shows";
 import { Link } from "wouter";
+import useEmblaCarousel from 'embla-carousel-react';
+import { useCallback } from 'react';
 
 // Import generated assets
 import imgFantasy from "@assets/generated_images/anime_poster_fantasy_adventure.png";
@@ -17,12 +19,24 @@ import imgDark from "@assets/generated_images/anime_poster_dark_fantasy.png";
 
 export default function Home() {
   const { data: genres } = useGenres();
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    axis: 'y', 
+    loop: true,
+    align: 'start'
+  });
+
+  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+
   // Mock Data
   const trendingAnime = [
     { title: "Blade of the Spirit", image: imgFantasy, episode: "12", rating: "9.8", type: "JP" },
     { title: "Mecha Horizon Zero", image: imgMecha, episode: "05", rating: "9.5", type: "ENG" },
     { title: "School Days Remix", image: imgSchool, episode: "08", rating: "8.9", type: "JP" },
-    { title: "Shadow Covenant", image: imgDark, episode: "24", rating: "9.2", type: "ENg" },];
+    { title: "Shadow Covenant", image: imgDark, episode: "24", rating: "9.2", type: "ENg" },
+    { title: "Cyber Dreams", image: imgMecha, episode: "3", rating: "8.4", type: "OVA" },
+    { title: "Dark Ritual", image: imgDark, episode: "2", rating: "9.1", type: "Movie" },
+  ];
 
   const topTen = [
     { rank: 1, title: "Blade of the Spirit", views: "1.2M", image: imgFantasy },
@@ -43,22 +57,34 @@ export default function Home() {
           {/* Main Content Area */}
           <div className="flex-1 space-y-12">
             
-            {/* Recent Updates Section */}
+            {/* Recent Updates Section with Vertical Slider */}
             <section>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
                   <Flame className="h-6 w-6 text-primary" />
-                  <h2 className="text-2xl font-display font-bold text-white">RECENTLY UPLOADED</h2>
+                  <h2 className="text-2xl font-display font-bold text-white">RECENT</h2>
                 </div>
-                <Button variant="link" className="text-muted-foreground hover:text-primary group">
-                  View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button size="icon" variant="outline" onClick={scrollPrev} className="h-8 w-8">
+                    <ChevronUp className="h-4 w-4" />
+                  </Button>
+                  <Button size="icon" variant="outline" onClick={scrollNext} className="h-8 w-8">
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                  <Button variant="link" className="text-muted-foreground hover:text-primary group px-2">
+                    View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </div>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                {trendingAnime.map((anime, i) => (
-                  <AnimeCard key={i} {...anime} />
-                ))}
+              <div className="overflow-hidden h-[500px] bg-white/5 rounded-xl p-4" ref={emblaRef}>
+                <div className="flex flex-col gap-4 h-full">
+                  {trendingAnime.map((anime, i) => (
+                    <div key={i} className="flex-[0_0_auto] min-h-0 w-full max-w-sm mx-auto">
+                      <AnimeCard {...anime} />
+                    </div>
+                  ))}
+                </div>
               </div>
             </section>
 
