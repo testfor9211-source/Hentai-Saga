@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronRight, Flame, Trophy, ChevronLeft, ChevronRight as ChevronRightIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { useGenres, useRecentShows } from "@/hooks/use-shows";
+import { useGenres, useRecentShows, useShowsByGenreId } from "@/hooks/use-shows";
 import { Link } from "wouter";
 import useEmblaCarousel from 'embla-carousel-react';
 import { useCallback } from 'react';
@@ -21,6 +21,12 @@ import imgDark from "@assets/generated_images/anime_poster_dark_fantasy.png";
 export default function Home() {
   const { data: genres } = useGenres();
   const { data: recentShows, isLoading: loadingRecent } = useRecentShows();
+  
+  const { data: test1Shows, isLoading: loadingTest1 } = useShowsByGenreId(3);
+  const { data: test2Shows, isLoading: loadingTest2 } = useShowsByGenreId(7);
+  const { data: test3Shows, isLoading: loadingTest3 } = useShowsByGenreId(9);
+  const { data: test4Shows, isLoading: loadingTest4 } = useShowsByGenreId(15);
+
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     axis: 'x', 
     loop: true,
@@ -111,9 +117,15 @@ export default function Home() {
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                {trendingAnime.slice(0, 4).map((anime, i) => (
-                  <AnimeCard key={`test1-${i}`} {...anime} />
-                ))}
+                {loadingTest1 ? (
+                  Array(4).fill(0).map((_, i) => (
+                    <div key={i} className="aspect-[3/4] bg-muted animate-pulse rounded-lg" />
+                  ))
+                ) : (
+                  test1Shows?.slice(0, 4).map((show, i) => (
+                    <AnimeCard2 key={`test1-${i}`} show={show} />
+                  ))
+                )}
               </div>
             </section>
 
@@ -130,9 +142,15 @@ export default function Home() {
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                {trendingAnime.slice(0, 4).map((anime, i) => (
-                  <AnimeCard key={`test2-${i}`} {...anime} />
-                ))}
+                {loadingTest2 ? (
+                  Array(4).fill(0).map((_, i) => (
+                    <div key={i} className="aspect-[3/4] bg-muted animate-pulse rounded-lg" />
+                  ))
+                ) : (
+                  test2Shows?.slice(0, 4).map((show, i) => (
+                    <AnimeCard2 key={`test2-${i}`} show={show} />
+                  ))
+                )}
               </div>
             </section>
 
@@ -149,9 +167,15 @@ export default function Home() {
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                {trendingAnime.slice(0, 4).map((anime, i) => (
-                  <AnimeCard key={`test3-${i}`} {...anime} />
-                ))}
+                {loadingTest3 ? (
+                  Array(4).fill(0).map((_, i) => (
+                    <div key={i} className="aspect-[3/4] bg-muted animate-pulse rounded-lg" />
+                  ))
+                ) : (
+                  test3Shows?.slice(0, 4).map((show, i) => (
+                    <AnimeCard2 key={`test3-${i}`} show={show} />
+                  ))
+                )}
               </div>
             </section>
 
@@ -168,9 +192,15 @@ export default function Home() {
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                {trendingAnime.slice(0, 4).map((anime, i) => (
-                  <AnimeCard key={`test4-${i}`} {...anime} />
-                ))}
+                {loadingTest4 ? (
+                  Array(4).fill(0).map((_, i) => (
+                    <div key={i} className="aspect-[3/4] bg-muted animate-pulse rounded-lg" />
+                  ))
+                ) : (
+                  test4Shows?.slice(0, 4).map((show, i) => (
+                    <AnimeCard2 key={`test4-${i}`} show={show} />
+                  ))
+                )}
               </div>
             </section>
 

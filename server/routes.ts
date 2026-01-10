@@ -275,6 +275,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/genres/id/:id/shows", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const shows = await query3<Show[]>(`
+        SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.years, s.time 
+        FROM shows s
+        JOIN show_genres sg ON s.show_id = sg.show_id
+        WHERE sg.genre_id = ?
+      `, [id]);
+      res.json(shows);
+    } catch (error) {
+      console.error("Error fetching shows by genre ID:", error);
+      res.status(500).json({ message: "Failed to fetch shows by genre ID" });
+    }
+  });
+
   app.get("/api/tags", async (_req, res) => {
     try {
       const tags = await query3<Tag[]>("SELECT tag_id, tag_name FROM tags");
