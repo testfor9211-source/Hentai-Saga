@@ -33,7 +33,7 @@ The frontend follows a component-based architecture with:
 - Custom hooks in `client/src/hooks/`
 
 #### Key Page Components
-- `client/src/pages/home.tsx`: Main landing page with hero section, recently uploaded vertical slider, and genre sidebar.
+- `client/src/pages/home.tsx`: Main landing page with hero section, recently uploaded horizontal slider, and genre sidebar.
 - `client/src/pages/genre-page.tsx`: Dynamic genre browsing page with database integration.
 - `client/src/pages/author-page.tsx`: Dynamic author works page with database integration.
 - `client/src/pages/tags-page.tsx`: Dynamic tags browsing page with database integration.

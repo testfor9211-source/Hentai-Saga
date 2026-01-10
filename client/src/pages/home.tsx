@@ -4,7 +4,7 @@ import { HeroSection } from "@/components/hero-section";
 import { AnimeCard } from "@/components/anime-card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, Flame, Trophy, ChevronUp, ChevronDown } from "lucide-react";
+import { ChevronRight, Flame, Trophy, ChevronLeft, ChevronRight as ChevronRightIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useGenres } from "@/hooks/use-shows";
 import { Link } from "wouter";
@@ -20,7 +20,7 @@ import imgDark from "@assets/generated_images/anime_poster_dark_fantasy.png";
 export default function Home() {
   const { data: genres } = useGenres();
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
-    axis: 'y', 
+    axis: 'x', 
     loop: true,
     align: 'start'
   });
@@ -57,7 +57,7 @@ export default function Home() {
           {/* Main Content Area */}
           <div className="flex-1 space-y-12">
             
-            {/* Recent Updates Section with Vertical Slider */}
+            {/* Recent Updates Section with Horizontal Slider */}
             <section>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
@@ -66,10 +66,10 @@ export default function Home() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Button size="icon" variant="outline" onClick={scrollPrev} className="h-8 w-8">
-                    <ChevronUp className="h-4 w-4" />
+                    <ChevronLeft className="h-4 w-4" />
                   </Button>
                   <Button size="icon" variant="outline" onClick={scrollNext} className="h-8 w-8">
-                    <ChevronDown className="h-4 w-4" />
+                    <ChevronRightIcon className="h-4 w-4" />
                   </Button>
                   <Button variant="link" className="text-muted-foreground hover:text-primary group px-2">
                     View All <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
@@ -77,10 +77,10 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="overflow-hidden h-[500px] bg-white/5 rounded-xl p-4" ref={emblaRef}>
-                <div className="flex flex-col gap-4 h-full">
+              <div className="overflow-hidden bg-white/5 rounded-xl p-4" ref={emblaRef}>
+                <div className="flex -ml-6">
                   {trendingAnime.map((anime, i) => (
-                    <div key={i} className="flex-[0_0_auto] min-h-0 w-full max-w-sm mx-auto">
+                    <div key={i} className="flex-[0_0_50%] sm:flex-[0_0_33.33%] md:flex-[0_0_25%] min-w-0 pl-6">
                       <AnimeCard {...anime} />
                     </div>
                   ))}
