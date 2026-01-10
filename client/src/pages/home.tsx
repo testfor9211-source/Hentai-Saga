@@ -77,7 +77,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="overflow-hidden bg-white/5 rounded-xl p-4" ref={emblaRef}>
+              <div className="overflow-hidden" ref={emblaRef}>
                 <div className="flex -ml-6">
                   {trendingAnime.map((anime, i) => (
                     <div key={i} className="flex-[0_0_50%] sm:flex-[0_0_33.33%] md:flex-[0_0_25%] min-w-0 pl-6">
