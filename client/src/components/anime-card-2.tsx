@@ -24,14 +24,7 @@ export function AnimeCard2({ show }: AnimeCardProps) {
         </div>
 
         {/* Tags */}
-        <div className="absolute top-2 left-2 flex flex-col items-start gap-1">
-          {show.series_type && (
-            <Badge className={`${
-              show.series_type === 'Censored' ? 'bg-blue-500/90 hover:bg-blue-500' : 'bg-red-500/90 hover:bg-red-500'
-            } text-white border-none text-[10px] font-bold px-1.5 py-0.5 uppercase tracking-wider`}>
-              {show.series_type === 'Censored' ? 'Cen' : 'Uncen'}
-            </Badge>
-          )}
+        <div className="absolute top-2 left-2 flex flex-col gap-1">
           <Badge className="bg-primary/90 hover:bg-primary text-white border-none text-[10px] font-bold px-1.5 py-0.5 uppercase tracking-wider">
             {show.originality}
           </Badge>
