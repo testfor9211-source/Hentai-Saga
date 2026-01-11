@@ -9,6 +9,7 @@ export interface Show {
   originality: string;
   years: string;
   time: string;
+  series_type: string;
 }
 
 export interface Genre {
