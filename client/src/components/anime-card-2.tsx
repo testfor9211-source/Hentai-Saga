@@ -28,14 +28,14 @@ export function AnimeCard2({ show }: AnimeCardProps) {
           {show.series_type && (
             <Badge className={`${
               show.series_type === 'Censored' ? 'bg-blue-500/90 hover:bg-blue-500' : 'bg-red-500/90 hover:bg-red-500'
-            } text-white border-none text-[10px] font-bold px-1.5 py-0.5 uppercase tracking-wider`}>
+            } text-white border-none text-[10px] font-bold px-1.5 py-0.5 uppercase tracking-wider w-14 justify-center`}>
               {show.series_type === 'Censored' ? 'Cen' : 'Uncen'}
             </Badge>
           )}
-          <Badge className="bg-primary/90 hover:bg-primary text-white border-none text-[10px] font-bold px-1.5 py-0.5 uppercase tracking-wider">
+          <Badge className="bg-primary/90 hover:bg-primary text-white border-none text-[10px] font-bold px-1.5 py-0.5 uppercase tracking-wider w-14 justify-center">
             {show.originality}
           </Badge>
-          <Badge className="bg-green-500/90 hover:bg-green-500 text-white border-none text-[10px] font-bold px-1.5 py-0.5 uppercase tracking-wider">
+          <Badge className="bg-green-500/90 hover:bg-green-500 text-white border-none text-[10px] font-bold px-1.5 py-0.5 uppercase tracking-wider w-14 justify-center">
             EP {show.total_episodes}
           </Badge>
         </div>
