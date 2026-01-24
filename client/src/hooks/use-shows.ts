@@ -7,7 +7,7 @@ export interface Show {
   total_episodes: number;
   rating: string | number;
   originality: string;
-  years: string;
+  release_year: string | number;
   time: string;
   series_type: string;
 }
