@@ -47,6 +47,17 @@ export function useShowsByGenreId(genreId: number) {
   });
 }
 
+export interface ReleaseYear {
+  year_id: number;
+  release_year: string | number;
+}
+
+export function useReleaseYears() {
+  return useQuery<ReleaseYear[]>({
+    queryKey: ["/api/release-years"],
+  });
+}
+
 export function useShowsByRelease(year: string) {
   return useQuery<Show[]>({
     queryKey: ["/api/release", year, "shows"],

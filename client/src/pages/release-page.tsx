@@ -1,17 +1,20 @@
-import { useParams } from "wouter";
+import { useParams, Link } from "wouter";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { AnimeCard2 } from "@/components/anime-card-2";
-import { Calendar, Loader2 } from "lucide-react";
-import { useShowsByRelease } from "@/hooks/use-shows";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Calendar, Star, Loader2 } from "lucide-react";
+import { useShowsByRelease, useReleaseYears } from "@/hooks/use-shows";
 
 export default function ReleasePage() {
   const params = useParams();
   const year = params.slug || "";
 
-  const { data: animeList, isLoading } = useShowsByRelease(year);
+  const { data: releaseYears, isLoading: yearsLoading } = useReleaseYears();
+  const { data: animeList, isLoading: showsLoading } = useShowsByRelease(year);
 
-  if (isLoading) {
+  if (yearsLoading || showsLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -32,10 +35,17 @@ export default function ReleasePage() {
         </div>
 
         <p className="text-muted-foreground mb-8">
-          Browse all anime released in {year}.
+          Browse all anime released in {year}. Find your favorite series and discover new content.
         </p>
 
         <section className="mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <Star className="h-5 w-5 text-primary fill-primary" />
+            <h2 className="text-xl font-display font-bold text-white uppercase">
+              {year} ANIME
+            </h2>
+          </div>
+
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
             {animeList?.map((show) => (
               <AnimeCard2 
@@ -49,6 +59,31 @@ export default function ReleasePage() {
               </div>
             )}
           </div>
+        </section>
+
+        <section className="mb-8">
+          <Card className="p-6 border-white/10">
+            <h3 className="font-display font-bold text-sm text-muted-foreground mb-4">
+              ALL RELEASE YEARS
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {releaseYears?.map((ry) => (
+                <Link 
+                  key={ry.year_id} 
+                  href={`/release/${ry.release_year}`}
+                >
+                  <Badge 
+                    variant="outline" 
+                    className={`cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors px-3 py-1 text-xs ${
+                      String(ry.release_year) === year ? 'bg-primary text-white border-primary' : ''
+                    }`}
+                  >
+                    {ry.release_year}
+                  </Badge>
+                </Link>
+              ))}
+            </div>
+          </Card>
         </section>
       </main>
 
