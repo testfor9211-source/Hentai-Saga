@@ -47,16 +47,10 @@ export function useShowsByGenreId(genreId: number) {
   });
 }
 
-export function useTags() {
-  return useQuery<Tag[]>({
-    queryKey: ["/api/tags"],
-  });
-}
-
-export function useShowsByTag(tagName: string) {
+export function useShowsByRelease(year: string) {
   return useQuery<Show[]>({
-    queryKey: ["/api/tags", tagName, "shows"],
-    enabled: !!tagName,
+    queryKey: ["/api/release", year, "shows"],
+    enabled: !!year,
   });
 }
 

@@ -315,19 +315,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/tags", async (_req, res) => {
+  app.get("/api/release/:year/shows", async (req, res) => {
     try {
-      const tags = await query3<Tag[]>("SELECT tag_id, tag_name FROM tags");
-      res.json(tags);
-    } catch (error) {
-      console.error("Error fetching tags:", error);
-      res.status(500).json({ message: "Failed to fetch tags" });
-    }
-  });
-
-  app.get("/api/tags/:slug/shows", async (req, res) => {
-    try {
-      const slug = req.params.slug;
+      const year = req.params.year;
       const shows = await query3<Show[]>(`
         SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.time, s.series_type,
                (SELECT MIN(ry.release_year) 
@@ -335,14 +325,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 JOIN show_release_years sry ON ry.year_id = sry.year_id 
                 WHERE sry.show_id = s.show_id) as release_year
         FROM shows s
-        JOIN show_tags st ON s.show_id = st.show_id
-        JOIN tags t ON st.tag_id = t.tag_id
-        WHERE t.tag_name = ?
-      `, [slug]);
+        JOIN show_release_years sry ON s.show_id = sry.show_id
+        JOIN release_years ry ON sry.year_id = ry.year_id
+        WHERE ry.release_year = ?
+      `, [year]);
       res.json(shows);
     } catch (error) {
-      console.error("Error fetching shows by tag:", error);
-      res.status(500).json({ message: "Failed to fetch shows by tag" });
+      console.error("Error fetching shows by release year:", error);
+      res.status(500).json({ message: "Failed to fetch shows by release year" });
     }
   });
 
