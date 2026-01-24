@@ -38,7 +38,7 @@ interface Show {
   total_episodes: number;
   rating: string | number;
   originality: string;
-  years: string;
+  release_year: string | number;
   time: string;
 }
 
@@ -230,7 +230,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/shows/recent", async (_req, res) => {
     try {
-      const shows = await query3<Show[]>("SELECT title, image_url, total_episodes, rating, originality, years, time, series_type FROM shows ORDER BY updated_at DESC LIMIT 10");
+      const shows = await query3<Show[]>(`
+        SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.time, s.series_type,
+               (SELECT MIN(ry.release_year) 
+                FROM release_years ry 
+                JOIN show_release_years sry ON ry.year_id = sry.year_id 
+                WHERE sry.show_id = s.show_id) as release_year
+        FROM shows s 
+        ORDER BY s.updated_at DESC 
+        LIMIT 10
+      `);
       res.json(shows);
     } catch (error) {
       console.error("Error fetching recent shows:", error);
@@ -240,7 +249,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/shows", async (_req, res) => {
     try {
-      const shows = await query3<Show[]>("SELECT title, image_url, total_episodes, rating, originality, years, time, series_type FROM shows");
+      const shows = await query3<Show[]>(`
+        SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.time, s.series_type,
+               (SELECT MIN(ry.release_year) 
+                FROM release_years ry 
+                JOIN show_release_years sry ON ry.year_id = sry.year_id 
+                WHERE sry.show_id = s.show_id) as release_year
+        FROM shows s
+      `);
       res.json(shows);
     } catch (error) {
       console.error("Error fetching shows:", error);
@@ -262,7 +278,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const slug = req.params.slug;
       const shows = await query3<Show[]>(`
-        SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.years, s.time, s.series_type 
+        SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.time, s.series_type,
+               (SELECT MIN(ry.release_year) 
+                FROM release_years ry 
+                JOIN show_release_years sry ON ry.year_id = sry.year_id 
+                WHERE sry.show_id = s.show_id) as release_year
         FROM shows s
         JOIN show_genres sg ON s.show_id = sg.show_id
         JOIN genres g ON sg.genre_id = g.genre_id
@@ -279,7 +299,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const id = parseInt(req.params.id);
       const shows = await query3<Show[]>(`
-        SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.years, s.time, s.series_type 
+        SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.time, s.series_type,
+               (SELECT MIN(ry.release_year) 
+                FROM release_years ry 
+                JOIN show_release_years sry ON ry.year_id = sry.year_id 
+                WHERE sry.show_id = s.show_id) as release_year
         FROM shows s
         JOIN show_genres sg ON s.show_id = sg.show_id
         WHERE sg.genre_id = ?
@@ -305,7 +329,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const slug = req.params.slug;
       const shows = await query3<Show[]>(`
-        SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.years, s.time, s.series_type 
+        SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.time, s.series_type,
+               (SELECT MIN(ry.release_year) 
+                FROM release_years ry 
+                JOIN show_release_years sry ON ry.year_id = sry.year_id 
+                WHERE sry.show_id = s.show_id) as release_year
         FROM shows s
         JOIN show_tags st ON s.show_id = st.show_id
         JOIN tags t ON st.tag_id = t.tag_id
@@ -332,7 +360,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const slug = req.params.slug;
       const shows = await query3<Show[]>(`
-        SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.years, s.time, s.series_type 
+        SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.time, s.series_type,
+               (SELECT MIN(ry.release_year) 
+                FROM release_years ry 
+                JOIN show_release_years sry ON ry.year_id = sry.year_id 
+                WHERE sry.show_id = s.show_id) as release_year
         FROM shows s
         JOIN show_authors sa ON s.show_id = sa.show_id
         JOIN authors a ON sa.author_id = a.author_id

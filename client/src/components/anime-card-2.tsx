@@ -54,7 +54,7 @@ export function AnimeCard2({ show }: AnimeCardProps) {
             <Clock className="h-3 w-3" /> {show.time}
           </span>
           <span className="flex items-center gap-1">
-            <Calendar className="h-3 w-3" /> {show.years}
+            <Calendar className="h-3 w-3" /> {show.release_year}
           </span>
         </div>
       </div>

@@ -24,8 +24,6 @@ CREATE TABLE shows (
     -- Average episode duration (e.g., "24min", "12min")
     time VARCHAR(6) NOT NULL,
     
-    -- Release year (e.g., 2024)
-    years VARCHAR(20) NOT NULL,
     
     -- Origin of Medium: 'SUB' for Japanese, 'DUB' for English or 'BOTH'
     originality ENUM('SUB', 'DUB', 'BOTH') NOT NULL,
@@ -46,7 +44,6 @@ CREATE TABLE shows (
     -- Indexes for faster searching
     INDEX idx_title (title),
     INDEX idx_alt_title (alternative_title),
-    INDEX idx_year (years),
     INDEX idx_rating (rating)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -68,7 +65,24 @@ CREATE TABLE authors (
 
 
 -- ====================
--- TABLE 3: GENRES (Categories like Action, Romance, etc.)
+-- TABLE 3: RELEASE_YEARS
+-- Stores release years (like 2024, 2019)
+-- ====================
+CREATE TABLE release_years (
+    year_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- Actual release year
+    release_year YEAR NOT NULL,
+
+    -- No duplicate years
+    UNIQUE KEY unique_release_year (release_year),
+
+    INDEX idx_release_year (release_year)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- ====================
+-- TABLE 4: GENRES (Categories like Action, Romance, etc.)
 -- ====================
 CREATE TABLE genres (
     -- Unique ID for each genre
@@ -78,20 +92,6 @@ CREATE TABLE genres (
     genre_name VARCHAR(100) NOT NULL UNIQUE,
     
     INDEX idx_genre_name (genre_name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
--- ====================
--- TABLE 4: TAGS (Keywords like "School", "Magic", etc.)
--- ====================
-CREATE TABLE tags (
-    -- Unique ID for each tag
-    tag_id INT AUTO_INCREMENT PRIMARY KEY,
-    
-    -- Tag name (e.g., "School Life", "Magic", "Isekai")
-    tag_name VARCHAR(200) NOT NULL UNIQUE,
-    
-    INDEX idx_tag_name (tag_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -113,8 +113,26 @@ CREATE TABLE show_authors (
 ) ENGINE=InnoDB;
 
 
+
 -- ====================
--- TABLE 6: SHOW_GENRES (Links shows to their genres)
+-- TABLE 6: SHOW_RELEASE_YEARS
+-- Links shows to their release year
+-- ====================
+CREATE TABLE show_release_years (
+    show_id INT NOT NULL,
+    year_id INT NOT NULL,
+
+    PRIMARY KEY (show_id, year_id),
+
+    FOREIGN KEY (show_id) REFERENCES shows(show_id) ON DELETE CASCADE,
+    FOREIGN KEY (year_id) REFERENCES release_years(year_id) ON DELETE CASCADE,
+
+    INDEX idx_show (show_id),
+    INDEX idx_year (year_id)
+) ENGINE=InnoDB;
+
+-- ====================
+-- TABLE 7: SHOW_GENRES (Links shows to their genres)
 -- ====================
 -- One show can have multiple genres (e.g., Action + Comedy)
 CREATE TABLE show_genres (
@@ -127,20 +145,6 @@ CREATE TABLE show_genres (
     FOREIGN KEY (genre_id) REFERENCES genres(genre_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-
--- ====================
--- TABLE 7: SHOW_TAGS (Links shows to their tags)
--- ====================
--- One show can have multiple tags
-CREATE TABLE show_tags (
-    show_id INT NOT NULL,
-    tag_id INT NOT NULL,
-    
-    PRIMARY KEY (show_id, tag_id),
-    
-    FOREIGN KEY (show_id) REFERENCES shows(show_id) ON DELETE CASCADE,
-    FOREIGN KEY (tag_id) REFERENCES tags(tag_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
 
 
 -- ====================
