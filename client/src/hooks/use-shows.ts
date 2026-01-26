@@ -60,6 +60,13 @@ export function useShowsByTag(tagName: string) {
   });
 }
 
+export function useShowsByReleaseYear(year: string) {
+  return useQuery<Show[]>({
+    queryKey: ["/api/release", year, "shows"],
+    enabled: !!year,
+  });
+}
+
 export function useAuthors() {
   return useQuery<Author[]>({
     queryKey: ["/api/authors"],

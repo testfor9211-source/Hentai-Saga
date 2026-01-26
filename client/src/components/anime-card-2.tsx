@@ -1,6 +1,7 @@
 import { Play, Star, Clock, Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { type Show } from "@/hooks/use-shows";
+import { Link } from "wouter";
 
 interface AnimeCardProps {
   show: Show;
@@ -54,7 +55,10 @@ export function AnimeCard2({ show }: AnimeCardProps) {
             <Clock className="h-3 w-3" /> {show.time}
           </span>
           <span className="flex items-center gap-1">
-            <Calendar className="h-3 w-3" /> {show.release_year}
+            <Calendar className="h-3 w-3" />
+            <Link href={`/release/${show.release_year}`} className="hover:text-primary transition-colors">
+              {show.release_year}
+            </Link>
           </span>
         </div>
       </div>

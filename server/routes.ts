@@ -351,6 +351,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/release/:year/shows", async (req, res) => {
+    try {
+      const year = req.params.year;
+      const shows = await query3<Show[]>(`
+        SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.time, s.series_type,
+               ry.release_year
+        FROM shows s
+        JOIN show_release_years sry ON s.show_id = sry.show_id
+        JOIN release_years ry ON sry.year_id = ry.year_id
+        WHERE ry.release_year = ? AND sry.primary_year = 'Y'
+      `, [year]);
+      res.json(shows);
+    } catch (error) {
+      console.error("Error fetching shows by release year:", error);
+      res.status(500).json({ message: "Failed to fetch shows by release year" });
+    }
+  });
+
   app.get("/api/authors", async (_req, res) => {
     try {
       const authors = await query3<Author[]>("SELECT author_id, author_name FROM authors");
