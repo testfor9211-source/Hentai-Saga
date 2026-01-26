@@ -47,21 +47,16 @@ export function useShowsByGenreId(genreId: number) {
   });
 }
 
-export interface ReleaseYear {
-  year_id: number;
-  release_year: string | number;
-}
-
-export function useReleaseYears() {
-  return useQuery<ReleaseYear[]>({
-    queryKey: ["/api/release-years"],
+export function useTags() {
+  return useQuery<Tag[]>({
+    queryKey: ["/api/tags"],
   });
 }
 
-export function useShowsByRelease(year: string) {
+export function useShowsByTag(tagName: string) {
   return useQuery<Show[]>({
-    queryKey: ["/api/release", year, "shows"],
-    enabled: !!year,
+    queryKey: ["/api/tags", tagName, "shows"],
+    enabled: !!tagName,
   });
 }
 

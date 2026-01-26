@@ -116,15 +116,11 @@ CREATE TABLE show_authors (
 
 -- ====================
 -- TABLE 6: SHOW_RELEASE_YEARS
--- Links shows to their release years
--- One of them can be marked as the PRIMARY year
+-- Links shows to their release year
 -- ====================
 CREATE TABLE show_release_years (
     show_id INT NOT NULL,
     year_id INT NOT NULL,
-
-    -- Is this the main / original release year?
-    primary_year ENUM('Y', 'N') NOT NULL DEFAULT 'N',
 
     PRIMARY KEY (show_id, year_id),
 
@@ -132,8 +128,7 @@ CREATE TABLE show_release_years (
     FOREIGN KEY (year_id) REFERENCES release_years(year_id) ON DELETE CASCADE,
 
     INDEX idx_show (show_id),
-    INDEX idx_year (year_id),
-    INDEX idx_primary_year (primary_year)
+    INDEX idx_year (year_id)
 ) ENGINE=InnoDB;
 
 -- ====================
