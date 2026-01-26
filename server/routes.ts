@@ -232,10 +232,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const shows = await query3<Show[]>(`
         SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.time, s.series_type,
-               (SELECT MIN(ry.release_year) 
+               (SELECT ry.release_year 
                 FROM release_years ry 
                 JOIN show_release_years sry ON ry.year_id = sry.year_id 
-                WHERE sry.show_id = s.show_id) as release_year
+                WHERE sry.show_id = s.show_id AND sry.primary_year = 'Y'
+                LIMIT 1) as release_year
         FROM shows s 
         ORDER BY s.updated_at DESC 
         LIMIT 10
@@ -251,10 +252,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const shows = await query3<Show[]>(`
         SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.time, s.series_type,
-               (SELECT MIN(ry.release_year) 
+               (SELECT ry.release_year 
                 FROM release_years ry 
                 JOIN show_release_years sry ON ry.year_id = sry.year_id 
-                WHERE sry.show_id = s.show_id) as release_year
+                WHERE sry.show_id = s.show_id AND sry.primary_year = 'Y'
+                LIMIT 1) as release_year
         FROM shows s
       `);
       res.json(shows);
@@ -279,10 +281,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const slug = req.params.slug;
       const shows = await query3<Show[]>(`
         SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.time, s.series_type,
-               (SELECT MIN(ry.release_year) 
+               (SELECT ry.release_year 
                 FROM release_years ry 
                 JOIN show_release_years sry ON ry.year_id = sry.year_id 
-                WHERE sry.show_id = s.show_id) as release_year
+                WHERE sry.show_id = s.show_id AND sry.primary_year = 'Y'
+                LIMIT 1) as release_year
         FROM shows s
         JOIN show_genres sg ON s.show_id = sg.show_id
         JOIN genres g ON sg.genre_id = g.genre_id
@@ -300,10 +303,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const id = parseInt(req.params.id);
       const shows = await query3<Show[]>(`
         SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.time, s.series_type,
-               (SELECT MIN(ry.release_year) 
+               (SELECT ry.release_year 
                 FROM release_years ry 
                 JOIN show_release_years sry ON ry.year_id = sry.year_id 
-                WHERE sry.show_id = s.show_id) as release_year
+                WHERE sry.show_id = s.show_id AND sry.primary_year = 'Y'
+                LIMIT 1) as release_year
         FROM shows s
         JOIN show_genres sg ON s.show_id = sg.show_id
         WHERE sg.genre_id = ?
@@ -330,10 +334,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const slug = req.params.slug;
       const shows = await query3<Show[]>(`
         SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.time, s.series_type,
-               (SELECT MIN(ry.release_year) 
+               (SELECT ry.release_year 
                 FROM release_years ry 
                 JOIN show_release_years sry ON ry.year_id = sry.year_id 
-                WHERE sry.show_id = s.show_id) as release_year
+                WHERE sry.show_id = s.show_id AND sry.primary_year = 'Y'
+                LIMIT 1) as release_year
         FROM shows s
         JOIN show_tags st ON s.show_id = st.show_id
         JOIN tags t ON st.tag_id = t.tag_id
@@ -361,10 +366,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const slug = req.params.slug;
       const shows = await query3<Show[]>(`
         SELECT s.title, s.image_url, s.total_episodes, s.rating, s.originality, s.time, s.series_type,
-               (SELECT MIN(ry.release_year) 
+               (SELECT ry.release_year 
                 FROM release_years ry 
                 JOIN show_release_years sry ON ry.year_id = sry.year_id 
-                WHERE sry.show_id = s.show_id) as release_year
+                WHERE sry.show_id = s.show_id AND sry.primary_year = 'Y'
+                LIMIT 1) as release_year
         FROM shows s
         JOIN show_authors sa ON s.show_id = sa.show_id
         JOIN authors a ON sa.author_id = a.author_id
