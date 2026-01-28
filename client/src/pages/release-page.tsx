@@ -75,7 +75,7 @@ export default function ReleasePage() {
                   <Badge 
                     variant="outline" 
                     className={`cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors px-3 py-1 text-xs ${
-                      y.release_year === year ? 'bg-primary text-white border-primary' : ''
+                      y.release_year === year ? 'bg-primary/20 text-primary border-primary/50 shadow-[0_0_15px_rgba(147,51,234,0.3)]' : ''
                     }`}
                     data-testid={`badge-year-${y.release_year}`}
                   >
