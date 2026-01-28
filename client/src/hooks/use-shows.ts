@@ -27,6 +27,11 @@ export interface Author {
   author_name: string;
 }
 
+export interface Year {
+  year_id: number;
+  release_year: string;
+}
+
 export function useGenres() {
   return useQuery<Genre[]>({
     queryKey: ["/api/genres"],
@@ -64,6 +69,12 @@ export function useShowsByReleaseYear(year: string) {
   return useQuery<Show[]>({
     queryKey: ["/api/release", year, "shows"],
     enabled: !!year,
+  });
+}
+
+export function useYears() {
+  return useQuery<Year[]>({
+    queryKey: ["/api/years"],
   });
 }
 

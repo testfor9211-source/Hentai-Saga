@@ -369,6 +369,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/years", async (_req, res) => {
+    try {
+      const years = await query3<{ year_id: number; release_year: string }[]>("SELECT year_id, release_year FROM release_years ORDER BY release_year DESC");
+      res.json(years);
+    } catch (error) {
+      console.error("Error fetching years:", error);
+      res.status(500).json({ message: "Failed to fetch years" });
+    }
+  });
+
   app.get("/api/authors", async (_req, res) => {
     try {
       const authors = await query3<Author[]>("SELECT author_id, author_name FROM authors");

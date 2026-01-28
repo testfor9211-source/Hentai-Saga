@@ -1,17 +1,20 @@
-import { useParams } from "wouter";
+import { useParams, Link } from "wouter";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { AnimeCard2 } from "@/components/anime-card-2";
-import { Loader2, Calendar } from "lucide-react";
-import { useShowsByReleaseYear } from "@/hooks/use-shows";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Loader2, Calendar, Star } from "lucide-react";
+import { useShowsByReleaseYear, useYears } from "@/hooks/use-shows";
 
 export default function ReleasePage() {
   const params = useParams();
   const year = params.slug || "";
 
-  const { data: animeList, isLoading } = useShowsByReleaseYear(year);
+  const { data: years, isLoading: yearsLoading } = useYears();
+  const { data: animeList, isLoading: showsLoading } = useShowsByReleaseYear(year);
 
-  if (isLoading) {
+  if (yearsLoading || showsLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -36,6 +39,13 @@ export default function ReleasePage() {
         </p>
 
         <section className="mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <Star className="h-5 w-5 text-primary fill-primary" />
+            <h2 className="text-xl font-display font-bold text-white" data-testid="heading-anime-list">
+              {year} ANIME
+            </h2>
+          </div>
+
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
             {animeList?.map((show) => (
               <AnimeCard2 
@@ -49,6 +59,32 @@ export default function ReleasePage() {
               </div>
             )}
           </div>
+        </section>
+
+        <section className="mb-8">
+          <Card className="p-6 border-white/10">
+            <h3 className="font-display font-bold text-sm text-muted-foreground mb-4" data-testid="heading-all-years">
+              ALL RELEASE YEARS
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {years?.map((y) => (
+                <Link 
+                  key={y.year_id} 
+                  href={`/release/${y.release_year}`}
+                >
+                  <Badge 
+                    variant="outline" 
+                    className={`cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors px-3 py-1 text-xs ${
+                      y.release_year === year ? 'bg-primary text-white border-primary' : ''
+                    }`}
+                    data-testid={`badge-year-${y.release_year}`}
+                  >
+                    {y.release_year}
+                  </Badge>
+                </Link>
+              ))}
+            </div>
+          </Card>
         </section>
       </main>
 
