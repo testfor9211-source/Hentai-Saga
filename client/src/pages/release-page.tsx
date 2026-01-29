@@ -1,15 +1,20 @@
-import { useParams } from "wouter";
+import { useParams, Link } from "wouter";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { AnimeCard2 } from "@/components/anime-card-2";
-import { Loader2, Calendar } from "lucide-react";
+import { Loader2, Calendar, Star } from "lucide-react";
 import { useShowsByReleaseYear } from "@/hooks/use-shows";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 
 export default function ReleasePage() {
   const params = useParams();
   const year = params.slug || "";
 
   const { data: animeList, isLoading } = useShowsByReleaseYear(year);
+
+  // Generate a list of years from 2000 to 2025 for the table
+  const years = Array.from({ length: 2025 - 2000 + 1 }, (_, i) => (2025 - i).toString());
 
   if (isLoading) {
     return (
@@ -36,6 +41,13 @@ export default function ReleasePage() {
         </p>
 
         <section className="mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <Star className="h-5 w-5 text-primary fill-primary" />
+            <h2 className="text-xl font-display font-bold text-white" data-testid="heading-anime-list">
+              {year} ANIME
+            </h2>
+          </div>
+
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
             {animeList?.map((show) => (
               <AnimeCard2 
@@ -49,6 +61,32 @@ export default function ReleasePage() {
               </div>
             )}
           </div>
+        </section>
+
+        <section className="mb-8">
+          <Card className="p-6 border-white/10">
+            <h3 className="font-display font-bold text-sm text-muted-foreground mb-4" data-testid="heading-all-years">
+              BROWSE BY YEAR
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {years.map((y) => (
+                <Link 
+                  key={y} 
+                  href={`/release/${y}`}
+                >
+                  <Badge 
+                    variant="outline" 
+                    className={`cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors px-3 py-1 text-xs ${
+                      y === year ? 'bg-primary text-white border-primary' : ''
+                    }`}
+                    data-testid={`badge-release-${y}`}
+                  >
+                    {y}
+                  </Badge>
+                </Link>
+              ))}
+            </div>
+          </Card>
         </section>
       </main>
 
